@@ -8,7 +8,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.arfmann.pushnotes"
-        minSdkVersion 24
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 12
         versionName "1.2"

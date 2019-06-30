@@ -1,6 +1,9 @@
 package com.arfmann.pushnotes
 
-import android.app.*
+import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -57,8 +60,7 @@ class MainActivity : AppCompatActivity() {
                 val minuteHourEditText = dialogView.minute_editText as EditText
 
                 alertDialogHour.setPositiveButton(R.string.send_alertDialog) {
-                        dialog, _ ->
-                    dialog.dismiss()
+                        _, _ ->
 
                     fun EditText.longValue() = text.toString().toLongOrNull() ?: 0
 
@@ -79,15 +81,12 @@ class MainActivity : AppCompatActivity() {
             else
                 notificationFunction(0)
         }
-
-        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.cancelAll()
     }
 
     private fun notificationFunction(totalMilli: Long){
 
 
-        var channelId = "com.arfmann.notificationnotes"
+        val channelId = "com.arfmann.notificationnotes"
         val description = "Notes"
         val groupKey = "com.arfmann.notificationnotes"
 
@@ -116,8 +115,6 @@ class MainActivity : AppCompatActivity() {
                 .setTimeoutAfter(totalMilli)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
-            Notification.VISIBILITY_PUBLIC
-
             if(persistent_notfication_switch.isChecked){
                 builder.setOngoing(true)
             }
@@ -137,8 +134,6 @@ class MainActivity : AppCompatActivity() {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setTimeoutAfter(totalMilli)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-
-            Notification.VISIBILITY_PUBLIC
 
             if(persistent_notfication_switch.isChecked)
                 builder.setOngoing(true)

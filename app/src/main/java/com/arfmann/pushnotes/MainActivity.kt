@@ -46,6 +46,8 @@ class MainActivity : AppCompatActivity() {
         gitHub_link_textView.text = HtmlCompat.fromHtml("<a href='https://github.com/Arfmann21/PushNotes'>GitHub</a>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         gitHub_link_textView.movementMethod = LinkMovementMethod.getInstance()
 
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
         done_fab.setOnClickListener {
 
             if (autodelete_notification_switch.isChecked) {
@@ -68,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                     minuteMilli = minuteHourEditText.longValue() * 60000
                     totalMilli = hourMilli + minuteMilli
 
-                    notificationFunction(totalMilli)
+                    notificationFunction(totalMilli, notificationManager)
                 }
 
                 alertDialogHour.setNegativeButton(R.string.cancel_alertDialog){
@@ -79,18 +81,19 @@ class MainActivity : AppCompatActivity() {
 
             }
             else
-                notificationFunction(0)
+                notificationFunction(0, notificationManager)
         }
+
+        cancelAllNotifications(notificationManager)
+
     }
 
-    private fun notificationFunction(totalMilli: Long){
+    private fun notificationFunction(totalMilli: Long, notificationManager: NotificationManager){
 
 
         val channelId = "com.arfmann.notificationnotes"
         val description = "Notes"
         val groupKey = "com.arfmann.notificationnotes"
-
-        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         title_editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
         content_editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
@@ -151,7 +154,6 @@ class MainActivity : AppCompatActivity() {
         persistent_notfication_switch.isChecked = false
         autodelete_notification_switch.isChecked = false
 
-        cancelAllNotifications(notificationManager)
     }
 
     private fun cancelAllNotifications(notificationManager: NotificationManager){

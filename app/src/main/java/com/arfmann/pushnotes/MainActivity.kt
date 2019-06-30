@@ -1,25 +1,20 @@
-package com.arfmann.notificationnotes
+package com.arfmann.pushnotes
 
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.NotificationCompat
 import android.support.v4.text.HtmlCompat
 import android.support.v7.app.AppCompatActivity
-import android.text.Html
 import android.text.InputType
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.alertdialog_autocancel.view.*
-import kotlinx.android.synthetic.main.alertdialog_cancel_all.view.*
 
 
 class MainActivity : AppCompatActivity() {

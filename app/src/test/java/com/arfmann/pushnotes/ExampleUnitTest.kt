@@ -1,4 +1,4 @@
-package com.arfmann.notificationnotes
+package com.arfmann.pushnotes
 
 import org.junit.Test
 

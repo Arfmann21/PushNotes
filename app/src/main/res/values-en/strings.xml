@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Notification Notes</string>
+    <string name="app_name">Push Notes</string>
     <string name="note_title"><font size="10">Title</font></string>
     <string name="note_content"><font size="10">Content</font></string>
     <string name="persistent_notification">Persistent notification</string>

@@ -1,0 +1,30 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="colorAccent">#3399ff</item>
+        <item name="android:textColorPrimary">#e6e6e6</item>
+        <item name="android:backgroundTint">#202030</item>
+        <item name="android:fontFamily">@font/product_sans_bold</item>
+        <item name="android:topLeftRadius">5pt</item>
+        <item name="android:topRightRadius">5pt</item>
+        <item name="android:bottomLeftRadius">5pt</item>
+        <item name="android:bottomRightRadius">5pt</item>
+    </style>
+
+    <style name="SwitchOffTheme" parent="Theme.AppCompat.Light">
+        <item name="android:trackTint">#FFFFFF</item>
+        <item name="android:thumbTint">#FFFFFF</item>
+    </style>
+
+    <style name="SwitchOnTheme" parent="Theme.AppCompat.Light">
+        <item name="android:trackTint">#d37a7a</item>
+        <item name="android:thumbTint">#d37a7a</item>
+    </style>
+</resources>

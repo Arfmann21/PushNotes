@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Notification Notes</string>
+    <string name="note_title"><font size="10">Title</font></string>
+    <string name="note_content"><font size="10">Content</font></string>
+    <string name="persistent_notification">Persistent notification</string>
+    <string name="lockscreen">Automatically delete notification</string>
+    <string name="alertdialog_title">Insert hours and minutes</string>
+    <string name="hour"><font size="15">Hours</font></string>
+    <string name="minute"><font size="15">Minutes</font></string>
+    <string name="send_alertDialog"><font color="#009900">Send</font></string>
+    <string name="cancel_alertDialog"><font color="#e60000">Cancel</font></string>
+    <string name="delete_question">"Delete all notes?"</string>
+    <string name="yes"><font color="#00cc00">Yes</font></string>
+</resources>

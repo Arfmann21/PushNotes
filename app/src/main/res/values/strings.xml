@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Push Notes</string>
+    <string name="note_title"><font size="10">Titolo</font></string>
+    <string name="note_content"><font size="10">Contenuto</font></string>
+    <string name="persistent_notification">Notifica persistente</string>
+    <string name="lockscreen">Elimina automaticamente la notifica</string>
+    <string name="alertdialog_title">Inserisci ore e minuti</string>
+    <string name="hour"><font size="15">Ore</font></string>
+    <string name="minute"><font size="15">Minuti</font></string>
+    <string name="send_alertDialog"><font color="#009900">Invia</font></string>
+    <string name="cancel_alertDialog"><font color="#e60000">Annulla</font></string>
+    <string name="delete_question">"Eliminare tutte le note?"</string>
+    <string name="yes"><font color="#009900">Si</font></string>
+    <string name="no" translatable="false"><font color="#e60000">No</font></string>
+    <string name="developer" translatable="false">Developer</string>
+    <string name="nameDeveloper" translatable="false">Giovanni Ferraro</string>
+    <string name="openSource" translatable="false">Open Source</string>
+    <string name="gitHub" translatable="false">GitHub</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#d37a7a</color>
+    <color name="colorPrimaryDark">#1a1a1a</color>
+    <color name="colorAccent">#3399ff</color>
+    <color name="deleteFabColor">#cc0000</color>
+</resources>

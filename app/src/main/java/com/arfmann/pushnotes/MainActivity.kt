@@ -78,15 +78,13 @@ class MainActivity : AppCompatActivity() {
             }
             else
                 notificationFunction(0)
-
-
         }
 
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancelAll()
     }
 
-    fun notificationFunction(totalMilli: Long){
+    private fun notificationFunction(totalMilli: Long){
 
 
         var channelId = "com.arfmann.notificationnotes"
@@ -105,17 +103,15 @@ class MainActivity : AppCompatActivity() {
             notificationChannel = NotificationChannel(channelId,description,NotificationManager.IMPORTANCE_HIGH)
             notificationChannel.enableLights(true)
             notificationChannel.lightColor = Color.GREEN
-            notificationChannel.enableVibration(false)
+            notificationChannel.enableVibration(true)
             notificationManager.createNotificationChannel(notificationChannel)
 
             builder = NotificationCompat.Builder(this,channelId)
                 .setContentTitle(title_editText.text!!.toString())
                 .setContentText(content_editText.text!!.toString())
                 .setSmallIcon(R.drawable.logo)
-               //Not needed for now .setLargeIcon(BitmapFactory.decodeResource(this.resources,R.drawable.logo))
+                //Not needed for now .setLargeIcon(BitmapFactory.decodeResource(this.resources,R.drawable.logo))
                 .setContentIntent(pendingIntent)
-                .setGroup(groupKey)
-                .setGroupSummary(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setTimeoutAfter(totalMilli)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)

@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         title_editText.requestFocus()
 
-        gitHub_link_textView.text = HtmlCompat.fromHtml("<a href='https://github.com/Arfmann21/Fisicapp'>GitHub</a>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        gitHub_link_textView.text = HtmlCompat.fromHtml("<a href='https://github.com/Arfmann21/PushNotes'>GitHub</a>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         gitHub_link_textView.movementMethod = LinkMovementMethod.getInstance()
 
         done_fab.setOnClickListener {

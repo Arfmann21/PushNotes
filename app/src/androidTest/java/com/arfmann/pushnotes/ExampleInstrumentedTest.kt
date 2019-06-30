@@ -1,4 +1,4 @@
-package com.arfmann.notificationnotes
+package com.arfmann.pushnotes
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

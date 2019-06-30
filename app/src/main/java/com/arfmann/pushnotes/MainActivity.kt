@@ -1,9 +1,6 @@
 package com.arfmann.pushnotes
 
-import android.app.AlertDialog
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -16,6 +13,7 @@ import android.text.InputType
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.widget.EditText
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.alertdialog_autocancel.view.*
 
@@ -26,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var notificationManager: NotificationManager
     lateinit var notificationChannel: NotificationChannel
-    lateinit var builder : NotificationCompat.Builder
+    private lateinit var builder : NotificationCompat.Builder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,37 +49,44 @@ class MainActivity : AppCompatActivity() {
         done_fab.setOnClickListener {
 
             if (autodelete_notification_switch.isChecked) {
-                val inflater = LayoutInflater.from(applicationContext)
-                val dialogView = inflater.inflate(R.layout.alertdialog_autocancel, null)
 
-                val alertDialogHour = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
-                alertDialogHour.setView(dialogView)
-                alertDialogHour.setTitle(R.string.alertdialog_title)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-                val hourEditText = dialogView.hour_editText as EditText
-                val minuteHourEditText = dialogView.minute_editText as EditText
+                    val inflater = LayoutInflater.from(applicationContext)
+                    val dialogView = inflater.inflate(R.layout.alertdialog_autocancel, null)
 
-                alertDialogHour.setPositiveButton(R.string.send_alertDialog) {
-                        _, _ ->
+                    val alertDialogHour = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
+                    alertDialogHour.setView(dialogView)
+                    alertDialogHour.setTitle(R.string.alertdialog_title)
 
-                    fun EditText.longValue() = text.toString().toLongOrNull() ?: 0
+                    val hourEditText = dialogView.hour_editText as EditText
+                    val minuteHourEditText = dialogView.minute_editText as EditText
 
-                    hourMilli = hourEditText.longValue() * 3600000
-                    minuteMilli = minuteHourEditText.longValue() * 60000
-                    totalMilli = hourMilli + minuteMilli
+                    alertDialogHour.setPositiveButton(R.string.send_alertDialog) { _, _ ->
 
-                    notificationFunction(totalMilli, notificationManager)
+                        fun EditText.longValue() = text.toString().toLongOrNull() ?: 0
+
+                        hourMilli = hourEditText.longValue() * 3600000
+                        minuteMilli = minuteHourEditText.longValue() * 60000
+                        totalMilli = hourMilli + minuteMilli
+
+                        notificationFunction(totalMilli, notificationManager)
+                    }
+
+                    alertDialogHour.setNegativeButton(R.string.cancel_alertDialog) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+
+                    alertDialogHour.show()
+
                 }
-
-                alertDialogHour.setNegativeButton(R.string.cancel_alertDialog){
-                        dialog, _ -> dialog.dismiss()
+                else{
+                    Toast.makeText(this, R.string.version_not_supported, Toast.LENGTH_LONG).show()
+                    autodelete_notification_switch.isChecked = false
                 }
-
-                alertDialogHour.show()
-
             }
             else
-                notificationFunction(0, notificationManager)
+                    notificationFunction(0, notificationManager)
         }
 
         cancelAllNotifications(notificationManager)
@@ -134,14 +139,15 @@ class MainActivity : AppCompatActivity() {
                 .setContentIntent(pendingIntent)
                 .setGroup(groupKey)
                 .setGroupSummary(true)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setTimeoutAfter(totalMilli)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setAutoCancel(true)
+                .setVisibility(Notification.VISIBILITY_PUBLIC)
 
             if(persistent_notfication_switch.isChecked)
                 builder.setOngoing(true)
             else
                 builder.setOngoing(false)
+
+
         }
         notificationManager.notify(i, builder.build())
         i++

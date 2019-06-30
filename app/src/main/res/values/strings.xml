@@ -16,4 +16,5 @@
     <string name="nameDeveloper" translatable="false">Giovanni Ferraro</string>
     <string name="openSource" translatable="false">Open Source</string>
     <string name="gitHub" translatable="false">GitHub</string>
+    <string name="version_not_supported">La tua versione Android non supporta questa funzione</string>
 </resources>

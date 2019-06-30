@@ -12,4 +12,5 @@
     <string name="cancel_alertDialog"><font color="#e60000">Cancel</font></string>
     <string name="delete_question">"Delete all notes?"</string>
     <string name="yes"><font color="#00cc00">Yes</font></string>
+    <string name="version_not_supported">Your Android version doesn\'t support this function</string>
 </resources>

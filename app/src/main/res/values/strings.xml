@@ -18,5 +18,7 @@
     <string name="gitHub" translatable="false">GitHub</string>
     <string name="version_not_supported">La tua versione Android non supporta questa funzione</string>
     <string name="howto_delete">Clicca per eliminare</string>
-    <string name="no_title">Inserisci il titolo</string>
+    <string name="no_title">Nota senza titolo</string>
+    <string name="no_content">Nota senza contenuto</string>
+    <string name="no_title_content">Impostare titolo e/o contenuto</string>
 </resources>

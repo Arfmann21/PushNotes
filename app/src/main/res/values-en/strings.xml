@@ -14,5 +14,7 @@
     <string name="yes"><font color="#00cc00">Yes</font></string>
     <string name="version_not_supported">Your Android version doesn\'t support this function</string>
     <string name="howto_delete">Click to delete</string>
-    <string name="no_title">Inserisci il titolo</string>
+    <string name="no_title">Note without title</string>
+    <string name="no_content">Note without content</string>
+    <string name="no_title_content">Insert title and/or content</string>
 </resources>

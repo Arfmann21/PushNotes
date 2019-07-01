@@ -13,4 +13,6 @@
     <string name="delete_question">"Delete all notes?"</string>
     <string name="yes"><font color="#00cc00">Yes</font></string>
     <string name="version_not_supported">Your Android version doesn\'t support this function</string>
+    <string name="howto_delete">Click to delete</string>
+    <string name="no_title">Inserisci il titolo</string>
 </resources>

@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             else
-                    notificationFunction(0, notificationManager)
+                notificationFunction(0, notificationManager)
         }
 
         cancelAllNotifications(notificationManager)
@@ -100,11 +100,15 @@ class MainActivity : AppCompatActivity() {
         val description = "Notes"
         val groupKey = "com.arfmann.notificationnotes"
 
+
+        val howtoDelete = resources.getString(R.string.howto_delete)
+
         title_editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
         content_editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
 
-        val intent = Intent(this,MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this,0,intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val deleteIntent = Intent()
+        val pendingIntentDelete = PendingIntent.getBroadcast(this,0,deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationChannel = NotificationChannel(channelId,description,NotificationManager.IMPORTANCE_HIGH)
@@ -118,16 +122,16 @@ class MainActivity : AppCompatActivity() {
                 .setContentText(content_editText.text!!.toString())
                 .setSmallIcon(R.drawable.logo)
                 //Not needed for now .setLargeIcon(BitmapFactory.decodeResource(this.resources,R.drawable.logo))
-                .setContentIntent(pendingIntent)
+                .setContentIntent(pendingIntentDelete)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setTimeoutAfter(totalMilli)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setAutoCancel(true)
 
             if(persistent_notfication_switch.isChecked){
                 builder.setOngoing(true)
+                builder.setSubText(howtoDelete)
             }
-            else
-                builder.setOngoing(false)
 
         }else{
 
@@ -136,21 +140,26 @@ class MainActivity : AppCompatActivity() {
                 .setContentText(content_editText.text!!.toString())
                 .setSmallIcon(R.drawable.logo)
                 //Not needed for now  .setLargeIcon(BitmapFactory.decodeResource(this.resources,R.drawable.logo))
-                .setContentIntent(pendingIntent)
+                .setContentIntent(pendingIntentDelete)
                 .setGroup(groupKey)
                 .setGroupSummary(true)
                 .setAutoCancel(true)
                 .setVisibility(Notification.VISIBILITY_PUBLIC)
 
-            if(persistent_notfication_switch.isChecked)
+            if(persistent_notfication_switch.isChecked) {
                 builder.setOngoing(true)
-            else
-                builder.setOngoing(false)
-
+                builder.setSubText(howtoDelete)
+            }
 
         }
-        notificationManager.notify(i, builder.build())
-        i++
+
+        if(title_editText.text!!.toString().isBlank())
+            Toast.makeText(this, R.string.no_title, Toast.LENGTH_LONG).show()
+
+        else{
+            notificationManager.notify(i, builder.build())
+            i++
+        }
 
         title_editText.text = null
         content_editText.text = null

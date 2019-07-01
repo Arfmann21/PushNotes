@@ -17,4 +17,6 @@
     <string name="openSource" translatable="false">Open Source</string>
     <string name="gitHub" translatable="false">GitHub</string>
     <string name="version_not_supported">La tua versione Android non supporta questa funzione</string>
+    <string name="howto_delete">Clicca per eliminare</string>
+    <string name="no_title">Inserisci il titolo</string>
 </resources>

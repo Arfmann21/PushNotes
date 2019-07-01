@@ -10,4 +10,4 @@ A simple app that save notes on notifications
 
 ##### Warning: this app is waiting to be verified by Google Play Protect. You may need to disable Play Protect in order to install this app.
 
-###### Note: Android 7 Nougat doesn't supports auto-delete notifications.
+###### Note: Android 7 Nougat and below doesn't supports auto-delete notifications.

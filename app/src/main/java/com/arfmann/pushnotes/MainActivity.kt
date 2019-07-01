@@ -147,8 +147,6 @@ class MainActivity : AppCompatActivity() {
                     .setContentIntent(pendingIntentDelete)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setTimeoutAfter(totalMilli)
-                    .setGroup(groupKey)
-                    .setGroupSummary(true)
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC) //set visibility to public to show notification on lock screen
                     .setAutoCancel(true) //set auto cancel to delete notification when click on it
                     .setStyle(NotificationCompat.BigTextStyle()) //set big text style to enable multiline notification

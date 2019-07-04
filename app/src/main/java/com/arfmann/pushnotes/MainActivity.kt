@@ -3,19 +3,26 @@ package com.arfmann.pushnotes
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.NotificationCompat
-import android.support.v4.text.HtmlCompat
-import android.support.v7.app.AppCompatActivity
 import android.text.InputType
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.text.HtmlCompat
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.alertdialog_autocancel.view.*
+import kotlinx.android.synthetic.main.alertdialog_list.*
+import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,10 +33,14 @@ class MainActivity : AppCompatActivity() {
     lateinit var notificationChannel: NotificationChannel
     private lateinit var builder : NotificationCompat.Builder
 
+    private val prefs = Prefs(applicationContext)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        getData()
 
         supportActionBar!!.hide()
 
@@ -37,20 +48,45 @@ class MainActivity : AppCompatActivity() {
         content_editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
         title_editText.requestFocus()
 
+        val values = ArrayList<String>()
+        val array = arrayOfNulls<String>(values.size)
+
+        val myString = prefs.myStringList
+
+        val adapter = ArrayAdapter(this, R.layout.listview_text_color, myString)
+
+
         gitHub_link_textView.text = HtmlCompat.fromHtml("<a href='https://github.com/Arfmann21/PushNotes'>GitHub</a>", HtmlCompat.FROM_HTML_MODE_LEGACY) //Add link to textView
         gitHub_link_textView.movementMethod = LinkMovementMethod.getInstance()
 
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
+
         done_fab.setOnClickListener {
+
+            if(title_editText.text!!.isEmpty())
+                adapter.add(resources.getString(R.string.no_title) +  " - " + content_editText.text!!.toString())
+            else
+                adapter.add(title_editText.text!!.toString() + " - " + content_editText.text!!.toString())
+
+            prefs.myStringList = values.toArray(array)
+
+            listImageView.setOnClickListener {
+                listOfNotes(adapter)
+            }
+
+           // saveData(values)
 
             if(autodelete_notification_switch.isChecked)
                 autoDeleteChecked()
             else
                 notificationFunction(0, notificationManager)
+
+
         }
 
         cancelAllNotifications(notificationManager)
+        checkUpdate()
 
     }
 
@@ -101,9 +137,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     private fun notificationFunction(totalMilli: Long, notificationManager: NotificationManager){ //function to handle notification
-
 
         val channelId = "com.arfmann.notificationnotes"
         val description = "Notes"
@@ -125,9 +159,9 @@ class MainActivity : AppCompatActivity() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //check if API is 25 (Android 8) or upper
                 notificationChannel = NotificationChannel(channelId,description,NotificationManager.IMPORTANCE_DEFAULT) //set default importance
-                notificationChannel.enableLights(true) //enable LED
-                notificationChannel.lightColor = Color.GREEN //set LED color to green
-                notificationChannel.enableVibration(true) //enable vibration
+                /*  notificationChannel.enableLights(true) //enable LED
+                  notificationChannel.lightColor = Color.GREEN //set LED color to green*/
+                notificationChannel.enableVibration(true)
                 notificationManager.createNotificationChannel(notificationChannel)
 
                 builder = NotificationCompat.Builder(this,channelId) //build notification
@@ -156,7 +190,7 @@ class MainActivity : AppCompatActivity() {
                     builder.setSubText(howtoDelete)
                 }
 
-            }else{
+            } else {
 
                 builder = NotificationCompat.Builder(this, channelId) //build notification
 
@@ -185,6 +219,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
             }
+
             notificationManager.notify(i, builder.build())
             i++
 
@@ -224,6 +259,96 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
+    private fun listOfNotes(adapter: ArrayAdapter<String>){
+
+
+        val inflater = LayoutInflater.from(applicationContext)
+        val dialogView = inflater.inflate(R.layout.alertdialog_list, null)
+
+        listView?.adapter = adapter
+        adapter.notifyDataSetChanged()
+
+        val alertDialogList = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
+        alertDialogList.setView(dialogView)
+
+        alertDialogList.setAdapter(adapter,null)
+        alertDialogList.setTitle("Note giornaliere")
+
+
+
+        alertDialogList.show()
+
+    }
+
+    fun saveData(values: ArrayList<String>) {
+        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
+        with(sharedPref.edit()) {
+           // putStringSet("test", values)
+            putString("title", title_editText.text!!.toString())
+            putString("content", content_editText.text!!.toString())
+            apply()
+        }
+    }
+
+    fun getData() {
+        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
+        val titleData = sharedPref.getString("title", "")
+        val contentData = sharedPref.getString("content", "")
+        Toast.makeText(this, "$titleData $contentData", Toast.LENGTH_LONG).show()
+
+    }
+
+
+
+    private fun checkUpdate(){
+
+        val queue = Volley.newRequestQueue(this)
+
+        val jsonLink = "https://api.github.com/repos/arfmann21/pushnotes/releases/latest"
+
+        val stringReq = StringRequest(Request.Method.GET, jsonLink,
+            Response.Listener<String> { response ->
+
+                val strResp = response.toString()
+                val jsonObj = JSONObject(strResp)
+
+                val jsonObjTagName: String = jsonObj.getString("tag_name")
+
+                val jsonUrl = jsonObj.getString("html_url")
+
+                val versionName = packageManager.getPackageInfo(packageName, 0).versionName
+
+                if(versionName < jsonObjTagName){
+
+                    val downloadIntent: Intent = Uri.parse(jsonUrl ).let { webpage ->
+                        Intent(Intent.ACTION_VIEW, webpage)
+                    }
+                    val chooser = Intent.createChooser(downloadIntent, "Browser")
+
+                    val inflater = LayoutInflater.from(applicationContext)
+                    val dialogView = inflater.inflate(R.layout.alertdialog_update, null)
+
+                    val alertDialogUpdateAvaible = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
+                    alertDialogUpdateAvaible.setView(dialogView)
+
+
+                    alertDialogUpdateAvaible.setPositiveButton(R.string.yes){
+                            _, _ ->  startActivity(chooser)
+
+                    }
+
+                    alertDialogUpdateAvaible.setNegativeButton(R.string.no){
+                            dialog, _ -> dialog.dismiss()
+                    }
+
+                    alertDialogUpdateAvaible.show()
+                }
+            },
+            Response.ErrorListener { "Errore durante la ricerca dell'aggiornamento"})
+        queue.add(stringReq)
+
+    }
 }
 
 

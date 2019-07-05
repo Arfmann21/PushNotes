@@ -61,15 +61,22 @@ class MainActivity : AppCompatActivity() {
 
         done_fab.setOnClickListener {
 
-            addNotesToList()
 
-            if(autodelete_notification_switch.isChecked)
-                autoDeleteChecked()
-            else
-                notificationFunction(0, notificationManager)
+            if(content_editText.text!!.isEmpty() && title_editText.text!!.isEmpty()) {
+                Toast.makeText(this, R.string.no_title_content, Toast.LENGTH_LONG).show()
+                title_editText.requestFocus()
+            }
+            else {
+                addNotesToList()
 
-            adapter.notifyDataSetChanged()
-            saveData()
+                if(autodelete_notification_switch.isChecked) {
+                    autoDeleteChecked()
+                }
+                else
+                    notificationFunction(0, notificationManager)
+
+                saveData()
+            }
         }
 
         listImageView.setOnClickListener {
@@ -139,14 +146,6 @@ class MainActivity : AppCompatActivity() {
 
         val deleteIntent = Intent() //intent to click on notification without opening app
         val pendingIntentDelete = PendingIntent.getBroadcast(this,0,deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-
-        if(content_editText.text!!.isEmpty() && title_editText.text!!.isEmpty()) {
-            Toast.makeText(this, R.string.no_title_content, Toast.LENGTH_LONG).show()
-            title_editText.requestFocus()
-        }
-
-        else {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //check if API is 25 (Android 8) or upper
                 notificationChannel = NotificationChannel(channelId,description,NotificationManager.IMPORTANCE_DEFAULT) //set default importance
@@ -223,8 +222,6 @@ class MainActivity : AppCompatActivity() {
             autodelete_notification_switch.isChecked = false
         }
 
-    }
-
 
     private fun cancelAllNotifications(notificationManager: NotificationManager){
 
@@ -281,7 +278,7 @@ class MainActivity : AppCompatActivity() {
         alertDialogList.setTitle(resources.getString(R.string.notes))
 
         alertDialogList.setPositiveButton(R.string.close){
-            dialog, _ -> dialog.dismiss()
+                dialog, _ -> dialog.dismiss()
         }
 
         if(!adapter.isEmpty()) {
@@ -370,6 +367,7 @@ class MainActivity : AppCompatActivity() {
             values = ArrayList()
 
     }
+
 
     private fun deleteData(adapter: ArrayAdapter<String>){
         val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)

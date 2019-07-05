@@ -43,8 +43,11 @@
     <GridLayout android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="1">
+        <GridLayout  android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:columnCount="2">
         <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:backgroundTint="#d37a7a"
                 android:textColorHint="#d9d9d9"
                 android:layout_marginTop="35dp"
@@ -62,6 +65,19 @@
                     android:layout_marginStart="15dp"
                     android:id="@+id/title_editText"/>
         </com.google.android.material.textfield.TextInputLayout>
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:layout_marginTop="50dp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="50dp"
+                    android:contentDescription="@string/listIconDescription"
+                    app:srcCompat="@drawable/ic_list_icon"
+                    android:id="@+id/listImageView"/>
+
+        </GridLayout>
 
         <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -111,17 +127,6 @@
                 android:track="@drawable/switch_track"
                 android:fontFamily="@font/product_sans_regular"
                 android:id="@+id/autodelete_notification_switch"/>
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:focusable="true"
-                android:clickable="true"
-                android:contentDescription="List"
-                app:srcCompat="@drawable/ic_list_icon"
-                android:id="@+id/listImageView"/>
-
         <TextView
                 android:text="@string/developer"
                 android:textColor="#FFFFFF"

@@ -1,6 +1,9 @@
 package com.arfmann.pushnotes
 
-import android.app.*
+import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -19,6 +22,8 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.alertdialog_autocancel.view.*
 import kotlinx.android.synthetic.main.alertdialog_list.*
@@ -28,33 +33,25 @@ import org.json.JSONObject
 class MainActivity : AppCompatActivity() {
 
     var i = 0
+    private var values = ArrayList<String>()
 
     lateinit var notificationManager: NotificationManager
     lateinit var notificationChannel: NotificationChannel
     private lateinit var builder : NotificationCompat.Builder
 
-    private val prefs = Prefs(applicationContext)
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        getData()
-
         supportActionBar!!.hide()
+
+        loadData()
 
         title_editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES //Set first letter in CAP
         content_editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
         title_editText.requestFocus()
 
-        val values = ArrayList<String>()
-        val array = arrayOfNulls<String>(values.size)
-
-        val myString = prefs.myStringList
-
-        val adapter = ArrayAdapter(this, R.layout.listview_text_color, myString)
-
+        val adapter = ArrayAdapter(this, R.layout.listview_text_color, values)
 
         gitHub_link_textView.text = HtmlCompat.fromHtml("<a href='https://github.com/Arfmann21/PushNotes'>GitHub</a>", HtmlCompat.FROM_HTML_MODE_LEGACY) //Add link to textView
         gitHub_link_textView.movementMethod = LinkMovementMethod.getInstance()
@@ -64,25 +61,19 @@ class MainActivity : AppCompatActivity() {
 
         done_fab.setOnClickListener {
 
-            if(title_editText.text!!.isEmpty())
-                adapter.add(resources.getString(R.string.no_title) +  " - " + content_editText.text!!.toString())
-            else
-                adapter.add(title_editText.text!!.toString() + " - " + content_editText.text!!.toString())
-
-            prefs.myStringList = values.toArray(array)
-
-            listImageView.setOnClickListener {
-                listOfNotes(adapter)
-            }
-
-           // saveData(values)
+            addNotesToList()
 
             if(autodelete_notification_switch.isChecked)
                 autoDeleteChecked()
             else
                 notificationFunction(0, notificationManager)
 
+            adapter.notifyDataSetChanged()
+            saveData()
+        }
 
+        listImageView.setOnClickListener {
+            listOfNotes(adapter)
         }
 
         cancelAllNotifications(notificationManager)
@@ -210,7 +201,7 @@ class MainActivity : AppCompatActivity() {
                     .setGroup(groupKey)
                     .setGroupSummary(true)
                     .setAutoCancel(true)
-                    .setVisibility(Notification.VISIBILITY_PUBLIC)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                     .setStyle(NotificationCompat.BigTextStyle())
 
                 if(persistent_notfication_switch.isChecked) {
@@ -245,6 +236,7 @@ class MainActivity : AppCompatActivity() {
             val alertDialogCancelAll = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
             alertDialogCancelAll.setView(dialogView)
 
+            alertDialogCancelAll.setTitle(R.string.delete_question)
 
             alertDialogCancelAll.setPositiveButton(R.string.yes){
                     _, _ -> notificationManager.cancelAll()
@@ -260,8 +252,21 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun listOfNotes(adapter: ArrayAdapter<String>){
+    private fun addNotesToList(){
 
+        if(title_editText.text!!.isEmpty())
+            values.add(resources.getString(R.string.no_title) +  "  -  " + content_editText.text!!.toString())
+
+        else if(content_editText.text!!.isEmpty())
+            values.add(title_editText.text!!.toString() + "  -  " + resources.getString(R.string.no_content))
+
+        else
+            values.add(title_editText.text!!.toString() + "  -  " + content_editText.text!!.toString())
+
+    }
+
+
+    private fun listOfNotes(adapter: ArrayAdapter<String>){
 
         val inflater = LayoutInflater.from(applicationContext)
         val dialogView = inflater.inflate(R.layout.alertdialog_list, null)
@@ -272,33 +277,24 @@ class MainActivity : AppCompatActivity() {
         val alertDialogList = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
         alertDialogList.setView(dialogView)
 
-        alertDialogList.setAdapter(adapter,null)
-        alertDialogList.setTitle("Note giornaliere")
+        alertDialogList.setAdapter(adapter, null)
+        alertDialogList.setTitle(resources.getString(R.string.notes))
 
+        alertDialogList.setPositiveButton(R.string.close){
+            dialog, _ -> dialog.dismiss()
+        }
 
+        if(!adapter.isEmpty()) {
+            alertDialogList.setNegativeButton(R.string.deleteNotes) { _, _ ->
+                deleteData(adapter)
+            }
+        }
+        else
+            alertDialogList.setMessage("Nessuna nota")
 
         alertDialogList.show()
 
     }
-
-    fun saveData(values: ArrayList<String>) {
-        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
-        with(sharedPref.edit()) {
-           // putStringSet("test", values)
-            putString("title", title_editText.text!!.toString())
-            putString("content", content_editText.text!!.toString())
-            apply()
-        }
-    }
-
-    fun getData() {
-        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
-        val titleData = sharedPref.getString("title", "")
-        val contentData = sharedPref.getString("content", "")
-        Toast.makeText(this, "$titleData $contentData", Toast.LENGTH_LONG).show()
-
-    }
-
 
 
     private fun checkUpdate(){
@@ -349,6 +345,43 @@ class MainActivity : AppCompatActivity() {
         queue.add(stringReq)
 
     }
+
+
+    private fun saveData() {
+        val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val gson = Gson()
+        val json = gson.toJson(values)
+        editor.putString("noteList", json)
+        editor.apply()
+    }
+
+
+    private fun loadData() {
+        val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
+        val gson = Gson()
+        val json = sharedPreferences.getString("noteList", null)
+        val type = object: TypeToken<ArrayList<String>>() {
+        }.type
+
+        if(json != null)
+            values = gson.fromJson(json, type)
+        else
+            values = ArrayList()
+
+    }
+
+    private fun deleteData(adapter: ArrayAdapter<String>){
+        val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
+
+        adapter.clear()
+
+    }
+
 }
+
 
 

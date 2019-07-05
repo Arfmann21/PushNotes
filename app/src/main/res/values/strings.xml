@@ -8,10 +8,11 @@
     <string name="hour"><font size="15">Ore</font></string>
     <string name="minute"><font size="15">Minuti</font></string>
     <string name="send_alertDialog"><font color="#009900">Invia</font></string>
-    <string name="cancel_alertDialog"><font color="#e60000">Annulla</font></string>
-    <string name="delete_question">"Eliminare tutte le note?"</string>
+    <string name="cancel_alertDialog"><font color="#b30000">Annulla</font></string>
+    <string name="delete_question">"Eliminare tutte le note dalle notifiche?"</string>
+    <string name="delete_iconAdvise">Potrai sempre consultare le tue note dall\'apposita icona</string>
     <string name="yes"><font color="#009900">Si</font></string>
-    <string name="no" translatable="false"><font color="#e60000">No</font></string>
+    <string name="no" translatable="false"><font color="#b30000">No</font></string>
     <string name="developer" translatable="false">Developer</string>
     <string name="nameDeveloper" translatable="false">Giovanni Ferraro</string>
     <string name="openSource" translatable="false">Open Source</string>
@@ -21,4 +22,9 @@
     <string name="no_title">Nota senza titolo</string>
     <string name="no_content">Nota senza contenuto</string>
     <string name="no_title_content">Impostare titolo e/o contenuto</string>
+    <string name="update_avaible">Nuovo aggiornamento disponibile. Aprire la pagina di download?</string>
+    <string name="notes"><font size="17">Note</font></string>
+    <string name="deleteNotes"><font color="#b30000">Elimina tutto</font></string>
+    <string name="noNotes">Nessuna nota</string>
+    <string name="close"><font color="#81c784">Chiudi</font></string>
 </resources>

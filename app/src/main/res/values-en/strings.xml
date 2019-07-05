@@ -9,12 +9,18 @@
     <string name="hour"><font size="15">Hours</font></string>
     <string name="minute"><font size="15">Minutes</font></string>
     <string name="send_alertDialog"><font color="#009900">Send</font></string>
-    <string name="cancel_alertDialog"><font color="#e60000">Cancel</font></string>
-    <string name="delete_question">"Delete all notes?"</string>
+    <string name="cancel_alertDialog"><font color="#b30000">Cancel</font></string>
+    <string name="delete_question">"Delete all notes from notifications?"</string>
+    <string name="delete_iconAdvise">You can always check them by the appropriate icon</string>
     <string name="yes"><font color="#00cc00">Yes</font></string>
     <string name="version_not_supported">Your Android version doesn\'t support this function</string>
     <string name="howto_delete">Click to delete</string>
     <string name="no_title">Note without title</string>
     <string name="no_content">Note without content</string>
     <string name="no_title_content">Insert title and/or content</string>
+    <string name="update_avaible">New update avaible. Open download page?</string>
+    <string name="notes">Notes</string>
+    <string name="deleteNotes">Delete all</string>
+    <string name="noNotes">Empty</string>
+    <string name="close">Close</string>
 </resources>

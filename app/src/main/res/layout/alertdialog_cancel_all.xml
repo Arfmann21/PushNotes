@@ -5,13 +5,12 @@
               android:layout_height="match_parent">
 
     <TextView
-            android:text="@string/delete_question"
+            android:text="@string/delete_iconAdvise"
             android:layout_width="match_parent"
-            android:fontFamily="@font/product_sans_bold"
-            android:textColor="#FFFFFF"
-            android:textSize="17sp"
-            android:gravity="center"
-            android:layout_marginTop="17dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/cancelAll_warning_textView"/>
+            android:fontFamily="@font/product_sans_regular"
+            android:textColor="#7986cb"
+            android:textSize="14sp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"/>
 </LinearLayout>

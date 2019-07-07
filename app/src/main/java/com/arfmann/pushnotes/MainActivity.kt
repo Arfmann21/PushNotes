@@ -32,11 +32,11 @@ import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
-    var i = 0
+    private var i = 0
     private var values = ArrayList<String>()
 
-    lateinit var notificationManager: NotificationManager
-    lateinit var notificationChannel: NotificationChannel
+    private lateinit var notificationManager: NotificationManager
+    private lateinit var notificationChannel: NotificationChannel
     private lateinit var builder : NotificationCompat.Builder
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,13 +67,15 @@ class MainActivity : AppCompatActivity() {
                 title_editText.requestFocus()
             }
             else {
-                addNotesToList()
 
                 if(autodelete_notification_switch.isChecked) {
                     autoDeleteChecked()
                 }
-                else
+                else{
+                    addNotesToList()
                     notificationFunction(0, notificationManager)
+                }
+
 
                 saveData()
             }
@@ -119,6 +121,7 @@ class MainActivity : AppCompatActivity() {
                 totalMilli = hourMilli + minuteMilli
 
                 notificationFunction(totalMilli, notificationManager)
+                addNotesToList()
             }
 
             alertDialogHour.setNegativeButton(R.string.cancel_alertDialog) { dialog, _ -> //if user has clicked "Cancel"
@@ -300,24 +303,24 @@ class MainActivity : AppCompatActivity() {
 
         val jsonLink = "https://api.github.com/repos/arfmann21/pushnotes/releases/latest"
 
-        val stringReq = StringRequest(Request.Method.GET, jsonLink,
+        val stringReq = StringRequest(Request.Method.GET, jsonLink, //request to get JSON
             Response.Listener<String> { response ->
 
                 val strResp = response.toString()
                 val jsonObj = JSONObject(strResp)
 
-                val jsonObjTagName: String = jsonObj.getString("tag_name")
+                val jsonObjTagName: String = jsonObj.getString("tag_name") //get GitHub release version tag
 
-                val jsonUrl = jsonObj.getString("html_url")
+                val jsonUrl = jsonObj.getString("html_url") //get GitHub release s URL
 
-                val versionName = packageManager.getPackageInfo(packageName, 0).versionName
+                val versionName = packageManager.getPackageInfo(packageName, 0).versionName //get installed version
 
                 if(versionName < jsonObjTagName){
 
-                    val downloadIntent: Intent = Uri.parse(jsonUrl ).let { webpage ->
+                    val downloadIntent: Intent = Uri.parse(jsonUrl ).let { webpage -> //create intent to release URL
                         Intent(Intent.ACTION_VIEW, webpage)
                     }
-                    val chooser = Intent.createChooser(downloadIntent, "Browser")
+                    val chooser = Intent.createChooser(downloadIntent, "Browser") //crete the app chooser
 
                     val inflater = LayoutInflater.from(applicationContext)
                     val dialogView = inflater.inflate(R.layout.alertdialog_update, null)
@@ -338,8 +341,8 @@ class MainActivity : AppCompatActivity() {
                     alertDialogUpdateAvaible.show()
                 }
             },
-            Response.ErrorListener { "Errore durante la ricerca dell'aggiornamento"})
-        queue.add(stringReq)
+            Response.ErrorListener { "Errore durante la ricerca dell'aggiornamento"}) //if update check go fail
+        queue.add(stringReq) //add request to queue
 
     }
 
@@ -348,9 +351,9 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         val gson = Gson()
-        val json = gson.toJson(values)
-        editor.putString("noteList", json)
-        editor.apply()
+        val json = gson.toJson(values) //convert ArrayList to JSON (shared preferences can't handle ArrayList)
+        editor.putString("noteList", json) //save the new JSON with values
+        editor.apply() //apply new changes
     }
 
 
@@ -361,10 +364,10 @@ class MainActivity : AppCompatActivity() {
         val type = object: TypeToken<ArrayList<String>>() {
         }.type
 
-        if(json != null)
-            values = gson.fromJson(json, type)
+        if(json != null) //if JSON isn't null, so isn't empty
+            values = gson.fromJson(json, type) //got JSON values and convert them back to ArrayList
         else
-            values = ArrayList()
+            values = ArrayList() //if json is null, so empty, values is just an empty ArrayList
 
     }
 
@@ -372,10 +375,10 @@ class MainActivity : AppCompatActivity() {
     private fun deleteData(adapter: ArrayAdapter<String>){
         val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-        editor.clear()
-        editor.apply()
+        editor.clear() //delete everything from shared preferences
+        editor.apply() //apply new changes
 
-        adapter.clear()
+        adapter.clear() //clear everything from the adapter
 
     }
 

@@ -20,7 +20,7 @@
     <string name="no_title_content">Insert title and/or content</string>
     <string name="update_avaible">New update avaible. Open download page?</string>
     <string name="notes">Notes</string>
-    <string name="deleteNotes">Delete all</string>
+    <string name="deleteNotes"><font color="#b30000">Delete all</font></string>
     <string name="noNotes">Empty</string>
-    <string name="close">Close</string>
+    <string name="close"><font color="#81c784">Close</font></string>
 </resources>

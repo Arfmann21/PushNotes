@@ -36,137 +36,193 @@
     <ScrollView android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <GridLayout android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:columnCount="1">
-        <GridLayout  android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:columnCount="2">
-        <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="250dp"
-                android:backgroundTint="#d37a7a"
-                android:textColorHint="#d9d9d9"
-                android:layout_marginTop="35dp"
-                android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:inputType="textMultiLine"
-                    android:ems="10"
-                    android:textColor="#FFFFFF"
-                    android:hint="@string/note_title"
-                    android:backgroundTint="#d37a7a"
-                    android:layout_marginStart="15dp"
-                    android:id="@+id/title_editText"/>
-        </com.google.android.material.textfield.TextInputLayout>
-            <ImageView
-                    android:layout_width="wrap_content"
+        <GridLayout android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="true"
-                    android:clickable="true"
-                    android:layout_marginTop="50dp"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="50dp"
-                    android:contentDescription="@string/listIconDescription"
-                    app:srcCompat="@drawable/ic_list_icon"
-                    android:id="@+id/listImageView"/>
+                    android:columnCount="1">
+            <GridLayout  android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:columnCount="2">
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="250dp"
+                        android:backgroundTint="#d37a7a"
+                        android:textColorHint="#d9d9d9"
+                        android:layout_marginTop="35dp"
+                        android:layout_height="wrap_content">
 
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:inputType="textMultiLine"
+                            android:ems="10"
+                            android:textColor="#FFFFFF"
+                            android:hint="@string/note_title"
+                            android:backgroundTint="#d37a7a"
+                            android:layout_marginStart="15dp"
+                            android:id="@+id/title_editText"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:layout_marginTop="50dp"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="50dp"
+                        android:contentDescription="@string/listIconDescription"
+                        app:srcCompat="@drawable/ic_list_icon"
+                        android:id="@+id/listImageView"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="250dp"
+                        android:backgroundTint="#d37a7a"
+                        android:textColorHint="#d9d9d9"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:inputType="textMultiLine"
+                            android:ems="10"
+                            android:textColor="#FFFFFF"
+                            android:hint="@string/note_content"
+                            android:backgroundTint="#d37a7a"
+                            android:id="@+id/content_editText"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:layout_marginTop="25dp"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="50dp"
+                        android:contentDescription="@string/listIconDescription"
+                        app:srcCompat="@drawable/ic_settings_icon"
+                        android:id="@+id/settingsImageView"/>
+
+            </GridLayout>
+
+            <GridLayout android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:columnCount="2"
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone"
+                        android:id="@+id/settingsGridLayout">
+                <TextView android:text="@string/persistent_notification"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:textColor="#FFFFFF"
+                          android:layout_marginTop="25dp"
+                          android:layout_gravity="start"
+                          android:layout_marginStart="15dp"
+                          android:textSize="17sp"/>
+                <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginEnd="20dp"
+                        android:track="@drawable/switch_track"
+                        android:thumb="@drawable/switch_thumb"
+                        android:id="@+id/persistent_notfication_switch"/>
+
+                <TextView android:text="@string/autodelete"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:textColor="#FFFFFF"
+                          android:layout_gravity="start"
+                          android:layout_marginTop="25dp"
+                          android:layout_marginStart="15dp"
+                          android:textSize="17sp"/>
+                <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginEnd="20dp"
+                        android:thumb="@drawable/switch_thumb"
+                        android:track="@drawable/switch_track"
+                        android:id="@+id/autodelete_notification_switch"/>
+
+                <TextView android:text="@string/dontSave"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:textColor="#FFFFFF"
+                          android:layout_marginTop="25dp"
+                          android:layout_marginStart="15dp"
+                          android:textSize="17sp"/>
+                <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginEnd="20dp"
+                        android:thumb="@drawable/switch_thumb"
+                        android:track="@drawable/switch_track"
+                        android:id="@+id/dont_save_switch"/>
+
+                <TextView android:text="@string/copyToClipboard"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:textColor="#FFFFFF"
+                          android:layout_marginTop="25dp"
+                          android:layout_marginStart="15dp"
+                          android:textSize="17sp"/>
+                <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginEnd="20dp"
+                        android:thumb="@drawable/switch_thumb"
+                        android:track="@drawable/switch_track"
+                        android:id="@+id/copy_to_clipboard_switch"/>
+            </GridLayout>
+            <GridLayout android:columnCount="1"
+                        android:id="@+id/info_gridLayout"
+                        android:animateLayoutChanges="true"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent">
+                <TextView
+                        android:text="@string/developer"
+                        android:textColor="#FFFFFF"
+                        android:textSize="17sp"
+                        android:fontFamily="@font/product_sans_bold"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="100dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:text="@string/nameDeveloper"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:text="@string/openSource"
+                        android:textColor="#FFFFFF"
+                        android:textSize="17sp"
+                        android:fontFamily="@font/product_sans_bold"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="25dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/gitHub_link_textView"/>
+            </GridLayout>
         </GridLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:backgroundTint="#d37a7a"
-                android:textColorHint="#d9d9d9"
-                android:layout_marginTop="15dp"
-                android:layout_marginStart="15dp"
-                android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:inputType="textMultiLine"
-                    android:ems="10"
-                    android:textColor="#FFFFFF"
-                    android:hint="@string/note_content"
-                    android:backgroundTint="#d37a7a"
-                    android:id="@+id/content_editText"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-        <Switch
-                android:text="@string/persistent_notification"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="15dp"
-                android:textColor="#ffffff"
-                android:layout_marginTop="25dp"
-                android:switchPadding="30dp"
-                android:textSize="17sp"
-                android:track="@drawable/switch_track"
-                android:thumb="@drawable/switch_thumb"
-                android:id="@+id/persistent_notfication_switch"/>
-        <Switch
-                android:text="@string/lockscreen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="15dp"
-                android:textColor="#ffffff"
-                android:layout_marginTop="25dp"
-                android:switchPadding="30dp"
-                android:textSize="17sp"
-                android:thumb="@drawable/switch_thumb"
-                android:track="@drawable/switch_track"
-                android:id="@+id/autodelete_notification_switch"/>
-        <Switch
-                android:text="@string/dontSave"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="15dp"
-                android:textColor="#ffffff"
-                android:layout_marginTop="25dp"
-                android:switchPadding="30dp"
-                android:textSize="17sp"
-                android:thumb="@drawable/switch_thumb"
-                android:track="@drawable/switch_track"
-                android:id="@+id/dont_save"/>
-        <TextView
-                android:text="@string/developer"
-                android:textColor="#FFFFFF"
-                android:textSize="17sp"
-                android:fontFamily="@font/product_sans_bold"
-                android:layout_gravity="center"
-                android:layout_marginTop="150dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        <TextView
-                android:text="@string/nameDeveloper"
-                android:textColor="#FFFFFF"
-                android:textSize="15sp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        <TextView
-                android:text="@string/openSource"
-                android:textColor="#FFFFFF"
-                android:textSize="17sp"
-                android:fontFamily="@font/product_sans_bold"
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        <TextView
-                android:textColor="#FFFFFF"
-                android:textSize="15sp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/gitHub_link_textView"/>
-    </GridLayout>
     </ScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

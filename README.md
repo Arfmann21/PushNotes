@@ -1,7 +1,12 @@
 # PushNotes
 A simple app that save notes on notifications
 
-#### Minimal dark design, delete all button, persistent notification and auto-delete
+### Features
+* Dark UI
+* Persistent notification
+* Autodelete notes
+* Save or not notes in the list
+* Copy notes to the clipboard
 
 <a href="https://imgur.com/mf3rZp"><img src="https://imgur.com/mf3rZp4.png" title="source: imgur.com" /></a>
 <a href="https://imgur.com/eqiojfM"><img src="https://imgur.com/eqiojfM.png" title="source: imgur.com" /></a>

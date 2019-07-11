@@ -288,7 +288,7 @@ class MainActivity : AppCompatActivity() {
             dialog.dismiss()
         }
 
-        if (!adapter.isEmpty()) {
+        if (!adapter.isEmpty) {
             alertDialogList.setNegativeButton(R.string.deleteNotes) { _, _ ->
                 deleteData(adapter)
             }

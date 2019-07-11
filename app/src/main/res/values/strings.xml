@@ -3,7 +3,7 @@
     <string name="note_title"><font size="10">Titolo</font></string>
     <string name="note_content"><font size="10">Contenuto</font></string>
     <string name="persistent_notification">Notifica persistente</string>
-    <string name="lockscreen">Elimina automaticamente la notifica</string>
+    <string name="autodelete">Elimina automaticamente la notifica</string>
     <string name="alertdialog_title">Inserisci ore e minuti</string>
     <string name="hour"><font size="15">Ore</font></string>
     <string name="minute"><font size="15">Minuti</font></string>
@@ -30,4 +30,5 @@
     <string name="listIconDescription" translatable="false">List icon</string>
     <string name="clipboardNote">Nota copiata negli appunti</string>
     <string name="dontSave">Non salvare nella lista</string>
+    <string name="copyToClipboard">Copia la nota negli appunti</string>
 </resources>

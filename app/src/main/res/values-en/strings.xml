@@ -4,7 +4,7 @@
     <string name="note_title"><font size="10">Title</font></string>
     <string name="note_content"><font size="10">Content</font></string>
     <string name="persistent_notification">Persistent notification</string>
-    <string name="lockscreen">Automatically delete notification</string>
+    <string name="autodelete">Automatically delete notification</string>
     <string name="alertdialog_title">Insert hours and minutes</string>
     <string name="hour"><font size="15">Hours</font></string>
     <string name="minute"><font size="15">Minutes</font></string>
@@ -25,4 +25,5 @@
     <string name="close"><font color="#81c784">Close</font></string>
     <string name="clipboardNote">Note copied to the clipboard</string>
     <string name="dontSave">Don\'t save it in the list</string>
+    <string name="copyToClipboard">Copy note to the clipboard</string>
 </resources>

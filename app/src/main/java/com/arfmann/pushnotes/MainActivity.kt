@@ -275,7 +275,7 @@ class MainActivity : AppCompatActivity() {
 
         val alertDialogList = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
 
-        alertDialogList.setAdapter(adapter, DialogInterface.OnClickListener { dialog, which ->
+        alertDialogList.setAdapter(adapter, DialogInterface.OnClickListener { _, which ->
 
             val item = adapter.getItem(which)
             myClip = ClipData.newPlainText("text", item)

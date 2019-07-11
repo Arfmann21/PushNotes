@@ -3,9 +3,9 @@ A simple app that save notes on notifications
 
 #### Minimal dark design, delete all button, persistent notification and auto-delete
 
-<a href="https://imgur.com/PMhgOb8.png"><img src="https://imgur.com/PMhgOb8.png" title="source: imgur.com" /></a>
-<a href="https://imgur.com/5ObJMMK"><img src="https://imgur.com/5ObJMMK.png" title="source: imgur.com" /></a>
-
+<a href="https://imgur.com/mf3rZp"><img src="https://imgur.com/mf3rZp4.png" title="source: imgur.com" /></a>
+<a href="https://imgur.com/eqiojfM"><img src="https://imgur.com/eqiojfM.png" title="source: imgur.com" /></a>
+<a href="https://imgur.com/2WodlGB"><img src="https://imgur.com/2WodlGB.png" title="source: imgur.com" /></a>
 
 ---
 

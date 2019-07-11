@@ -11,6 +11,8 @@ import android.os.Bundle
 import android.text.InputType
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
+import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
@@ -61,35 +63,43 @@ class MainActivity : AppCompatActivity() {
 
 
         done_fab.setOnClickListener {
-
-
-            if(content_editText.text!!.isEmpty() && title_editText.text!!.isEmpty()) {
-                Toast.makeText(this, R.string.no_title_content, Toast.LENGTH_LONG).show()
-                title_editText.requestFocus()
-            }
-            else {
-
-                if(autodelete_notification_switch.isChecked) {
-                    autoDeleteChecked()
-                }
-                else{
-                    if(!dont_save.isChecked)
-                        addNotesToList()
-
-                    notificationFunction(0, notificationManager)
-                }
-
-                saveData()
-            }
+            doneClick()
         }
 
         listImageView.setOnClickListener {
             listOfNotes(adapter)
         }
 
+
+        settingsImageView.setOnClickListener {
+            showSettings()
+        }
+
         cancelAllNotifications(notificationManager)
         checkUpdate()
 
+    }
+
+    private fun doneClick(){
+
+        if(content_editText.text!!.isEmpty() && title_editText.text!!.isEmpty()) {
+            Toast.makeText(this, R.string.no_title_content, Toast.LENGTH_LONG).show()
+            title_editText.requestFocus()
+        }
+
+        else {
+
+            copyToClipboard()
+
+            if(autodelete_notification_switch.isChecked)
+                autoDeleteChecked()
+            else {
+                notificationFunction(0, notificationManager)
+                addNotesToList()
+            }
+
+            saveData()
+        }
     }
 
     private fun autoDeleteChecked(){ //function to handle auto-delete notifications
@@ -105,7 +115,8 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //Check if API is 25 (Android 8) or upper
 
             val inflater = LayoutInflater.from(applicationContext)
-            val dialogView = inflater.inflate(R.layout.alertdialog_autocancel, null) //Inflate layout for AlertDialog
+            val dialogView =
+                inflater.inflate(R.layout.alertdialog_autocancel, null) //Inflate layout for AlertDialog
 
             val alertDialogHour = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle) //build AlertDialog
             alertDialogHour.setView(dialogView) //set inflated layout
@@ -114,27 +125,28 @@ class MainActivity : AppCompatActivity() {
             val hourEditText = dialogView.hour_editText as EditText //declare the two editText
             val minuteHourEditText = dialogView.minute_editText as EditText
 
-            alertDialogHour.setPositiveButton(R.string.send_alertDialog) { _, _ -> //if user has clicked "Send"
+            alertDialogHour.setPositiveButton(R.string.send_alertDialog) { _, _ ->
+                //if user has clicked "Send"
 
-                fun EditText.longValue() = text.toString().toLongOrNull() ?: 0 //function to convert editText's value from string to Long
+                fun EditText.longValue() =
+                    text.toString().toLongOrNull() ?: 0 //function to convert editText's value from string to Long
 
                 hourMilli = hourEditText.longValue() * 3600000 //convert from hours to milliseconds
                 minuteMilli = minuteHourEditText.longValue() * 60000 //convert from minutes to milliseconds
                 totalMilli = hourMilli + minuteMilli
 
+                addNotesToList()
                 notificationFunction(totalMilli, notificationManager)
-                if(!dont_save.isChecked)
-                    addNotesToList()
             }
 
-            alertDialogHour.setNegativeButton(R.string.cancel_alertDialog) { dialog, _ -> //if user has clicked "Cancel"
+            alertDialogHour.setNegativeButton(R.string.cancel_alertDialog) { dialog, _ ->
+                //if user has clicked "Cancel"
                 dialog.dismiss()
             }
 
             alertDialogHour.show()
 
-        }
-        else { //if not, this feature will not work because API 24 and below doesn't supports it
+        } else { //if not, this feature will not work because API 24 and below doesn't supports it
             Toast.makeText(this, R.string.version_not_supported, Toast.LENGTH_LONG).show()
             autodelete_notification_switch.isChecked = false
         }
@@ -146,6 +158,8 @@ class MainActivity : AppCompatActivity() {
         val channelId = "com.arfmann.notificationnotes"
         val description = "Notes"
         val groupKey = "com.arfmann.notificationnotes"
+
+        Toast.makeText(this, resources.getString(R.string.clipboardNote), Toast.LENGTH_LONG).show()
 
 
         val howtoDelete = resources.getString(R.string.howto_delete) //declare string with R.string value
@@ -226,7 +240,8 @@ class MainActivity : AppCompatActivity() {
 
         persistent_notfication_switch.isChecked = false
         autodelete_notification_switch.isChecked = false
-        dont_save.isChecked = false
+        dont_save_switch.isChecked = false
+        copy_to_clipboard_switch.isChecked = false
     }
 
 
@@ -258,12 +273,45 @@ class MainActivity : AppCompatActivity() {
 
     private fun addNotesToList(){
 
-        if (title_editText.text!!.isEmpty())
-            values.add(resources.getString(R.string.no_title) + "  -  " + content_editText.text!!.toString())
-        else if (content_editText.text!!.isEmpty())
-            values.add(title_editText.text!!.toString() + "  -  " + resources.getString(R.string.no_content))
-        else
-            values.add(title_editText.text!!.toString() + "  -  " + content_editText.text!!.toString())
+        if(!dont_save_switch.isChecked) {
+
+            if (title_editText.text!!.isEmpty())
+                values.add(resources.getString(R.string.no_title) + "  -  " + content_editText.text!!.toString())
+            else if (content_editText.text!!.isEmpty())
+                values.add(title_editText.text!!.toString() + "  -  " + resources.getString(R.string.no_content))
+            else
+                values.add(title_editText.text!!.toString() + "  -  " + content_editText.text!!.toString())
+
+        }
+
+    }
+
+
+    private fun copyToClipboard(){
+
+        if(copy_to_clipboard_switch.isChecked) {
+
+            myClipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
+
+            if (title_editText.text!!.isEmpty())
+                myClip = ClipData.newPlainText(
+                    "text",
+                    resources.getString(R.string.no_title) + " - " + content_editText.text!!.toString()
+                )
+            else if (content_editText.text!!.isEmpty())
+                myClip = ClipData.newPlainText(
+                    "text",
+                    title_editText.text!!.toString() + " - " + resources.getString(R.string.no_content)
+                )
+            else
+                myClip = ClipData.newPlainText(
+                    "text",
+                    title_editText.text!!.toString() + "  -  " + content_editText.text!!.toString()
+                )
+
+            myClipboard?.primaryClip = myClip
+
+        }
 
     }
 
@@ -299,6 +347,31 @@ class MainActivity : AppCompatActivity() {
             alertDialogList.setMessage("Nessuna nota")
 
         alertDialogList.show()
+
+    }
+
+
+    private fun showSettings(){
+
+        val slideStart = AnimationUtils.loadAnimation(this, R.anim.visibility_anim_start)
+        val infoStart = AnimationUtils.loadAnimation(this, R.anim.info_anim_start)
+        val infoEnd = AnimationUtils.loadAnimation(this, R.anim.info_anim_end)
+        val visibilityEnd = AnimationUtils.loadAnimation(this, R.anim.visibility_anim_end)
+
+        if(settingsGridLayout.visibility == View.GONE) {
+            settingsGridLayout.animation = slideStart
+            info_gridLayout.animation = infoStart
+            settingsGridLayout.visibility = View.VISIBLE
+            settingsImageView.setImageDrawable(resources.getDrawable(R.drawable.ic_settings_pressed_icon))
+        }
+
+        else{
+            settingsGridLayout.animation = visibilityEnd
+            info_gridLayout.animation = infoEnd
+            settingsImageView.setImageDrawable(resources.getDrawable(R.drawable.ic_settings_icon))
+            settingsGridLayout.visibility = View.GONE
+
+        }
 
     }
 

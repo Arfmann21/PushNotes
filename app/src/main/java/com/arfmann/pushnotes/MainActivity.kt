@@ -368,10 +368,11 @@ class MainActivity : AppCompatActivity() {
         val type = object: TypeToken<ArrayList<String>>() {
         }.type
 
-        if(json != null) //if JSON isn't null, so isn't empty
-            values = gson.fromJson(json, type) //got JSON values and convert them back to ArrayList
-        else
-            values = ArrayList() //if json is null, so empty, values is just an empty ArrayList
+        when(json){
+            null -> values = ArrayList() //if json is null, so empty, values is just an empty ArrayList
+            else-> values = gson.fromJson(json, type) //got JSON values and convert them back to ArrayList
+
+        }
 
     }
 

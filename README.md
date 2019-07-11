@@ -14,10 +14,6 @@ A simple app that save notes on notifications
 
 ---
 
-##### Warning: this app is waiting to be verified by Google Play Protect. You may need to disable Play Protect in order to install this app.
-
----
-
 #### How to download
 Click [HERE](https://github.com/Arfmann21/PushNotes/releases/latest) to go to latest release page -> scroll down - > click on "**Assets**" -> click on Push.Notes.apk -> install it
 

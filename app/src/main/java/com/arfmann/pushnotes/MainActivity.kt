@@ -4,8 +4,7 @@ import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -26,7 +25,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.alertdialog_autocancel.view.*
-import kotlinx.android.synthetic.main.alertdialog_list.*
 import org.json.JSONObject
 
 
@@ -34,6 +32,8 @@ class MainActivity : AppCompatActivity() {
 
     private var i = 0
     private var values = ArrayList<String>()
+    private var myClipboard: ClipboardManager? = null
+    private var myClip: ClipData? = null
 
     private lateinit var notificationManager: NotificationManager
     private lateinit var notificationChannel: NotificationChannel
@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
 
         gitHub_link_textView.text = HtmlCompat.fromHtml("<a href='https://github.com/Arfmann21/PushNotes'>GitHub</a>", HtmlCompat.FROM_HTML_MODE_LEGACY) //Add link to textView
         gitHub_link_textView.movementMethod = LinkMovementMethod.getInstance()
+
 
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -150,80 +151,80 @@ class MainActivity : AppCompatActivity() {
         val deleteIntent = Intent() //intent to click on notification without opening app
         val pendingIntentDelete = PendingIntent.getBroadcast(this,0,deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //check if API is 25 (Android 8) or upper
-                notificationChannel = NotificationChannel(channelId,description,NotificationManager.IMPORTANCE_DEFAULT) //set default importance
-                /*  notificationChannel.enableLights(true) //enable LED
-                  notificationChannel.lightColor = Color.GREEN //set LED color to green*/
-                notificationChannel.enableVibration(true)
-                notificationManager.createNotificationChannel(notificationChannel)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //check if API is 25 (Android 8) or upper
+            notificationChannel = NotificationChannel(channelId,description,NotificationManager.IMPORTANCE_DEFAULT) //set default importance
+            /*  notificationChannel.enableLights(true) //enable LED
+              notificationChannel.lightColor = Color.GREEN //set LED color to green*/
+            notificationChannel.enableVibration(true)
+            notificationManager.createNotificationChannel(notificationChannel)
 
-                builder = NotificationCompat.Builder(this,channelId) //build notification
+            builder = NotificationCompat.Builder(this,channelId) //build notification
 
-                if(title_editText.text!!.isEmpty())
-                    builder.setContentTitle(resources.getString(R.string.no_title))
-                else
-                    builder.setContentTitle(title_editText.text!!.toString())
+            if(title_editText.text!!.isEmpty())
+                builder.setContentTitle(resources.getString(R.string.no_title))
+            else
+                builder.setContentTitle(title_editText.text!!.toString())
 
-                if(content_editText.text!!.isEmpty())
-                    builder.setContentText(resources.getString(R.string.no_content))
-                else
-                    builder.setContentText(content_editText.text!!.toString())
+            if(content_editText.text!!.isEmpty())
+                builder.setContentText(resources.getString(R.string.no_content))
+            else
+                builder.setContentText(content_editText.text!!.toString())
 
-                builder.setSmallIcon(R.drawable.logo)
-                    //Not needed for now .setLargeIcon(BitmapFactory.decodeResource(this.resources,R.drawable.logo))
-                    .setContentIntent(pendingIntentDelete)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setTimeoutAfter(totalMilli)
-                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC) //set visibility to public to show notification on lock screen
-                    .setAutoCancel(true) //set auto cancel to delete notification when click on it
-                    .setStyle(NotificationCompat.BigTextStyle()) //set big text style to enable multiline notification
+            builder.setSmallIcon(R.drawable.logo)
+                //Not needed for now .setLargeIcon(BitmapFactory.decodeResource(this.resources,R.drawable.logo))
+                .setContentIntent(pendingIntentDelete)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setTimeoutAfter(totalMilli)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC) //set visibility to public to show notification on lock screen
+                .setAutoCancel(true) //set auto cancel to delete notification when click on it
+                .setStyle(NotificationCompat.BigTextStyle()) //set big text style to enable multiline notification
 
-                if(persistent_notfication_switch.isChecked){
-                    builder.setOngoing(true) //set ongoing to prevent notification from clearing (except when user clicks on it)
-                    builder.setSubText(howtoDelete)
-                }
-
-            } else {
-
-                builder = NotificationCompat.Builder(this, channelId) //build notification
-
-                if(title_editText.text!!.isEmpty())
-                    builder.setContentTitle(resources.getString(R.string.no_title))
-                else
-                    builder.setContentTitle(title_editText.text!!.toString())
-
-                if(content_editText.text!!.isEmpty())
-                    builder.setContentText(resources.getString(R.string.no_content))
-                else
-                    builder.setContentText(content_editText.text!!.toString())
-
-                builder.setSmallIcon(R.drawable.logo)
-                    //Not needed for now  .setLargeIcon(BitmapFactory.decodeResource(this.resources,R.drawable.logo))
-                    .setContentIntent(pendingIntentDelete)
-                    .setGroup(groupKey)
-                    .setGroupSummary(true)
-                    .setAutoCancel(true)
-                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                    .setStyle(NotificationCompat.BigTextStyle())
-
-                if(persistent_notfication_switch.isChecked) {
-                    builder.setOngoing(true)
-                    builder.setSubText(howtoDelete)
-                }
-
+            if(persistent_notfication_switch.isChecked){
+                builder.setOngoing(true) //set ongoing to prevent notification from clearing (except when user clicks on it)
+                builder.setSubText(howtoDelete)
             }
 
-            notificationManager.notify(i, builder.build())
-            i++
+        } else {
 
-            title_editText.text = null
-            content_editText.text = null
+            builder = NotificationCompat.Builder(this, channelId) //build notification
 
-            title_editText.requestFocus()
+            if(title_editText.text!!.isEmpty())
+                builder.setContentTitle(resources.getString(R.string.no_title))
+            else
+                builder.setContentTitle(title_editText.text!!.toString())
 
-            persistent_notfication_switch.isChecked = false
-            autodelete_notification_switch.isChecked = false
+            if(content_editText.text!!.isEmpty())
+                builder.setContentText(resources.getString(R.string.no_content))
+            else
+                builder.setContentText(content_editText.text!!.toString())
+
+            builder.setSmallIcon(R.drawable.logo)
+                //Not needed for now  .setLargeIcon(BitmapFactory.decodeResource(this.resources,R.drawable.logo))
+                .setContentIntent(pendingIntentDelete)
+                .setGroup(groupKey)
+                .setGroupSummary(true)
+                .setAutoCancel(true)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setStyle(NotificationCompat.BigTextStyle())
+
+            if(persistent_notfication_switch.isChecked) {
+                builder.setOngoing(true)
+                builder.setSubText(howtoDelete)
+            }
+
         }
+
+        notificationManager.notify(i, builder.build())
+        i++
+
+        title_editText.text = null
+        content_editText.text = null
+
+        title_editText.requestFocus()
+
+        persistent_notfication_switch.isChecked = false
+        autodelete_notification_switch.isChecked = false
+    }
 
 
     private fun cancelAllNotifications(notificationManager: NotificationManager){
@@ -266,30 +267,33 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun listOfNotes(adapter: ArrayAdapter<String>){
+    private fun listOfNotes(adapter: ArrayAdapter<String>) {
 
-        val inflater = LayoutInflater.from(applicationContext)
-        val dialogView = inflater.inflate(R.layout.alertdialog_list, null)
+        myClipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
 
-        listView?.adapter = adapter
         adapter.notifyDataSetChanged()
 
         val alertDialogList = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
-        alertDialogList.setView(dialogView)
 
-        alertDialogList.setAdapter(adapter, null)
+        alertDialogList.setAdapter(adapter, DialogInterface.OnClickListener { dialog, which ->
+
+            val item = adapter.getItem(which)
+            myClip = ClipData.newPlainText("text", item)
+            myClipboard?.primaryClip = myClip
+        })
+
         alertDialogList.setTitle(resources.getString(R.string.notes))
 
-        alertDialogList.setPositiveButton(R.string.close){
-                dialog, _ -> dialog.dismiss()
+        alertDialogList.setPositiveButton(R.string.close) { dialog, _ ->
+            dialog.dismiss()
         }
 
-        if(!adapter.isEmpty()) {
+        if (!adapter.isEmpty()) {
             alertDialogList.setNegativeButton(R.string.deleteNotes) { _, _ ->
                 deleteData(adapter)
             }
-        }
-        else
+
+        } else
             alertDialogList.setMessage("Nessuna nota")
 
         alertDialogList.show()

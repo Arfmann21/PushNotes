@@ -32,10 +32,7 @@
             app:layout_anchorGravity="top|right|end"
             app:srcCompat="@drawable/ic_delete_icon"
             app:backgroundTint="#cc0000"/>
-    <ListView
-            android:layout_width="match_parent"
-            android:id="@+id/listViewMain"
-            android:layout_height="match_parent"/>
+
     <ScrollView android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -60,7 +57,6 @@
                     android:textColor="#FFFFFF"
                     android:hint="@string/note_title"
                     android:backgroundTint="#d37a7a"
-                    android:fontFamily="@font/product_sans_regular"
                     android:layout_marginStart="15dp"
                     android:id="@+id/title_editText"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -94,7 +90,6 @@
                     android:textColor="#FFFFFF"
                     android:hint="@string/note_content"
                     android:backgroundTint="#d37a7a"
-                    android:fontFamily="@font/product_sans_regular"
                     android:id="@+id/content_editText"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -110,7 +105,6 @@
                 android:textSize="17sp"
                 android:track="@drawable/switch_track"
                 android:thumb="@drawable/switch_thumb"
-                android:fontFamily="@font/product_sans_regular"
                 android:id="@+id/persistent_notfication_switch"/>
         <Switch
                 android:text="@string/lockscreen"
@@ -124,8 +118,20 @@
                 android:textSize="17sp"
                 android:thumb="@drawable/switch_thumb"
                 android:track="@drawable/switch_track"
-                android:fontFamily="@font/product_sans_regular"
                 android:id="@+id/autodelete_notification_switch"/>
+        <Switch
+                android:text="@string/dontSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="15dp"
+                android:textColor="#ffffff"
+                android:layout_marginTop="25dp"
+                android:switchPadding="30dp"
+                android:textSize="17sp"
+                android:thumb="@drawable/switch_thumb"
+                android:track="@drawable/switch_track"
+                android:id="@+id/dont_save"/>
         <TextView
                 android:text="@string/developer"
                 android:textColor="#FFFFFF"
@@ -139,7 +145,6 @@
                 android:text="@string/nameDeveloper"
                 android:textColor="#FFFFFF"
                 android:textSize="15sp"
-                android:fontFamily="@font/product_sans_regular"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
@@ -156,7 +161,6 @@
         <TextView
                 android:textColor="#FFFFFF"
                 android:textSize="15sp"
-                android:fontFamily="@font/product_sans_regular"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"

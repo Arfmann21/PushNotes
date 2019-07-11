@@ -73,10 +73,11 @@ class MainActivity : AppCompatActivity() {
                     autoDeleteChecked()
                 }
                 else{
-                    addNotesToList()
+                    if(!dont_save.isChecked)
+                        addNotesToList()
+
                     notificationFunction(0, notificationManager)
                 }
-
 
                 saveData()
             }
@@ -122,7 +123,8 @@ class MainActivity : AppCompatActivity() {
                 totalMilli = hourMilli + minuteMilli
 
                 notificationFunction(totalMilli, notificationManager)
-                addNotesToList()
+                if(!dont_save.isChecked)
+                    addNotesToList()
             }
 
             alertDialogHour.setNegativeButton(R.string.cancel_alertDialog) { dialog, _ -> //if user has clicked "Cancel"
@@ -179,7 +181,7 @@ class MainActivity : AppCompatActivity() {
                 .setAutoCancel(true) //set auto cancel to delete notification when click on it
                 .setStyle(NotificationCompat.BigTextStyle()) //set big text style to enable multiline notification
 
-            if(persistent_notfication_switch.isChecked){
+            if(persistent_notfication_switch.isChecked || autodelete_notification_switch.isChecked){
                 builder.setOngoing(true) //set ongoing to prevent notification from clearing (except when user clicks on it)
                 builder.setSubText(howtoDelete)
             }
@@ -207,7 +209,7 @@ class MainActivity : AppCompatActivity() {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setStyle(NotificationCompat.BigTextStyle())
 
-            if(persistent_notfication_switch.isChecked) {
+            if(persistent_notfication_switch.isChecked || autodelete_notification_switch.isChecked) {
                 builder.setOngoing(true)
                 builder.setSubText(howtoDelete)
             }
@@ -224,6 +226,7 @@ class MainActivity : AppCompatActivity() {
 
         persistent_notfication_switch.isChecked = false
         autodelete_notification_switch.isChecked = false
+        dont_save.isChecked = false
     }
 
 
@@ -255,12 +258,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun addNotesToList(){
 
-        if(title_editText.text!!.isEmpty())
-            values.add(resources.getString(R.string.no_title) +  "  -  " + content_editText.text!!.toString())
-
-        else if(content_editText.text!!.isEmpty())
+        if (title_editText.text!!.isEmpty())
+            values.add(resources.getString(R.string.no_title) + "  -  " + content_editText.text!!.toString())
+        else if (content_editText.text!!.isEmpty())
             values.add(title_editText.text!!.toString() + "  -  " + resources.getString(R.string.no_content))
-
         else
             values.add(title_editText.text!!.toString() + "  -  " + content_editText.text!!.toString())
 
@@ -276,10 +277,11 @@ class MainActivity : AppCompatActivity() {
         val alertDialogList = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
 
         alertDialogList.setAdapter(adapter, DialogInterface.OnClickListener { _, which ->
-
             val item = adapter.getItem(which)
             myClip = ClipData.newPlainText("text", item)
             myClipboard?.primaryClip = myClip
+
+            Toast.makeText(this, resources.getString(R.string.clipboardNote), Toast.LENGTH_LONG).show()
         })
 
         alertDialogList.setTitle(resources.getString(R.string.notes))

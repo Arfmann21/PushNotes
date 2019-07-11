@@ -8,6 +8,8 @@
         <item name="android:navigationBarColor">#202030</item>
         <item name="android:statusBarColor">#1d1d30</item>
         <item name="android:backgroundTint">#202030</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:fontFamily">@font/product_sans_regular</item>
     </style>
 
     <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.DayNight.Dialog.Alert">

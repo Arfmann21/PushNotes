@@ -28,4 +28,6 @@
     <string name="noNotes">Nessuna nota</string>
     <string name="close"><font color="#81c784">Chiudi</font></string>
     <string name="listIconDescription" translatable="false">List icon</string>
+    <string name="clipboardNote">Nota copiata negli appunti</string>
+    <string name="dontSave">Non salvare nella lista</string>
 </resources>

@@ -23,4 +23,6 @@
     <string name="deleteNotes"><font color="#b30000">Delete all</font></string>
     <string name="noNotes">Empty</string>
     <string name="close"><font color="#81c784">Close</font></string>
+    <string name="clipboardNote">Note copied to the clipboard</string>
+    <string name="dontSave">Don\'t save it in the list</string>
 </resources>

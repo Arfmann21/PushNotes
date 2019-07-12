@@ -94,8 +94,8 @@ class MainActivity : AppCompatActivity() {
             if(autodelete_notification_switch.isChecked)
                 autoDeleteChecked()
             else {
-                notificationFunction(0, notificationManager)
                 addNotesToList()
+                notificationFunction(0, notificationManager)
             }
 
             saveData()
@@ -136,6 +136,7 @@ class MainActivity : AppCompatActivity() {
                 totalMilli = hourMilli + minuteMilli
 
                 addNotesToList()
+                copyToClipboard()
                 notificationFunction(totalMilli, notificationManager)
             }
 
@@ -158,9 +159,6 @@ class MainActivity : AppCompatActivity() {
         val channelId = "com.arfmann.notificationnotes"
         val description = "Notes"
         val groupKey = "com.arfmann.notificationnotes"
-
-        Toast.makeText(this, resources.getString(R.string.clipboardNote), Toast.LENGTH_LONG).show()
-
 
         val howtoDelete = resources.getString(R.string.howto_delete) //declare string with R.string value
 
@@ -344,7 +342,7 @@ class MainActivity : AppCompatActivity() {
             }
 
         } else
-            alertDialogList.setMessage("Nessuna nota")
+            alertDialogList.setMessage(resources.getString(R.string.noNotes))
 
         alertDialogList.show()
 

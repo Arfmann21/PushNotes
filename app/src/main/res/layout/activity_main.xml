@@ -32,6 +32,16 @@
             app:layout_anchorGravity="top|right|end"
             app:srcCompat="@drawable/ic_delete_icon"
             app:backgroundTint="#cc0000"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/update_fab"
+            android:layout_width="57dp"
+            android:layout_height="57dp"
+            android:layout_gravity="bottom|start"
+            android:backgroundTint="#81C784"
+            android:visibility="gone"
+            android:layout_margin="12pt"
+            app:srcCompat="@drawable/ic_download_icon"
+            app:backgroundTint="#cc0000"/>
 
     <ScrollView android:layout_width="match_parent"
                 android:layout_height="match_parent">

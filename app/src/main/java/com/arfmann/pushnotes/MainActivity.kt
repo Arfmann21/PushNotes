@@ -1,13 +1,13 @@
 package com.arfmann.pushnotes
 
-import android.app.AlertDialog
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.Manifest
+import android.app.*
 import android.content.*
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.text.InputType
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
@@ -17,7 +17,9 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import com.android.volley.Request
 import com.android.volley.Response
@@ -27,12 +29,14 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.alertdialog_autocancel.view.*
+import org.json.JSONArray
 import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity() {
 
     private var i = 0
+    private var constant = 0
     private var values = ArrayList<String>()
     private var myClipboard: ClipboardManager? = null
     private var myClip: ClipData? = null
@@ -115,8 +119,7 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //Check if API is 25 (Android 8) or upper
 
             val inflater = LayoutInflater.from(applicationContext)
-            val dialogView =
-                inflater.inflate(R.layout.alertdialog_autocancel, null) //Inflate layout for AlertDialog
+            val dialogView = inflater.inflate(R.layout.alertdialog_autocancel, null) //Inflate layout for AlertDialog
 
             val alertDialogHour = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle) //build AlertDialog
             alertDialogHour.setView(dialogView) //set inflated layout
@@ -388,39 +391,91 @@ class MainActivity : AppCompatActivity() {
 
                 val jsonObjTagName: String = jsonObj.getString("tag_name") //get GitHub release version tag
 
-                val jsonUrl = jsonObj.getString("html_url") //get GitHub release s URL
-
                 val versionName = packageManager.getPackageInfo(packageName, 0).versionName //get installed version
+                val jsonArray: JSONArray = jsonObj.getJSONArray("assets")
+
+                var jsonUrlDownload = ""
+                val jsonUrlInfo = jsonObj.getString("html_url")
+
+                for (i in 0 until jsonArray.length()) {
+                    val jsonInner: JSONObject = jsonArray.getJSONObject(i)
+                    jsonUrlDownload = jsonInner.getString("browser_download_url")
+                }
 
                 if(versionName < jsonObjTagName){
 
-                    val downloadIntent: Intent = Uri.parse(jsonUrl ).let { webpage -> //create intent to release URL
-                        Intent(Intent.ACTION_VIEW, webpage)
-                    }
-                    val chooser = Intent.createChooser(downloadIntent, "Browser") //crete the app chooser
+                    update_fab.show()
 
-                    val inflater = LayoutInflater.from(applicationContext)
-                    val dialogView = inflater.inflate(R.layout.alertdialog_update, null)
+                    update_fab.setOnClickListener{
 
-                    val alertDialogUpdateAvaible = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
-                    alertDialogUpdateAvaible.setView(dialogView)
-
-
-                    alertDialogUpdateAvaible.setPositiveButton(R.string.yes){
-                            _, _ ->  startActivity(chooser)
+                        checkPermission(Uri.parse(jsonUrlDownload))
 
                     }
 
-                    alertDialogUpdateAvaible.setNegativeButton(R.string.no){
-                            dialog, _ -> dialog.dismiss()
-                    }
-
-                    alertDialogUpdateAvaible.show()
                 }
             },
             Response.ErrorListener { "Errore durante la ricerca dell'aggiornamento"}) //if update check go fail
         queue.add(stringReq) //add request to queue
 
+    }
+
+
+    private fun checkPermission(jsonUrlDownload: Uri){
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+
+            val alertDialogPermission = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
+            val inflater = LayoutInflater.from(applicationContext)
+
+            val dialogView = inflater.inflate(R.layout.alertdialog_permission, null)
+
+            alertDialogPermission.setTitle(R.string.noPermissionAlertTitle)
+            alertDialogPermission.setView(dialogView)
+
+            alertDialogPermission.setPositiveButton(R.string.yes){ _, _ ->
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), constant)
+
+            }
+
+            alertDialogPermission.setNegativeButton(R.string.no){
+                    dialog, _ -> dialog.dismiss()
+            }
+
+            alertDialogPermission.show()
+        }
+        else
+            downloadUpdate(jsonUrlDownload)
+
+    }
+
+    private fun downloadUpdate(jsonUrlDownload: Uri){
+
+        val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+
+        val request = DownloadManager.Request(jsonUrlDownload)
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+        request.setVisibleInDownloadsUi(true)
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "PushNotes" + ".apk")
+
+        val alertDialogUpdateAvaible = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
+        alertDialogUpdateAvaible.setMessage(resources.getString(R.string.update_avaible))
+
+
+        alertDialogUpdateAvaible.setPositiveButton(R.string.yes) { _, _ ->
+            downloadManager.enqueue(request)
+
+            Toast.makeText(this, resources.getString(R.string.downloadPath), Toast.LENGTH_LONG).show()
+
+            update_fab.hide()
+        }
+
+        alertDialogUpdateAvaible.setNegativeButton(R.string.no) { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        alertDialogUpdateAvaible.show()
     }
 
 

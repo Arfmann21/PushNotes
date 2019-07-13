@@ -18,7 +18,7 @@
     <string name="no_title">Note without title</string>
     <string name="no_content">Note without content</string>
     <string name="no_title_content">Insert title and/or content</string>
-    <string name="update_avaible">New update avaible. Open download page?</string>
+    <string name="update_avaible">New update avaible. Download it?</string>
     <string name="notes">Notes</string>
     <string name="deleteNotes"><font color="#b30000">Delete all</font></string>
     <string name="noNotes">Empty</string>

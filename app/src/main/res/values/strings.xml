@@ -7,11 +7,11 @@
     <string name="alertdialog_title">Inserisci ore e minuti</string>
     <string name="hour"><font size="15">Ore</font></string>
     <string name="minute"><font size="15">Minuti</font></string>
-    <string name="send_alertDialog"><font color="#009900">Invia</font></string>
+    <string name="send_alertDialog"><font color="#81C784">Invia</font></string>
     <string name="cancel_alertDialog"><font color="#b30000">Annulla</font></string>
     <string name="delete_question">"Eliminare tutte le note dalle notifiche?"</string>
     <string name="delete_iconAdvise">Potrai sempre consultare le tue note dall\'apposita icona</string>
-    <string name="yes"><font color="#009900">Si</font></string>
+    <string name="yes"><font color="#81C784">Si</font></string>
     <string name="no" translatable="false"><font color="#b30000">No</font></string>
     <string name="developer" translatable="false">Developer</string>
     <string name="nameDeveloper" translatable="false">Giovanni Ferraro</string>
@@ -22,13 +22,16 @@
     <string name="no_title">Nota senza titolo</string>
     <string name="no_content">Nota senza contenuto</string>
     <string name="no_title_content">Impostare titolo e/o contenuto</string>
-    <string name="update_avaible">Nuovo aggiornamento disponibile. Aprire la pagina di download?</string>
+    <string name="update_avaible">Nuovo aggiornamento disponibile. Effettuare il download?</string>
     <string name="notes"><font size="17">Note</font></string>
     <string name="deleteNotes"><font color="#b30000">Elimina tutto</font></string>
     <string name="noNotes">Nessuna nota</string>
-    <string name="close"><font color="#81c784">Chiudi</font></string>
+    <string name="close"><font color="#81C784">Chiudi</font></string>
     <string name="listIconDescription" translatable="false">List icon</string>
     <string name="clipboardNote">Nota copiata negli appunti</string>
     <string name="dontSave">Non salvare nella lista</string>
     <string name="copyToClipboard">Copia la nota negli appunti</string>
+    <string name="downloadPath">Il download verrà salvato nella cartella "Download" del tuo dispositivo</string>
+    <string name="noPermissionAlertTitle">Permessi mancanti</string>
+    <string name="noPermissionAlert">Push Notes può scaricare il nuovo aggiornamento, ma c\'è bisogno dell\'autorizzazione per scrivere nella memoria interna. Concedere l\'autorizzazione?</string>
 </resources>

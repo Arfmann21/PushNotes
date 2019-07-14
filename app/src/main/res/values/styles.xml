@@ -13,7 +13,7 @@
     </style>
 
     <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.DayNight.Dialog.Alert">
-        <item name="colorAccent">#FFFFFF</item>
+        <item name="colorAccent">#3399FF</item>
         <item name="android:textColorPrimary">#7986cb</item>
         <item name="android:backgroundTint">#202030</item>
         <item name="android:fontFamily">@font/product_sans_bold</item>
@@ -22,7 +22,6 @@
         <item name="android:bottomLeftRadius">5pt</item>
         <item name="android:bottomRightRadius">5pt</item>
     </style>
-
 
     <style name="SwitchOffTheme" parent="Theme.AppCompat.Light">
         <item name="android:trackTint">#FFFFFF</item>

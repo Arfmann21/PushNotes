@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.*
 import android.content.*
 import android.content.pm.PackageManager
+import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -29,6 +30,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.alertdialog_autocancel.view.*
+import kotlinx.android.synthetic.main.timepicker.view.*
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -51,6 +53,8 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar!!.hide()
 
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
         loadData()
 
         title_editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES //Set first letter in CAP
@@ -61,10 +65,6 @@ class MainActivity : AppCompatActivity() {
 
         gitHub_link_textView.text = HtmlCompat.fromHtml("<a href='https://github.com/Arfmann21/PushNotes'>GitHub</a>", HtmlCompat.FROM_HTML_MODE_LEGACY) //Add link to textView
         gitHub_link_textView.movementMethod = LinkMovementMethod.getInstance()
-
-
-        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
 
         done_fab.setOnClickListener {
             doneClick()
@@ -79,7 +79,10 @@ class MainActivity : AppCompatActivity() {
             showSettings()
         }
 
-        cancelAllNotifications(notificationManager)
+        delete_fab.setOnClickListener{
+            cancelAllNotifications(notificationManager)
+        }
+
         checkUpdate()
 
     }
@@ -99,22 +102,19 @@ class MainActivity : AppCompatActivity() {
                 autoDeleteChecked()
             else {
                 addNotesToList()
-                notificationFunction(0, notificationManager)
+                notificationFunction(0)
             }
 
             saveData()
         }
     }
 
+
     private fun autoDeleteChecked(){ //function to handle auto-delete notifications
 
         var hourMilli: Long
         var minuteMilli: Long
         var totalMilli: Long
-
-
-        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //Check if API is 25 (Android 8) or upper
 
@@ -127,6 +127,7 @@ class MainActivity : AppCompatActivity() {
 
             val hourEditText = dialogView.hour_editText as EditText //declare the two editText
             val minuteHourEditText = dialogView.minute_editText as EditText
+            val setTime = dialogView.setTimeLayout
 
             alertDialogHour.setPositiveButton(R.string.send_alertDialog) { _, _ ->
                 //if user has clicked "Send"
@@ -140,12 +141,16 @@ class MainActivity : AppCompatActivity() {
 
                 addNotesToList()
                 copyToClipboard()
-                notificationFunction(totalMilli, notificationManager)
+                notificationFunction(totalMilli)
             }
 
             alertDialogHour.setNegativeButton(R.string.cancel_alertDialog) { dialog, _ ->
                 //if user has clicked "Cancel"
                 dialog.dismiss()
+            }
+
+            setTime.setOnClickListener {
+                timePicker()
             }
 
             alertDialogHour.show()
@@ -157,11 +162,49 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun notificationFunction(totalMilli: Long, notificationManager: NotificationManager){ //function to handle notification
+    private fun timePicker(){
+
+        var totalMilli: Long
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+
+            val inflater = LayoutInflater.from(applicationContext)
+            val dialogView = inflater.inflate(R.layout.timepicker, null)
+
+            dialogView.tp.setIs24HourView(true)
+
+            val c = Calendar.getInstance()
+            val hour = c.get(Calendar.HOUR_OF_DAY)
+            val minute = c.get(Calendar.MINUTE)
+
+            val tpd = TimePickerDialog(this,TimePickerDialog.OnTimeSetListener(function = { _, h, m ->
+
+                if(h <= hour)
+                    Toast.makeText(this, R.string.invalidTime, Toast.LENGTH_LONG).show()
+                else{
+
+                    totalMilli = ((h.toLong() - hour.toLong()) * 3600000) + ((m.toLong() - minute.toLong()) * 60000)
+                    Toast.makeText(this, totalMilli.toString() , Toast.LENGTH_LONG).show()
+                    addNotesToList()
+                    notificationFunction(totalMilli)
+                }
+
+            }),hour,minute,true)
+
+            tpd.setView(dialogView)
+            tpd.show()
+
+        }
+    }
+
+
+    private fun notificationFunction(totalMilli: Long){ //function to handle notification
 
         val channelId = "com.arfmann.notificationnotes"
         val description = "Notes"
         val groupKey = "com.arfmann.notificationnotes"
+
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         val howtoDelete = resources.getString(R.string.howto_delete) //declare string with R.string value
 
@@ -248,27 +291,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun cancelAllNotifications(notificationManager: NotificationManager){
 
-        delete_fab.setOnClickListener{
+        val inflater = LayoutInflater.from(applicationContext)
+        val dialogView = inflater.inflate(R.layout.alertdialog_cancel_all, null)
 
-            val inflater = LayoutInflater.from(applicationContext)
-            val dialogView = inflater.inflate(R.layout.alertdialog_cancel_all, null)
+        val alertDialogCancelAll = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
+        alertDialogCancelAll.setView(dialogView)
 
-            val alertDialogCancelAll = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
-            alertDialogCancelAll.setView(dialogView)
+        alertDialogCancelAll.setTitle(R.string.delete_question)
 
-            alertDialogCancelAll.setTitle(R.string.delete_question)
-
-            alertDialogCancelAll.setPositiveButton(R.string.yes){
-                    _, _ -> notificationManager.cancelAll()
-            }
-
-            alertDialogCancelAll.setNegativeButton(R.string.no){
-                    dialog, _ -> dialog.dismiss()
-            }
-
-            alertDialogCancelAll.show()
+        alertDialogCancelAll.setPositiveButton(R.string.yes){
+                _, _ -> notificationManager.cancelAll()
         }
 
+        alertDialogCancelAll.setNegativeButton(R.string.no){
+                dialog, _ -> dialog.dismiss()
+        }
+
+        alertDialogCancelAll.show()
     }
 
 
@@ -449,6 +488,7 @@ class MainActivity : AppCompatActivity() {
             downloadUpdate(jsonUrlDownload)
 
     }
+
 
     private fun downloadUpdate(jsonUrlDownload: Uri){
 

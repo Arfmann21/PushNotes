@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:background="#202030"
+              android:layout_width="match_parent"
+              android:background="#202030"
               android:orientation="vertical"
-                android:layout_height="match_parent">
+              android:layout_height="match_parent">
 
     <EditText android:layout_width="match_parent"
               android:id="@+id/hour_editText"
@@ -29,4 +29,24 @@
               android:layout_height="wrap_content"
               android:inputType="number"/>
 
+    <GridLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/setTimeLayout"
+                android:columnCount="2">
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_clock_icon"
+                android:layout_gravity="start"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:id="@+id/setTimeImageView"/>
+        <TextView android:text="@string/setTime"
+                  android:textSize="17sp"
+                  android:fontFamily="@font/product_sans_regular"
+                  android:textColor="#ffffff"
+                  android:layout_marginStart="10dp"
+                  android:layout_marginTop="10dp"/>
+    </GridLayout>
 </LinearLayout>

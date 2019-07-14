@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TimePicker
+        android:id="@+id/tp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:timePickerMode="clock"
+        android:headerBackground="#202030"
+        android:amPmBackgroundColor="#500126"
+        android:numbersBackgroundColor="#202030"
+        android:numbersInnerTextColor="#D9D9D9"
+        android:numbersTextColor="#FFFFFF"
+        android:numbersSelectorColor="#3399FF"
+        android:textColorSecondary="#897530"
+        android:textColorPrimary="#359875"
+        xmlns:android="http://schemas.android.com/apk/res/android"/>

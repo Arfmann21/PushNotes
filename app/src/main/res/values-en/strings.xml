@@ -26,4 +26,9 @@
     <string name="clipboardNote">Note copied to the clipboard</string>
     <string name="dontSave">Don\'t save it in the list</string>
     <string name="copyToClipboard">Copy note to the clipboard</string>
+    <string name="noPermissionAlertTitle">Permession required</string>
+    <string name="noPermissionAlert">Push Notes can download the update for you, but needs the permission to write to the device internal storage . Give permission?</string>
+    <string name="downloadPath">The download will be saved in the path "Download" of your device</string>
+    <string name="invalidTime">Set a time after the current one</string>
+    <string name="setTime">Set time</string>
 </resources>

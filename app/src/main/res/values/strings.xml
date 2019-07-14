@@ -32,6 +32,8 @@
     <string name="dontSave">Non salvare nella lista</string>
     <string name="copyToClipboard">Copia la nota negli appunti</string>
     <string name="downloadPath">Il download verrà salvato nella cartella "Download" del tuo dispositivo</string>
+    <string name="setTime">Imposta orario</string>
     <string name="noPermissionAlertTitle">Permessi mancanti</string>
     <string name="noPermissionAlert">Push Notes può scaricare il nuovo aggiornamento, ma c\'è bisogno dell\'autorizzazione per scrivere nella memoria interna. Concedere l\'autorizzazione?</string>
+    <string name="invalidTime">Impostare un orario successivo a quello attuale</string>
 </resources>

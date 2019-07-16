@@ -10,7 +10,7 @@
     <string name="send_alertDialog"><font color="#81C784">Invia</font></string>
     <string name="cancel_alertDialog"><font color="#b30000">Annulla</font></string>
     <string name="delete_question">"Eliminare tutte le note dalle notifiche?"</string>
-    <string name="delete_iconAdvise">Potrai sempre consultare le tue note dall\'apposita icona</string>
+    <string name="delete_iconAdvise">Potrai sempre consultarle dall\'apposita icona</string>
     <string name="yes"><font color="#81C784">Si</font></string>
     <string name="no" translatable="false"><font color="#b30000">No</font></string>
     <string name="developer" translatable="false">Developer</string>
@@ -31,7 +31,7 @@
     <string name="clipboardNote">Nota copiata negli appunti</string>
     <string name="dontSave">Non salvare nella lista</string>
     <string name="copyToClipboard">Copia la nota negli appunti</string>
-    <string name="downloadPath">Il download verrà salvato nella cartella "Download" del tuo dispositivo</string>
+    <string name="downloadPath">Il download verrà salvato nella cartella \"Download\" del tuo dispositivo</string>
     <string name="setTime">Imposta orario</string>
     <string name="noPermissionAlertTitle">Permessi mancanti</string>
     <string name="noPermissionAlert">Push Notes può scaricare il nuovo aggiornamento, ma c\'è bisogno dell\'autorizzazione per scrivere nella memoria interna. Concedere l\'autorizzazione?</string>

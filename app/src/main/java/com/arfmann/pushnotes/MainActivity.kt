@@ -133,10 +133,8 @@ class MainActivity : AppCompatActivity() {
             val setTime = dialogView.setTimeLayout
 
             alertDialogHour.setPositiveButton(R.string.send_alertDialog) { _, _ ->
-                //if user has clicked "Send"
 
-                fun EditText.longValue() =
-                    text.toString().toLongOrNull() ?: 0 //function to convert editText's value from string to Long
+                fun EditText.longValue() = text.toString().toLongOrNull() ?: 0 //function to convert editText's value from string to Long
 
                 hourMilli = hourEditText.longValue() * 3600000 //convert from hours to milliseconds
                 minuteMilli = minuteHourEditText.longValue() * 60000 //convert from minutes to milliseconds
@@ -216,8 +214,6 @@ class MainActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //check if API is 25 (Android 8) or upper
             notificationChannel = NotificationChannel(channelId,description,NotificationManager.IMPORTANCE_DEFAULT) //set default importance
-            /*  notificationChannel.enableLights(true) //enable LED
-              notificationChannel.lightColor = Color.GREEN //set LED color to green*/
             notificationChannel.enableVibration(true)
             notificationManager.createNotificationChannel(notificationChannel)
 
@@ -234,7 +230,6 @@ class MainActivity : AppCompatActivity() {
                 builder.setContentText(content_editText.text!!.toString())
 
             builder.setSmallIcon(R.drawable.logo)
-                //Not needed for now .setLargeIcon(BitmapFactory.decodeResource(this.resources,R.drawable.logo))
                 .setContentIntent(pendingIntentDelete)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setTimeoutAfter(totalMilli)
@@ -262,7 +257,6 @@ class MainActivity : AppCompatActivity() {
                 builder.setContentText(content_editText.text!!.toString())
 
             builder.setSmallIcon(R.drawable.logo)
-                //Not needed for now  .setLargeIcon(BitmapFactory.decodeResource(this.resources,R.drawable.logo))
                 .setContentIntent(pendingIntentDelete)
                 .setGroup(groupKey)
                 .setGroupSummary(true)
@@ -503,8 +497,8 @@ class MainActivity : AppCompatActivity() {
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "PushNotes" + ".apk")
 
         val alertDialogUpdateAvaible = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
-        alertDialogUpdateAvaible.setMessage(resources.getString(R.string.update_avaible))
 
+        alertDialogUpdateAvaible.setMessage(resources.getString(R.string.update_avaible))
 
         alertDialogUpdateAvaible.setPositiveButton(R.string.yes) { _, _ ->
             downloadManager.enqueue(request)

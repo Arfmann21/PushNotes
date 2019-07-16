@@ -2,7 +2,10 @@ package com.arfmann.pushnotes
 
 import android.Manifest
 import android.app.*
-import android.content.*
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.util.Calendar
 import android.net.Uri
@@ -364,13 +367,13 @@ class MainActivity : AppCompatActivity() {
 
         val alertDialogList = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
 
-        alertDialogList.setAdapter(adapter, DialogInterface.OnClickListener { _, which ->
+        alertDialogList.setAdapter(adapter) { _, which ->
             val item = adapter.getItem(which)
             myClip = ClipData.newPlainText("text", item)
             myClipboard?.primaryClip = myClip
 
             Toast.makeText(this, resources.getString(R.string.clipboardNote), Toast.LENGTH_LONG).show()
-        })
+        }
 
         alertDialogList.setTitle(resources.getString(R.string.notes))
 

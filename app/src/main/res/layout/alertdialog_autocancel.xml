@@ -47,6 +47,6 @@
                   android:fontFamily="@font/product_sans_regular"
                   android:textColor="#ffffff"
                   android:layout_marginStart="10dp"
-                  android:layout_marginTop="10dp"/>
+                  android:layout_marginTop="12dp"/>
     </GridLayout>
 </LinearLayout>

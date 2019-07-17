@@ -444,7 +444,7 @@ class MainActivity : AppCompatActivity() {
 
                     update_fab.setOnClickListener{
 
-                        checkPermission(Uri.parse(jsonUrlDownload))
+                        checkPermission(Uri.parse(jsonUrlDownload), Uri.parse(jsonUrlInfo))
 
                     }
 
@@ -456,7 +456,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun checkPermission(jsonUrlDownload: Uri){
+    private fun checkPermission(jsonUrlDownload: Uri, jsonUrlInfo: Uri){
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -482,12 +482,17 @@ class MainActivity : AppCompatActivity() {
             alertDialogPermission.show()
         }
         else
-            downloadUpdate(jsonUrlDownload)
+            downloadUpdate(jsonUrlDownload, jsonUrlInfo)
 
     }
 
 
-    private fun downloadUpdate(jsonUrlDownload: Uri){
+    private fun downloadUpdate(jsonUrlDownload: Uri, jsonUrlInfo: Uri){
+
+        val downloadIntent: Intent = jsonUrlInfo.let { webpage -> //create intent to release URL
+            Intent(Intent.ACTION_VIEW, webpage)
+        }
+        val chooser = Intent.createChooser(downloadIntent, "Browser")
 
         val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
@@ -506,6 +511,10 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, resources.getString(R.string.downloadPath), Toast.LENGTH_LONG).show()
 
             update_fab.hide()
+        }
+
+        alertDialogUpdateAvaible.setNeutralButton("Info"){
+                _, _ ->  startActivity(chooser)
         }
 
         alertDialogUpdateAvaible.setNegativeButton(R.string.no) { dialog, _ ->

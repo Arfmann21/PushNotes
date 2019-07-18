@@ -9,6 +9,7 @@
         <item name="android:statusBarColor">#1d1d30</item>
         <item name="android:backgroundTint">#202030</item>
         <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:timePickerStyle">@style/TimePickerStyle</item>
         <item name="android:fontFamily">@font/product_sans_regular</item>
     </style>
 
@@ -21,6 +22,18 @@
         <item name="android:topRightRadius">5pt</item>
         <item name="android:bottomLeftRadius">5pt</item>
         <item name="android:bottomRightRadius">5pt</item>
+    </style>
+
+    <style name="TimePickerStyle" parent="android:Widget.Material.Light.TimePicker">
+        <item name="android:timePickerMode">clock</item>
+        <item name="android:headerBackground">#202030</item>
+        <item name="android:amPmBackgroundColor">#500126</item>
+        <item name="android:numbersBackgroundColor">#202030</item>
+        <item name="android:numbersInnerTextColor">#D9D9D9</item>
+        <item name="android:numbersTextColor">#FFFFFF</item>
+        <item name="android:numbersSelectorColor">#3399FF</item>
+        <item name="android:textColorSecondary">#897530</item>
+        <item name="android:textColorPrimary">#359875</item>
     </style>
 
     <style name="SwitchOffTheme" parent="Theme.AppCompat.Light">

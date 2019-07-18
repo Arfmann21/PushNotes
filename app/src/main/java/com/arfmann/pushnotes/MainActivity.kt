@@ -33,7 +33,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.alertdialog_autocancel.view.*
-import kotlinx.android.synthetic.main.timepicker.view.*
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -169,30 +168,23 @@ class MainActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
 
-            val inflater = LayoutInflater.from(applicationContext)
-            val dialogView = inflater.inflate(R.layout.timepicker, null)
-
-            dialogView.tp.setIs24HourView(true)
-
             val c = Calendar.getInstance()
             val hour = c.get(Calendar.HOUR_OF_DAY)
             val minute = c.get(Calendar.MINUTE)
 
-            val tpd = TimePickerDialog(this,TimePickerDialog.OnTimeSetListener(function = { _, h, m ->
+             val tpd = TimePickerDialog(this,TimePickerDialog.OnTimeSetListener(function = { _, h, m ->
 
-                if(h <= hour)
-                    Toast.makeText(this, R.string.invalidTime, Toast.LENGTH_LONG).show()
+                if(h < hour)
+                    Toast.makeText(this,  R.string.invalidTime, Toast.LENGTH_LONG).show()
                 else{
 
                     totalMilli = ((h.toLong() - hour.toLong()) * 3600000) + ((m.toLong() - minute.toLong()) * 60000)
-                    Toast.makeText(this, totalMilli.toString() , Toast.LENGTH_LONG).show()
                     addNotesToList()
                     notificationFunction(totalMilli)
                 }
 
             }),hour,minute,true)
 
-            tpd.setView(dialogView)
             tpd.show()
 
         }

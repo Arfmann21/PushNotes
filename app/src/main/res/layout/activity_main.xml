@@ -12,7 +12,8 @@
             android:layout_width="57dp"
             android:layout_height="57dp"
             android:layout_gravity="bottom|end"
-            android:backgroundTint="#3399ff"
+            app:backgroundTint="#303050"
+            android:backgroundTint="#303050"
             android:layout_margin="12pt"
             app:srcCompat="@drawable/ic_done_icon"/>
     <View
@@ -26,12 +27,12 @@
             android:layout_width="57dp"
             android:layout_height="57dp"
             android:layout_gravity="top|end"
-            android:backgroundTint="#CC0000"
+            app:backgroundTint="#660000"
             android:layout_marginEnd="12pt"
             app:layout_anchor="@id/dummy"
             app:layout_anchorGravity="top|right|end"
             app:srcCompat="@drawable/ic_delete_icon"
-            app:backgroundTint="#cc0000"/>
+            android:backgroundTint="#660000"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/update_fab"
             android:layout_width="57dp"
@@ -49,25 +50,31 @@
         <GridLayout android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:columnCount="1">
+            <androidx.cardview.widget.CardView
+                    android:layout_height="180dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:backgroundTint="#29293d"
+                    android:layout_width="match_parent">
             <GridLayout  android:layout_width="match_parent"
                          android:layout_height="wrap_content"
                          android:columnCount="2">
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="250dp"
                         android:backgroundTint="#d37a7a"
-                        android:textColorHint="#d9d9d9"
                         android:layout_marginTop="35dp"
                         android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
-                            android:inputType="textMultiLine"
+                            android:inputType="number"
                             android:ems="10"
-                            android:textColor="#FFFFFF"
+                            android:fontFamily="@font/product_sans_italic"
                             android:hint="@string/note_title"
-                            android:backgroundTint="#d37a7a"
                             android:layout_marginStart="15dp"
+                            android:backgroundTint="#d37a7a"
                             android:id="@+id/title_editText"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <ImageView
@@ -85,7 +92,6 @@
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="250dp"
                         android:backgroundTint="#d37a7a"
-                        android:textColorHint="#d9d9d9"
                         android:layout_marginTop="15dp"
                         android:layout_marginStart="15dp"
                         android:layout_height="wrap_content">
@@ -93,9 +99,9 @@
                     <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
-                            android:inputType="textMultiLine"
+                            android:inputType="number"
                             android:ems="10"
-                            android:textColor="#FFFFFF"
+                            android:fontFamily="@font/product_sans_italic"
                             android:hint="@string/note_content"
                             android:backgroundTint="#d37a7a"
                             android:id="@+id/content_editText"/>
@@ -107,7 +113,7 @@
                         android:layout_height="wrap_content"
                         android:focusable="true"
                         android:clickable="true"
-                        android:layout_marginTop="25dp"
+                        android:layout_marginTop="30dp"
                         android:layout_gravity="end"
                         android:layout_marginEnd="50dp"
                         android:contentDescription="@string/listIconDescription"
@@ -115,7 +121,7 @@
                         android:id="@+id/settingsImageView"/>
 
             </GridLayout>
-
+            </androidx.cardview.widget.CardView>
             <GridLayout android:layout_height="wrap_content"
                         android:layout_width="match_parent"
                         android:columnCount="2"
@@ -125,7 +131,6 @@
                 <TextView android:text="@string/persistent_notification"
                           android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
-                          android:textColor="#FFFFFF"
                           android:layout_marginTop="25dp"
                           android:layout_gravity="start"
                           android:layout_marginStart="15dp"
@@ -143,7 +148,6 @@
                 <TextView android:text="@string/autodelete"
                           android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
-                          android:textColor="#FFFFFF"
                           android:layout_gravity="start"
                           android:layout_marginTop="25dp"
                           android:layout_marginStart="15dp"
@@ -161,7 +165,6 @@
                 <TextView android:text="@string/dontSave"
                           android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
-                          android:textColor="#FFFFFF"
                           android:layout_marginTop="25dp"
                           android:layout_marginStart="15dp"
                           android:textSize="17sp"/>
@@ -178,7 +181,6 @@
                 <TextView android:text="@string/copyToClipboard"
                           android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
-                          android:textColor="#FFFFFF"
                           android:layout_marginTop="25dp"
                           android:layout_marginStart="15dp"
                           android:textSize="17sp"/>
@@ -199,35 +201,36 @@
                         android:layout_width="match_parent">
                 <TextView
                         android:text="@string/developer"
-                        android:textColor="#FFFFFF"
                         android:textSize="17sp"
                         android:fontFamily="@font/product_sans_bold"
                         android:layout_gravity="center"
                         android:layout_marginTop="100dp"
+                        android:textColor="#E6E6E6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:text="@string/nameDeveloper"
-                        android:textColor="#FFFFFF"
                         android:textSize="15sp"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
+                        android:backgroundTint="#d9d9d9"
+                        android:fontFamily="@font/product_sans_italic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:text="@string/openSource"
-                        android:textColor="#FFFFFF"
                         android:textSize="17sp"
                         android:fontFamily="@font/product_sans_bold"
                         android:layout_gravity="center"
                         android:layout_marginTop="25dp"
+                        android:textColor="#E6E6E6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
-                        android:textColor="#FFFFFF"
                         android:textSize="15sp"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
+                        android:fontFamily="@font/product_sans_italic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/gitHub_link_textView"/>

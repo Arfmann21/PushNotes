@@ -1,34 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:background="#202030"
-              android:orientation="vertical"
-              android:layout_height="match_parent">
-
-    <EditText android:layout_width="match_parent"
-              android:id="@+id/hour_editText"
-              android:layout_marginStart="15dp"
-              android:layout_marginEnd="15dp"
-              android:hint="@string/hour"
-              android:fontFamily="@font/product_sans_regular"
-              android:textColor="#ffffff"
-              android:backgroundTint="#d37a7a"
-              android:textColorHint="#ffffff"
-              android:layout_height="wrap_content"
-              android:inputType="number"/>
-
-    <EditText android:layout_width="match_parent"
-              android:id="@+id/minute_editText"
-              android:layout_marginStart="15dp"
-              android:layout_marginEnd="15dp"
-              android:backgroundTint="#d37a7a"
-              android:hint="@string/minute"
-              android:fontFamily="@font/product_sans_regular"
-              android:textColor="#ffffff"
-              android:textColorHint="#ffffff"
-              android:layout_height="wrap_content"
-              android:inputType="number"/>
-
+<androidx.appcompat.widget.LinearLayoutCompat
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:background="#202030"
+        android:orientation="vertical"
+        android:theme="@style/AppTheme"
+        android:id="@+id/autocancel_root"
+        android:layout_height="match_parent">
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="250dp"
+            android:backgroundTint="#d37a7a"
+            android:layout_marginTop="5dp"
+            android:textColorHint="#E6E6E6"
+            android:layout_height="wrap_content">
+        <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/hour_editText"
+                android:layout_marginStart="15dp"
+                android:text="25"
+                android:layout_marginEnd="15dp"
+                android:hint="@string/hour"
+                android:fontFamily="@font/product_sans_regular"
+                android:textColor="#E6E6E6"
+                android:backgroundTint="#d37a7a"
+                android:layout_height="wrap_content"
+                android:inputType="number"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="250dp"
+            android:backgroundTint="#d37a7a"
+            android:layout_marginTop="10dp"
+            android:textColorHint="#E6E6E6"
+            android:layout_height="wrap_content">
+        <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/minute_editText"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:backgroundTint="#d37a7a"
+                android:hint="@string/minute"
+                android:fontFamily="@font/product_sans_regular"
+                android:textColor="#ffffff"
+                android:textColorHint="#ffffff"
+                android:layout_height="wrap_content"
+                android:inputType="number"/>
+    </com.google.android.material.textfield.TextInputLayout>
     <GridLayout android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/setTimeLayout"
@@ -39,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_clock_icon"
                 android:layout_gravity="start"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginStart="20dp"
                 android:id="@+id/setTimeImageView"/>
         <TextView android:text="@string/setTime"
@@ -47,6 +63,6 @@
                   android:fontFamily="@font/product_sans_regular"
                   android:textColor="#ffffff"
                   android:layout_marginStart="10dp"
-                  android:layout_marginTop="12dp"/>
+                  android:layout_marginTop="23dp"/>
     </GridLayout>
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -10,7 +10,7 @@ A simple app that save notes on notifications
 
 <a href="https://imgur.com/mf3rZp"><img src="https://imgur.com/mf3rZp4.png" title="source: imgur.com" /></a>
 <a href="https://imgur.com/eqiojfM"><img src="https://imgur.com/eqiojfM.png" title="source: imgur.com" /></a>
-<a href="https://imgur.com/2WodlGB"><img src="https://imgur.com/2WodlGB.png" title="source: imgur.com" /></a>
+<a href="https://imgur.com/BoJJR0h"><img src="https://imgur.com/BoJJR0h.png" title="source: imgur.com" /></a>
 
 ---
 

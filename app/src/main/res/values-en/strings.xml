@@ -8,11 +8,11 @@
     <string name="alertdialog_title">Insert hours and minutes</string>
     <string name="hour"><font size="15">Hours</font></string>
     <string name="minute"><font size="15">Minutes</font></string>
-    <string name="send_alertDialog"><font color="#009900">Send</font></string>
-    <string name="cancel_alertDialog"><font color="#b30000">Cancel</font></string>
+    <string name="send_alertDialog">Send</string>
+    <string name="cancel_alertDialog">Cancel</string>
     <string name="delete_question">"Delete all notes from notifications?"</string>
     <string name="delete_iconAdvise">You can always check them by the appropriate icon</string>
-    <string name="yes"><font color="#00cc00">Yes</font></string>
+    <string name="yes">Yes</string>
     <string name="version_not_supported">Your Android version doesn\'t support this function</string>
     <string name="howto_delete">Click to delete</string>
     <string name="no_title">Note without title</string>
@@ -20,9 +20,9 @@
     <string name="no_title_content">Insert title and/or content</string>
     <string name="update_avaible">New update avaible. Download it?</string>
     <string name="notes">Notes</string>
-    <string name="deleteNotes"><font color="#b30000">Delete all</font></string>
+    <string name="deleteNotes">Delete all</string>
     <string name="noNotes">Empty</string>
-    <string name="close"><font color="#81c784">Close</font></string>
+    <string name="close">Close</string>
     <string name="clipboardNote">Note copied to the clipboard</string>
     <string name="dontSave">Don\'t save it in the list</string>
     <string name="copyToClipboard">Copy note to the clipboard</string>
@@ -31,4 +31,16 @@
     <string name="downloadPath">The download will be saved in the path "Download" of your device</string>
     <string name="invalidTime">Set a time after the current one</string>
     <string name="setTime">Set time</string>
+    <string name="limitationsTitle">Limitations</string>
+    <string name="limitationsContent">Your Android version does not support auto-delete function due to software limits</string>
+    <string name="and">and</string>
+    <string name="minutes">minutes</string>
+    <string name="hours">hours</string>
+    <string name="inString">in</string>
+    <string name="willBeDeletedIn">Notification will be deleted</string>
+    <string name="willNotBeDeleted">Notification will not be automatically deleted because of missing hours and/or
+        minutes
+    </string>
+    <string name="at">at</string>
+    <string name="fullDeleted">Notes deleted</string>
 </resources>

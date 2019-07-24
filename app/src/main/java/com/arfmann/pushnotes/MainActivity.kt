@@ -18,7 +18,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -29,10 +28,13 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.alertdialog_autocancel.view.*
+import kotlinx.android.synthetic.main.sheet_advise.view.*
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -40,10 +42,9 @@ import org.json.JSONObject
 class MainActivity : AppCompatActivity() {
 
     private var i = 0
+    private var oneTimeAdviseInt = 0
     private var constant = 0
     private var values = ArrayList<String>()
-    private var myClipboard: ClipboardManager? = null
-    private var myClip: ClipData? = null
 
     private lateinit var notificationManager: NotificationManager
     private lateinit var notificationChannel: NotificationChannel
@@ -58,6 +59,9 @@ class MainActivity : AppCompatActivity() {
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         loadData()
+
+        if(oneTimeAdviseInt == 0)
+            oneTimeAdvise()
 
         title_editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES //Set first letter in CAP
         content_editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
@@ -86,6 +90,26 @@ class MainActivity : AppCompatActivity() {
         }
 
         checkUpdate()
+
+    }
+
+    private fun oneTimeAdvise(){
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+
+            val dialog = BottomSheetDialog(this)
+            val view = layoutInflater.inflate(R.layout.sheet_advise, null)
+
+            dialog.setContentView(view)
+            dialog.show()
+            oneTimeAdviseInt = 1
+
+            view.closeSheetAdvise.setOnClickListener {
+                dialog.cancel()
+            }
+
+            saveData()
+        }
 
     }
 
@@ -118,26 +142,37 @@ class MainActivity : AppCompatActivity() {
         var minuteMilli: Long
         var totalMilli: Long
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //Check if API is 25 (Android 8) or upper
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //Check if API is 26 (Android 8.0) or upper
 
             val inflater = LayoutInflater.from(applicationContext)
-            val dialogView = inflater.inflate(R.layout.alertdialog_autocancel, null) //Inflate layout for AlertDialog
+            val dialogView = inflater.inflate(R.layout.alertdialog_autocancel, null)
 
             val alertDialogHour = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle) //build AlertDialog
+
             alertDialogHour.setView(dialogView) //set inflated layout
             alertDialogHour.setTitle(R.string.alertdialog_title)
 
-            val hourEditText = dialogView.hour_editText as EditText //declare the two editText
-            val minuteHourEditText = dialogView.minute_editText as EditText
             val setTime = dialogView.setTimeLayout
 
             alertDialogHour.setPositiveButton(R.string.send_alertDialog) { _, _ ->
 
-                fun EditText.longValue() = text.toString().toLongOrNull() ?: 0 //function to convert editText's value from string to Long
+                val hourEditText = dialogView.hour_editText as TextInputEditText //declare the two editText
+                val minuteEditText = dialogView.minute_editText as TextInputEditText
+
+                fun TextInputEditText.longValue() = text.toString().toLongOrNull() ?: 0//function to convert editText's value from string to Long
 
                 hourMilli = hourEditText.longValue() * 3600000 //convert from hours to milliseconds
-                minuteMilli = minuteHourEditText.longValue() * 60000 //convert from minutes to milliseconds
+                minuteMilli = minuteEditText.longValue() * 60000 //convert from minutes to milliseconds
                 totalMilli = hourMilli + minuteMilli
+
+                if(hourEditText.text!!.isEmpty() && minuteEditText.text!!.isNotEmpty())
+                    Toast.makeText(this, resources.getString(R.string.willBeDeletedIn) + " " + resources.getString(R.string.inString) + " 0 " + resources.getString(R.string.hours) + " " +  resources.getString(R.string.and) + " " + minuteEditText.text!!.toString() + " " + resources.getString(R.string.minutes), Toast.LENGTH_LONG).show()
+                else if(minuteEditText.text!!.isEmpty() && hourEditText.text!!.isNotEmpty())
+                    Toast.makeText(this, resources.getString(R.string.willBeDeletedIn) + " " + resources.getString(R.string.inString) + " " + hourEditText.text!!.toString()  + " " + resources.getString(R.string.hours) + " " + resources.getString(R.string.and) + " 0 " + resources.getString(R.string.minutes), Toast.LENGTH_LONG).show()
+                else if(hourEditText.text.isNullOrEmpty() && minuteEditText.text.isNullOrEmpty())
+                    Toast.makeText(this, resources.getString(R.string.willNotBeDeleted), Toast.LENGTH_LONG).show()
+                else
+                    Toast.makeText(this, resources.getString(R.string.willBeDeletedIn) + " " + resources.getString(R.string.inString) + " " + hourEditText.text!!.toString() +  " " + resources.getString(R.string.hours) + " " + resources.getString(R.string.and) + " " + minuteEditText.text!!.toString() + " " + resources.getString(R.string.minutes), Toast.LENGTH_LONG).show()
 
                 addNotesToList()
                 copyToClipboard()
@@ -145,15 +180,17 @@ class MainActivity : AppCompatActivity() {
             }
 
             alertDialogHour.setNegativeButton(R.string.cancel_alertDialog) { dialog, _ ->
-                //if user has clicked "Cancel"
                 dialog.dismiss()
             }
 
+            val alertDialogClose = alertDialogHour.create()
+
             setTime.setOnClickListener {
                 timePicker()
+                alertDialogClose.dismiss()
             }
 
-            alertDialogHour.show()
+            alertDialogClose.show()
 
         } else { //if not, this feature will not work because API 24 and below doesn't supports it
             Toast.makeText(this, R.string.version_not_supported, Toast.LENGTH_LONG).show()
@@ -166,18 +203,19 @@ class MainActivity : AppCompatActivity() {
 
         var totalMilli: Long
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
 
             val c = Calendar.getInstance()
             val hour = c.get(Calendar.HOUR_OF_DAY)
             val minute = c.get(Calendar.MINUTE)
 
-             val tpd = TimePickerDialog(this,TimePickerDialog.OnTimeSetListener(function = { _, h, m ->
+            val tpd = TimePickerDialog(this,TimePickerDialog.OnTimeSetListener(function = { _, h, m ->
 
                 if(h < hour)
                     Toast.makeText(this,  R.string.invalidTime, Toast.LENGTH_LONG).show()
                 else{
 
+                    Toast.makeText(this, resources.getString(R.string.willBeDeletedIn) + " "  + resources.getString(R.string.at) + " " + h.toString() + ":" + m.toString(), Toast.LENGTH_LONG).show()
                     totalMilli = ((h.toLong() - hour.toLong()) * 3600000) + ((m.toLong() - minute.toLong()) * 60000)
                     addNotesToList()
                     notificationFunction(totalMilli)
@@ -189,7 +227,6 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
-
 
     private fun notificationFunction(totalMilli: Long){ //function to handle notification
 
@@ -318,9 +355,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun copyToClipboard(){
 
+        val myClipboard: ClipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        val myClip: ClipData
+
         if(copy_to_clipboard_switch.isChecked) {
 
-            myClipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
 
             if (title_editText.text!!.isEmpty())
                 myClip = ClipData.newPlainText(
@@ -338,7 +377,9 @@ class MainActivity : AppCompatActivity() {
                     title_editText.text!!.toString() + "  -  " + content_editText.text!!.toString()
                 )
 
-            myClipboard?.primaryClip = myClip
+            myClipboard.setPrimaryClip(myClip)
+
+            Toast.makeText(this, resources.getString(R.string.copyToClipboard), Toast.LENGTH_LONG).show()
 
         }
 
@@ -347,7 +388,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun listOfNotes(adapter: ArrayAdapter<String>) {
 
-        myClipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
+        val myClipboard: ClipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        var myClip: ClipData
 
         adapter.notifyDataSetChanged()
 
@@ -356,7 +398,7 @@ class MainActivity : AppCompatActivity() {
         alertDialogList.setAdapter(adapter) { _, which ->
             val item = adapter.getItem(which)
             myClip = ClipData.newPlainText("text", item)
-            myClipboard?.primaryClip = myClip
+            myClipboard.setPrimaryClip(myClip)
 
             Toast.makeText(this, resources.getString(R.string.clipboardNote), Toast.LENGTH_LONG).show()
         }
@@ -370,6 +412,7 @@ class MainActivity : AppCompatActivity() {
         if (!adapter.isEmpty) {
             alertDialogList.setNegativeButton(R.string.deleteNotes) { _, _ ->
                 deleteData(adapter)
+                Toast.makeText(this, resources.getString(R.string.fullDeleted), Toast.LENGTH_LONG).show()
             }
 
         } else
@@ -523,6 +566,7 @@ class MainActivity : AppCompatActivity() {
         val gson = Gson()
         val json = gson.toJson(values) //convert ArrayList to JSON (shared preferences can't handle ArrayList)
         editor.putString("noteList", json) //save the new JSON with values
+        editor.putInt("oneTime", oneTimeAdviseInt)
         editor.apply() //apply new changes
     }
 
@@ -531,6 +575,7 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
         val gson = Gson()
         val json = sharedPreferences.getString("noteList", null)
+        val oneTimeAdvise = sharedPreferences.getInt("oneTime", 0)
         val type = object: TypeToken<ArrayList<String>>() {
         }.type
 
@@ -539,6 +584,9 @@ class MainActivity : AppCompatActivity() {
             else-> values = gson.fromJson(json, type) //got JSON values and convert them back to ArrayList
 
         }
+
+        if(oneTimeAdvise >= 1)
+            oneTimeAdviseInt = 1
 
     }
 

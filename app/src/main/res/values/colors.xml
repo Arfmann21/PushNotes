@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#d37a7a</color>
+    <color name="colorPrimary">#202030</color>
     <color name="colorPrimaryDark">#1a1a1a</color>
     <color name="colorAccent">#3399ff</color>
+    <color name="splash_color">#202030</color>
 </resources>

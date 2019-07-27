@@ -6,6 +6,7 @@
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="match_parent"
+        android:background="#202030"
         tools:context=".MainActivity">
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/done_fab"
@@ -62,14 +63,12 @@
                          android:columnCount="2">
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="250dp"
-                        android:backgroundTint="#d37a7a"
                         android:layout_marginTop="35dp"
                         android:layout_height="wrap_content">
-
                     <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
-                            android:inputType="number"
+                            android:inputType="text"
                             android:ems="10"
                             android:fontFamily="@font/product_sans_italic"
                             android:hint="@string/note_title"
@@ -91,7 +90,6 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="250dp"
-                        android:backgroundTint="#d37a7a"
                         android:layout_marginTop="15dp"
                         android:layout_marginStart="15dp"
                         android:layout_height="wrap_content">
@@ -99,7 +97,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
-                            android:inputType="number"
+                            android:inputType="textMultiLine"
                             android:ems="10"
                             android:fontFamily="@font/product_sans_italic"
                             android:hint="@string/note_content"

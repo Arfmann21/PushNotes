@@ -7,11 +7,10 @@
     <TextView
             android:text="@string/update_avaible"
             android:layout_width="match_parent"
-            android:fontFamily="@font/product_sans_bold"
+            android:fontFamily="@font/google_sans_bold"
             android:textColor="#FFFFFF"
             android:textSize="17sp"
             android:gravity="center"
             android:layout_marginTop="17dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/cancelAll_warning_textView"/>
+            android:layout_height="wrap_content"/>
 </LinearLayout>

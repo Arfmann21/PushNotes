@@ -9,9 +9,7 @@
         android:layout_height="match_parent">
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="250dp"
-            android:backgroundTint="#d37a7a"
             android:layout_marginTop="5dp"
-            android:textColorHint="#E6E6E6"
             android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -19,17 +17,16 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
                 android:hint="@string/hour"
-                android:fontFamily="@font/product_sans_regular"
-                android:textColor="#E6E6E6"
+                android:fontFamily="@font/google_sans_medium"
+                android:textColor="#E0E0E0"
                 android:backgroundTint="#d37a7a"
                 android:layout_height="wrap_content"
                 android:inputType="number"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="250dp"
-            android:backgroundTint="#d37a7a"
+            android:backgroundTint="#3399FF"
             android:layout_marginTop="10dp"
-            android:textColorHint="#E6E6E6"
             android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -38,9 +35,8 @@
                 android:layout_marginEnd="15dp"
                 android:backgroundTint="#d37a7a"
                 android:hint="@string/minute"
-                android:fontFamily="@font/product_sans_regular"
-                android:textColor="#ffffff"
-                android:textColorHint="#ffffff"
+                android:fontFamily="@font/google_sans_medium"
+                android:textColor="#E0E0E0"
                 android:layout_height="wrap_content"
                 android:inputType="number"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -59,8 +55,8 @@
                 android:id="@+id/setTimeImageView"/>
         <TextView android:text="@string/setTime"
                   android:textSize="17sp"
-                  android:fontFamily="@font/product_sans_regular"
-                  android:textColor="#ffffff"
+                  android:fontFamily="@font/google_sans_bold"
+                  android:textColor="#e0e0e0"
                   android:layout_marginStart="10dp"
                   android:layout_marginTop="23dp"/>
     </GridLayout>

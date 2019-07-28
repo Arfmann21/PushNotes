@@ -6,6 +6,7 @@
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="match_parent"
+        android:theme="@style/AppTheme"
         android:background="#202030"
         tools:context=".MainActivity">
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -46,6 +47,8 @@
             app:backgroundTint="#cc0000"/>
 
     <ScrollView android:layout_width="match_parent"
+                android:scrollbarThumbVertical="@null"
+                android:backgroundTint="#202030"
                 android:layout_height="match_parent">
 
         <GridLayout android:layout_width="match_parent"
@@ -57,6 +60,8 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
                     android:backgroundTint="#29293d"
+                    app:cardCornerRadius="4.5pt"
+                    app:cardElevation="10dp"
                     android:layout_width="match_parent">
             <GridLayout  android:layout_width="match_parent"
                          android:layout_height="wrap_content"
@@ -64,16 +69,18 @@
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="250dp"
                         android:layout_marginTop="35dp"
+                        android:backgroundTint="#d37a7a"
                         android:layout_height="wrap_content">
                     <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:inputType="text"
-                            android:ems="10"
-                            android:fontFamily="@font/product_sans_italic"
+                            android:backgroundTint="#d37a7a"
+                            android:textColor="#e0e0e0"
+                            android:ems="8"
+                            android:fontFamily="@font/google_sans_medium_italic"
                             android:hint="@string/note_title"
                             android:layout_marginStart="15dp"
-                            android:backgroundTint="#d37a7a"
                             android:id="@+id/title_editText"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <ImageView
@@ -99,8 +106,9 @@
                             android:layout_height="40dp"
                             android:inputType="textMultiLine"
                             android:ems="10"
-                            android:fontFamily="@font/product_sans_italic"
+                            android:fontFamily="@font/google_sans_medium_italic"
                             android:hint="@string/note_content"
+                            android:textColor="#e0e0e0"
                             android:backgroundTint="#d37a7a"
                             android:id="@+id/content_editText"/>
 
@@ -132,7 +140,7 @@
                           android:layout_marginTop="25dp"
                           android:layout_gravity="start"
                           android:layout_marginStart="15dp"
-                          android:textSize="17sp"/>
+                          android:textSize="16sp"/>
                 <Switch
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -149,7 +157,7 @@
                           android:layout_gravity="start"
                           android:layout_marginTop="25dp"
                           android:layout_marginStart="15dp"
-                          android:textSize="17sp"/>
+                          android:textSize="15.5sp"/>
                 <Switch
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -165,7 +173,7 @@
                           android:layout_height="wrap_content"
                           android:layout_marginTop="25dp"
                           android:layout_marginStart="15dp"
-                          android:textSize="17sp"/>
+                          android:textSize="16sp"/>
                 <Switch
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -181,7 +189,7 @@
                           android:layout_height="wrap_content"
                           android:layout_marginTop="25dp"
                           android:layout_marginStart="15dp"
-                          android:textSize="17sp"/>
+                          android:textSize="16sp"/>
                 <Switch
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -200,7 +208,6 @@
                 <TextView
                         android:text="@string/developer"
                         android:textSize="17sp"
-                        android:fontFamily="@font/product_sans_bold"
                         android:layout_gravity="center"
                         android:layout_marginTop="100dp"
                         android:textColor="#E6E6E6"
@@ -212,13 +219,12 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
                         android:backgroundTint="#d9d9d9"
-                        android:fontFamily="@font/product_sans_italic"
+                        android:fontFamily="@font/google_sans_regular_italic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:text="@string/openSource"
                         android:textSize="17sp"
-                        android:fontFamily="@font/product_sans_bold"
                         android:layout_gravity="center"
                         android:layout_marginTop="25dp"
                         android:textColor="#E6E6E6"
@@ -228,7 +234,7 @@
                         android:textSize="15sp"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
-                        android:fontFamily="@font/product_sans_italic"
+                        android:fontFamily="@font/google_sans_regular_italic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/gitHub_link_textView"/>

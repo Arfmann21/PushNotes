@@ -1,28 +1,33 @@
 <resources>
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:windowBackground">@color/splash_color</item>
         <item name="colorAccent">#1E88E5</item>
         <item name="android:navigationBarColor">#202030</item>
         <item name="android:statusBarColor">#1d1d30</item>
-        <item name="android:textColorPrimary">#E0E0E0</item>
-        <item name="android:timePickerStyle">@style/TimePickerStyleLight</item>
-        <item name="android:fontFamily">@font/product_sans_regular</item>
+        <item name="android:textColorPrimary">#212121</item>
+        <item name="android:timePickerDialogTheme">@style/TimePickerDialog</item>
+        <item name="android:fontFamily">@font/google_sans_medium</item>
         <item name="android:textColor">#E0E0E0</item>
         <item name="android:colorControlHighlight">#3399ff</item>
-        <item name="android:colorControlActivated">#3399ff</item>
+        <item name="actionMenuTextColor">@color/colorAccent</item>
         <item name="alertDialogStyle">@style/AppCompatAlertDialogStyle</item>
-        <item name="android:textColorHint">#BDBDBD</item>
+        <item name="android:textColorHint">#9E9E9E</item>
+        <item name="colorControlNormal">#ffffff</item>
+        <item name="colorControlActivated">#1E88E5</item>
+        <item name="colorControlHighlight">#FFFFFF</item>
+    </style>
+
+    <style name="PopupMenu" parent="Widget.AppCompat.Light.PopupMenu">
+        <item name="android:popupBackground">#FFFFFF</item>
     </style>
 
     <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="colorAccent">#3399FF</item>
         <item name="android:textColorPrimary">#7986cb</item>
         <item name="android:backgroundTint">#202030</item>
-        <item name="android:fontFamily">@font/product_sans_bold</item>
+        <item name="android:fontFamily">@font/google_sans_bold</item>
         <item name="android:topLeftRadius">3pt</item>
         <item name="android:topRightRadius">3pt</item>
         <item name="android:bottomLeftRadius">3pt</item>
@@ -32,6 +37,13 @@
         <item name="android:textColor">#7986CB</item>
     </style>
 
+    <style name="TimePickerDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="android:backgroundTint">#202030</item>
+        <item name="android:textColorPrimary">#E0E0E0</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="android:timePickerStyle">@style/TimePickerStyleLight</item>
+    </style>
     <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">#b30000</item>
     </style>
@@ -43,13 +55,16 @@
     <style name="TimePickerStyleLight" parent="android:Widget.Material.Light.TimePicker">
         <item name="android:timePickerMode">clock</item>
         <item name="android:headerBackground">#202030</item>
-        <item name="android:amPmBackgroundColor">#500126</item>
+        <item name="android:amPmBackgroundColor">#202030</item>
         <item name="android:numbersBackgroundColor">#202030</item>
         <item name="android:numbersInnerTextColor">#D9D9D9</item>
-        <item name="android:numbersTextColor">#FFFFFF</item>
-        <item name="android:numbersSelectorColor">#3399FF</item>
-        <item name="android:textColorSecondary">#897530</item>
-        <item name="android:textColorPrimary">#359875</item>
+        <item name="alertDialogStyle">@style/AppCompatAlertDialogStyle</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="android:numbersTextColor">#E0E0E0</item>
+        <item name="android:numbersSelectorColor">#1E88E5</item>
+        <item name="android:textColorSecondary">#E0E0E0</item>
+        <item name="android:textColorPrimary">#E0E0E0</item>
     </style>
 
     <style name="SwitchOffTheme" parent="Theme.AppCompat.Light">

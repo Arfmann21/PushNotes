@@ -43,4 +43,5 @@
     </string>
     <string name="at">at</string>
     <string name="fullDeleted">Notes deleted</string>
+    <string name="hideLockScreen">Hide from lock screen</string>
 </resources>

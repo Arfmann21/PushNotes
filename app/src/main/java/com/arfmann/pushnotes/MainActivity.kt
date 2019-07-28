@@ -63,8 +63,9 @@ class MainActivity : AppCompatActivity() {
         if(oneTimeAdviseInt == 0)
             oneTimeAdvise()
 
-        title_editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES //Set first letter in CAP
-        content_editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+        title_editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+        content_editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+
         title_editText.requestFocus()
 
         val adapter = ArrayAdapter(this, R.layout.listview_text_color, values)
@@ -112,6 +113,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
 
     private fun doneClick(){
 
@@ -228,6 +230,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun notificationFunction(totalMilli: Long){ //function to handle notification
 
         val channelId = "com.arfmann.notificationnotes"
@@ -243,7 +246,6 @@ class MainActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //check if API is 25 (Android 8) or upper
             notificationChannel = NotificationChannel(channelId,description,NotificationManager.IMPORTANCE_DEFAULT) //set default importance
-            notificationChannel.enableVibration(true)
             notificationManager.createNotificationChannel(notificationChannel)
 
             builder = NotificationCompat.Builder(this,channelId) //build notification
@@ -260,6 +262,7 @@ class MainActivity : AppCompatActivity() {
 
             builder.setSmallIcon(R.drawable.logo)
                 .setContentIntent(pendingIntentDelete)
+                .setShowWhen(false)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setTimeoutAfter(totalMilli)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC) //set visibility to public to show notification on lock screen
@@ -387,6 +390,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun listOfNotes(adapter: ArrayAdapter<String>) {
+
 
         val myClipboard: ClipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         var myClip: ClipData

@@ -124,13 +124,12 @@ class MainActivity : AppCompatActivity() {
 
         else {
 
-            copyToClipboard()
-
             if(autodelete_notification_switch.isChecked)
                 autoDeleteChecked()
             else {
                 addNotesToList()
                 notificationFunction(0)
+                copyToClipboard()
             }
 
             saveData()
@@ -382,7 +381,7 @@ class MainActivity : AppCompatActivity() {
 
             myClipboard.setPrimaryClip(myClip)
 
-            Toast.makeText(this, resources.getString(R.string.copyToClipboard), Toast.LENGTH_LONG).show()
+            Toast.makeText(this, resources.getString(R.string.clipboardNote), Toast.LENGTH_LONG).show()
 
         }
 

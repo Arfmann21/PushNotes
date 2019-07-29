@@ -7,6 +7,8 @@ A simple app that save notes on notifications
 * Autodelete notes from notification
 * Save or not notes in the list
 * Copy notes to the clipboard
+* In-app update system
+
 
 <a href="https://imgur.com/Uxh7bdk"><img src="https://imgur.com/Uxh7bdk.png" /></a>
 <a href="https://imgur.com/gvxYENK"><img src="https://imgur.com/gvxYENK.png" /></a>

@@ -47,4 +47,5 @@
     <string name="willNotBeDeleted">La notifica non verrà eliminata automaticamente in quanto non sono state inserite ore e/o minuti</string>
     <string name="fullDeleted">Note eliminate</string>
     <string name="hideLockScreen">Nascondi dalla schermata di blocco</string>
+    <string name="deleteFromNotification">Note eliminate dalle notifiche</string>
 </resources>

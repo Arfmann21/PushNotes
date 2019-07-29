@@ -310,7 +310,6 @@ class MainActivity : AppCompatActivity() {
 
         title_editText.requestFocus()
 
-        persistent_notfication_switch.isChecked = false
         autodelete_notification_switch.isChecked = false
         dont_save_switch.isChecked = false
         copy_to_clipboard_switch.isChecked = false
@@ -327,8 +326,9 @@ class MainActivity : AppCompatActivity() {
 
         alertDialogCancelAll.setTitle(R.string.delete_question)
 
-        alertDialogCancelAll.setPositiveButton(R.string.yes){
-                _, _ -> notificationManager.cancelAll()
+        alertDialogCancelAll.setPositiveButton(R.string.yes){ _, _ ->
+            notificationManager.cancelAll()
+            Toast.makeText(this, resources.getString(R.string.deleteFromNotification), Toast.LENGTH_LONG).show()
         }
 
         alertDialogCancelAll.setNegativeButton(R.string.no){

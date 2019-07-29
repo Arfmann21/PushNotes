@@ -149,6 +149,7 @@
                         android:layout_marginEnd="20dp"
                         android:track="@drawable/switch_track"
                         android:thumb="@drawable/switch_thumb"
+                        android:checked="true"
                         android:id="@+id/persistent_notfication_switch"/>
 
                 <TextView android:text="@string/autodelete"

@@ -9,8 +9,8 @@ A simple app that save notes on notifications
 * Copy notes to the clipboard
 
 <a href="https://imgur.com/Uxh7bdk"><img src="https://imgur.com/Uxh7bdk.png" /></a>
-<a href="https://imgur.com/HWbLaeY"><img src="https://imgur.com/HWbLaeY.png" /></a>
 <a href="https://imgur.com/gvxYENK"><img src="https://imgur.com/gvxYENK.png" /></a>
+<a href="https://imgur.com/HWbLaeY"><img src="https://imgur.com/HWbLaeY.png" /></a>
 
 ---
 

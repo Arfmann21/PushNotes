@@ -7,6 +7,7 @@
         <item name="android:navigationBarColor">#202030</item>
         <item name="android:statusBarColor">#1d1d30</item>
         <item name="android:textColorPrimary">#212121</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu</item>
         <item name="android:timePickerDialogTheme">@style/TimePickerDialog</item>
         <item name="android:fontFamily">@font/google_sans_medium</item>
         <item name="android:textColor">#E0E0E0</item>
@@ -20,7 +21,7 @@
     </style>
 
     <style name="PopupMenu" parent="Widget.AppCompat.Light.PopupMenu">
-        <item name="android:popupBackground">#FFFFFF</item>
+        <item name="android:popupBackground">#202030</item>
     </style>
 
     <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.DayNight.Dialog.Alert">

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:theme="@style/AppTheme"
+        android:layout_height="match_parent">
+
+    <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="20dp"
+            android:id="@+id/resend_layout">
+
+        <ImageView
+                android:layout_width="18dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_resend_icon"
+                android:layout_column="0"/>
+        <TextView
+                android:text="@string/resend"
+                android:textSize="16sp"
+                android:textColor="#81C784"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+        android:layout_marginTop="3dp"/>
+    </GridLayout>
+
+    <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:layout_marginTop="60dp"
+            android:layout_marginStart="20dp"
+            android:id="@+id/copy_layout">
+
+        <ImageView
+                android:layout_width="18dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_copy_icon"
+                android:layout_column="0"/>
+        <TextView
+                android:text="@string/copy"
+                android:textSize="16sp"
+                android:textColor="#d3737a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"/>
+    </GridLayout>
+
+    <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:layout_marginTop="105dp"
+            android:layout_marginStart="20dp"
+            android:id="@+id/delete_layout">
+
+        <ImageView
+                android:layout_width="18dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_delete_icon"
+                android:layout_column="0"/>
+        <TextView
+                android:text="@string/delete"
+                android:textSize="16sp"
+                android:textColor="#b30000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"/>
+    </GridLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

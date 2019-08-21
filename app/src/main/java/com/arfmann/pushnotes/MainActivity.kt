@@ -14,10 +14,12 @@ import android.os.Bundle
 import android.os.Environment
 import android.text.InputType
 import android.text.method.LinkMovementMethod
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -34,6 +36,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.alertdialog_autocancel.view.*
+import kotlinx.android.synthetic.main.alertdialog_listview.view.*
 import kotlinx.android.synthetic.main.sheet_advise.view.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -128,8 +131,8 @@ class MainActivity : AppCompatActivity() {
                 autoDeleteChecked()
             else {
                 addNotesToList()
-                notificationFunction(0)
                 copyToClipboard()
+                notificationFunction(0)
             }
 
             saveData()
@@ -390,21 +393,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun listOfNotes(adapter: ArrayAdapter<String>) {
 
-
-        val myClipboard: ClipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        var myClip: ClipData
-
         adapter.notifyDataSetChanged()
+
+        val inflater = LayoutInflater.from(applicationContext)
+
+        val dialogView = inflater.inflate(R.layout.alertdialog_listview, null)
+
+        dialogView.alertdialog_list.adapter = adapter
 
         val alertDialogList = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
 
-        alertDialogList.setAdapter(adapter) { _, which ->
-            val item = adapter.getItem(which)
-            myClip = ClipData.newPlainText("text", item)
-            myClipboard.setPrimaryClip(myClip)
-
-            Toast.makeText(this, resources.getString(R.string.clipboardNote), Toast.LENGTH_LONG).show()
-        }
+        alertDialogList.setView(dialogView)
 
         alertDialogList.setTitle(resources.getString(R.string.notes))
 
@@ -421,7 +420,96 @@ class MainActivity : AppCompatActivity() {
         } else
             alertDialogList.setMessage(resources.getString(R.string.noNotes))
 
-        alertDialogList.show()
+        val alertDialogClose = alertDialogList.create()
+
+        dialogView.alertdialog_list.setOnItemClickListener { _, view, i, _ ->
+
+            onListItemClick(adapter, view, i, alertDialogClose)
+        }
+
+
+        alertDialogClose.show()
+
+    }
+
+
+    private fun onListItemClick(adapter: ArrayAdapter<String>, view: View, i: Int, alertDialog: AlertDialog){
+        val popupMenu = PopupMenu(this, view)
+        val itemList = adapter.getItem(i)
+
+        var title = ""
+        var content = ""
+        var j = 0
+
+        while(itemList.toString()[j] != '-') {
+            title += itemList.toString()[j]
+            j++
+        }
+
+        val itemLength = itemList.toString().length
+
+        j += 3
+
+        while(j < itemLength) {
+            content += itemList.toString()[j]
+            j++
+        }
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            when(item.itemId){
+                R.id.resend_popup -> {
+                    if(title != (resources.getString(R.string.no_title) + "  "))
+                        title_editText.setText(title)
+
+                    if(content != resources.getString(R.string.no_content))
+                        content_editText.setText(content)
+
+                    dont_save_switch.isChecked = true
+
+                    alertDialog.dismiss()
+                    true
+                }
+
+                R.id.copy_popup -> {
+                    val myClipboard: ClipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                    val myClip = ClipData.newPlainText("text", itemList)
+                    myClipboard.setPrimaryClip(myClip)
+
+                    Toast.makeText(this, resources.getString(R.string.clipboardNote), Toast.LENGTH_LONG).show()
+
+                    true
+                }
+
+                R.id.delete_popup -> {
+                    adapter.remove(itemList)
+                    values.remove(itemList)
+
+                    if(values.isEmpty())
+                        alertDialog.dismiss()
+
+                    saveData()
+                    true
+                }
+
+                else -> false
+            }
+
+        }
+
+        popupMenu.inflate(R.menu.popup_menu)
+
+        try{
+            val fieldMPopup = PopupMenu::class.java.getDeclaredField("mPopup")
+            fieldMPopup.isAccessible = true
+            val mPopup = fieldMPopup.get(popupMenu)
+            mPopup.javaClass
+                .getDeclaredMethod("setForceShowIcon", Boolean::class.java)
+                .invoke(mPopup, true)
+        } catch (e: Exception) {
+            Log.e("Main", "Error showing menu icons")
+        } finally {
+            popupMenu.show()
+        }
 
     }
 
@@ -434,18 +522,17 @@ class MainActivity : AppCompatActivity() {
         val visibilityEnd = AnimationUtils.loadAnimation(this, R.anim.visibility_anim_end)
 
         if(settingsGridLayout.visibility == View.GONE) {
-            settingsGridLayout.animation = slideStart
             info_gridLayout.animation = infoStart
+            settingsGridLayout.animation = slideStart
             settingsGridLayout.visibility = View.VISIBLE
             settingsImageView.setImageDrawable(resources.getDrawable(R.drawable.ic_settings_pressed_icon))
         }
 
         else{
             settingsGridLayout.animation = visibilityEnd
+            settingsGridLayout.visibility = View.GONE
             info_gridLayout.animation = infoEnd
             settingsImageView.setImageDrawable(resources.getDrawable(R.drawable.ic_settings_icon))
-            settingsGridLayout.visibility = View.GONE
-
         }
 
     }
@@ -488,7 +575,7 @@ class MainActivity : AppCompatActivity() {
 
                 }
             },
-            Response.ErrorListener { "Errore durante la ricerca dell'aggiornamento"}) //if update check go fail
+            Response.ErrorListener {}) //if update check go fail
         queue.add(stringReq) //add request to queue
 
     }
@@ -570,6 +657,7 @@ class MainActivity : AppCompatActivity() {
         val json = gson.toJson(values) //convert ArrayList to JSON (shared preferences can't handle ArrayList)
         editor.putString("noteList", json) //save the new JSON with values
         editor.putInt("oneTime", oneTimeAdviseInt)
+        editor.putInt("notificationId", i)
         editor.apply() //apply new changes
     }
 
@@ -579,6 +667,7 @@ class MainActivity : AppCompatActivity() {
         val gson = Gson()
         val json = sharedPreferences.getString("noteList", null)
         val oneTimeAdvise = sharedPreferences.getInt("oneTime", 0)
+        val notificationIdSp = sharedPreferences.getInt("notificationId", 0)
         val type = object: TypeToken<ArrayList<String>>() {
         }.type
 
@@ -591,13 +680,15 @@ class MainActivity : AppCompatActivity() {
         if(oneTimeAdvise >= 1)
             oneTimeAdviseInt = 1
 
+        i = notificationIdSp
+
     }
 
 
     private fun deleteData(adapter: ArrayAdapter<String>){
         val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-        editor.clear() //delete everything from shared preferences
+        editor.remove("noteList")
         editor.apply() //apply new changes
 
         adapter.clear() //clear everything from the adapter

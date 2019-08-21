@@ -45,4 +45,7 @@
     <string name="fullDeleted">Notes deleted</string>
     <string name="hideLockScreen">Hide from lock screen</string>
     <string name="deleteFromNotification">Notes deleted from notification</string>
+    <string name="resend">Resend</string>
+    <string name="copy">Copia</string>
+    <string name="delete">Delete</string>
 </resources>

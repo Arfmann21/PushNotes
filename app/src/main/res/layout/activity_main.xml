@@ -203,7 +203,7 @@
             </GridLayout>
             <GridLayout android:columnCount="1"
                         android:id="@+id/info_gridLayout"
-                        android:animateLayoutChanges="true"
+                        android:animationCache="true"
                         android:layout_height="match_parent"
                         android:layout_width="match_parent">
                 <TextView

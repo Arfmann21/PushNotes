@@ -9,8 +9,8 @@
             android:label="@string/app_name"
             android:roundIcon="@drawable/logo"
             android:supportsRtl="true"
-            android:versionCode="17"
-            android:versionName="1.7"
+            android:versionCode="18"
+            android:versionName="1.8"
             android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter>

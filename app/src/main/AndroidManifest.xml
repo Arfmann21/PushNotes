@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.arfmann.pushnotes">
-
+        xmlns:tools="http://schemas.android.com/tools"
+        package="com.arfmann.pushnotes">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <application
-
             android:allowBackup="true"
             android:icon="@drawable/logo"
             android:label="@string/app_name"
             android:roundIcon="@drawable/logo"
             android:supportsRtl="true"
-            android:versionCode="18"
-            android:versionName="1.8"
-            android:theme="@style/AppTheme">
+            android:versionCode="19"
+            android:versionName="1.9"
+            android:theme="@style/AppTheme.BrandedLaunch"
+            tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -20,8 +23,4 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
 </manifest>

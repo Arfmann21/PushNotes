@@ -47,13 +47,13 @@
             app:backgroundTint="#cc0000"/>
 
     <ScrollView android:layout_width="match_parent"
-                android:scrollbarThumbVertical="@null"
-                android:backgroundTint="#202030"
-                android:layout_height="match_parent">
+            android:scrollbarThumbVertical="@null"
+            android:backgroundTint="#202030"
+            android:layout_height="match_parent">
 
         <GridLayout android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:columnCount="1">
+                android:layout_height="wrap_content"
+                android:columnCount="1">
             <androidx.cardview.widget.CardView
                     android:layout_height="180dp"
                     android:layout_marginTop="25dp"
@@ -63,184 +63,135 @@
                     app:cardCornerRadius="4.5pt"
                     app:cardElevation="10dp"
                     android:layout_width="match_parent">
-            <GridLayout  android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:columnCount="2">
-                <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="250dp"
-                        android:layout_marginTop="35dp"
-                        android:backgroundTint="#d37a7a"
-                        android:layout_height="wrap_content">
-                    <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:inputType="text"
+                <GridLayout  android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="2">
+                    <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="250dp"
+                            android:layout_marginTop="35dp"
                             android:backgroundTint="#d37a7a"
-                            android:textColor="#e0e0e0"
-                            android:ems="8"
-                            android:fontFamily="@font/google_sans_medium_italic"
-                            android:hint="@string/note_title"
+                            android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:inputType="text"
+                                android:backgroundTint="#d37a7a"
+                                android:textColor="#e0e0e0"
+                                android:ems="8"
+                                android:fontFamily="@font/google_sans_medium"
+                                android:hint="@string/note_title"
+                                android:layout_marginStart="15dp"
+                                android:textSize="17sp"
+                                android:id="@+id/title_editText"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:layout_marginTop="50dp"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="50dp"
+                            android:contentDescription="@string/listIconDescription"
+                            app:srcCompat="@drawable/ic_list_icon"
+                            android:id="@+id/listImageView"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="250dp"
+                            android:layout_marginTop="15dp"
                             android:layout_marginStart="15dp"
-                            android:id="@+id/title_editText"/>
-                </com.google.android.material.textfield.TextInputLayout>
-                <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:layout_marginTop="50dp"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="50dp"
-                        android:contentDescription="@string/listIconDescription"
-                        app:srcCompat="@drawable/ic_list_icon"
-                        android:id="@+id/listImageView"/>
+                            android:layout_height="wrap_content">
 
-                <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="250dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:inputType="textMultiLine"
+                                android:ems="10"
+                                android:fontFamily="@font/google_sans_medium"
+                                android:hint="@string/note_content"
+                                android:textColor="#e0e0e0"
+                                android:backgroundTint="#d37a7a"
+                                android:textSize="17sp"
+                                android:id="@+id/content_editText"/>
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:inputType="textMultiLine"
-                            android:ems="10"
-                            android:fontFamily="@font/google_sans_medium_italic"
-                            android:hint="@string/note_content"
-                            android:textColor="#e0e0e0"
-                            android:backgroundTint="#d37a7a"
-                            android:id="@+id/content_editText"/>
+                            android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:layout_marginTop="30dp"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="50dp"
+                            android:contentDescription="@string/listIconDescription"
+                            app:srcCompat="@drawable/ic_settings_icon"
+                            android:id="@+id/settingsImageView"/>
 
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:layout_marginTop="30dp"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="50dp"
-                        android:contentDescription="@string/listIconDescription"
-                        app:srcCompat="@drawable/ic_settings_icon"
-                        android:id="@+id/settingsImageView"/>
-
-            </GridLayout>
+                </GridLayout>
             </androidx.cardview.widget.CardView>
-            <GridLayout android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:columnCount="2"
-                        android:layout_marginTop="10dp"
-                        android:visibility="gone"
-                        android:id="@+id/settingsGridLayout">
-                <TextView android:text="@string/persistent_notification"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_marginTop="25dp"
-                          android:layout_gravity="start"
-                          android:layout_marginStart="15dp"
-                          android:textSize="16sp"/>
-                <Switch
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="25dp"
-                        android:layout_marginEnd="20dp"
-                        android:track="@drawable/switch_track"
-                        android:thumb="@drawable/switch_thumb"
-                        android:checked="true"
-                        android:id="@+id/persistent_notfication_switch"/>
-
-                <TextView android:text="@string/autodelete"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_gravity="start"
-                          android:layout_marginTop="25dp"
-                          android:layout_marginStart="15dp"
-                          android:textSize="15.5sp"/>
-                <Switch
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="25dp"
-                        android:layout_marginEnd="20dp"
-                        android:thumb="@drawable/switch_thumb"
-                        android:track="@drawable/switch_track"
-                        android:id="@+id/autodelete_notification_switch"/>
-
-                <TextView android:text="@string/dontSave"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_marginTop="25dp"
-                          android:layout_marginStart="15dp"
-                          android:textSize="16sp"/>
-                <Switch
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="25dp"
-                        android:layout_marginEnd="20dp"
-                        android:thumb="@drawable/switch_thumb"
-                        android:track="@drawable/switch_track"
-                        android:id="@+id/dont_save_switch"/>
-
-                <TextView android:text="@string/copyToClipboard"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_marginTop="25dp"
-                          android:layout_marginStart="15dp"
-                          android:textSize="16sp"/>
-                <Switch
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="25dp"
-                        android:layout_marginEnd="20dp"
-                        android:thumb="@drawable/switch_thumb"
-                        android:track="@drawable/switch_track"
-                        android:id="@+id/copy_to_clipboard_switch"/>
-            </GridLayout>
-            <GridLayout android:columnCount="1"
-                        android:id="@+id/info_gridLayout"
-                        android:animationCache="true"
-                        android:layout_height="match_parent"
-                        android:layout_width="match_parent">
-                <TextView
-                        android:text="@string/developer"
-                        android:textSize="17sp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="100dp"
-                        android:textColor="#E6E6E6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                <TextView
-                        android:text="@string/nameDeveloper"
-                        android:textSize="15sp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:backgroundTint="#d9d9d9"
-                        android:fontFamily="@font/google_sans_regular_italic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                <TextView
-                        android:text="@string/openSource"
-                        android:textSize="17sp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="25dp"
-                        android:textColor="#E6E6E6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                <TextView
-                        android:textSize="15sp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="@font/google_sans_regular_italic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/gitHub_link_textView"/>
-            </GridLayout>
         </GridLayout>
     </ScrollView>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:orientation="vertical"
+            android:elevation="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:theme="@style/Animation.Design.BottomSheetDialog"
+            android:layout_marginTop="40dp"
+            android:id="@+id/container_sheet">
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@drawable/bottom_sheet_corner"
+                android:id="@+id/contentLayout"
+                android:padding="30dp"
+                app:layout_behavior=".GestureLockedBottomSheetBehavior"
+                app:behavior_peekHeight="0dp">
+
+            <ListView
+                    android:layout_width="match_parent"
+                    android:id="@+id/alertdialog_list"
+                    android:divider="#202030"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="60dp"
+                    android:layout_marginTop="35dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notes"
+                    android:textColor="#d37a7a"
+                    android:textSize="17.5sp"/>
+
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="35dp"
+                    android:text="@string/noNotes"
+                    android:visibility="invisible"
+                    android:id="@+id/no_notes_textView"/>
+            <Button
+                    android:layout_width="95dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="end|bottom"
+                    android:backgroundTint="#303050"
+                    android:theme="@style/ButtonStyle"
+                    android:text="@string/close"
+                    android:id="@+id/close_list_button"/>
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="55dp"
+                    android:layout_gravity="end|bottom"
+                    android:background="@android:color/transparent"
+                    android:layout_marginEnd="115dp"
+                    android:textColor="#F4511E"
+                    android:visibility="invisible"
+                    android:text="@string/deleteNotes"
+                    android:id="@+id/delete_notes_button"/>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

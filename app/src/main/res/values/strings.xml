@@ -22,7 +22,8 @@
     <string name="no_title">Nota senza titolo</string>
     <string name="no_content">Nota senza contenuto</string>
     <string name="no_title_content">Impostare titolo e/o contenuto</string>
-    <string name="update_avaible">Nuovo aggiornamento disponibile. Effettuare il download?</string>
+    <string name="update_avaible">Nuovo aggiornamento disponibile</string>
+    <string name="update_download">Effettuare il download?</string>
     <string name="notes"><font size="17">Note</font></string>
     <string name="deleteNotes">Elimina tutto</string>
     <string name="noNotes">Nessuna nota</string>
@@ -51,4 +52,8 @@
     <string name="resend">Rimanda</string>
     <string name="copy">Copia</string>
     <string name="delete">Elimina</string>
+
+    <string name="dev_info">Sviluppatore - Giovanni Ferraro</string>
+    <string name="logo_info">Logo e aiuto UI - AleD219</string>
+    <string name="ps_info" translatable="false">Push Notes - OpenSource</string>
 </resources>

@@ -18,7 +18,7 @@
     <string name="no_title">Note without title</string>
     <string name="no_content">Note without content</string>
     <string name="no_title_content">Insert title and/or content</string>
-    <string name="update_avaible">New update avaible. Download it?</string>
+    <string name="update_avaible">New update avaible</string>
     <string name="notes">Notes</string>
     <string name="deleteNotes">Delete all</string>
     <string name="noNotes">Empty</string>
@@ -48,4 +48,7 @@
     <string name="resend">Resend</string>
     <string name="copy">Copia</string>
     <string name="delete">Delete</string>
+    <string name="update_download">Start download?</string>
+    <string name="dev_info">Developer - Giovanni Ferraro</string>
+    <string name="logo_info">Logo and UI help - AleD219</string>
 </resources>

@@ -17,9 +17,9 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
                 android:hint="@string/hour"
-                android:fontFamily="@font/google_sans_medium"
                 android:textColor="#E0E0E0"
                 android:backgroundTint="#d37a7a"
+                android:textSize="16sp"
                 android:layout_height="wrap_content"
                 android:inputType="number"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -35,29 +35,19 @@
                 android:layout_marginEnd="15dp"
                 android:backgroundTint="#d37a7a"
                 android:hint="@string/minute"
-                android:fontFamily="@font/google_sans_medium"
                 android:textColor="#E0E0E0"
+                android:textSize="16sp"
                 android:layout_height="wrap_content"
                 android:inputType="number"/>
     </com.google.android.material.textfield.TextInputLayout>
-    <GridLayout android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/setTimeLayout"
-                android:columnCount="2">
-
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_clock_icon"
-                android:layout_gravity="start"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                android:id="@+id/setTimeImageView"/>
         <TextView android:text="@string/setTime"
-                  android:textSize="17sp"
-                  android:fontFamily="@font/google_sans_bold"
-                  android:textColor="#e0e0e0"
-                  android:layout_marginStart="10dp"
-                  android:layout_marginTop="23dp"/>
-    </GridLayout>
+                android:textSize="17sp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="#e0e0e0"
+                android:drawableStart="@drawable/ic_clock_icon"
+                android:layout_marginStart="20dp"
+                android:drawablePadding="15dp"
+                android:layout_marginTop="23dp"
+                android:id="@+id/set_time_textView"/>
 </androidx.appcompat.widget.LinearLayoutCompat>

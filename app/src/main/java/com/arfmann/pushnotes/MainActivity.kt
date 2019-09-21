@@ -9,35 +9,38 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.util.Calendar
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.text.InputType
-import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.alertdialog_autocancel.view.*
-import kotlinx.android.synthetic.main.alertdialog_listview.view.*
-import kotlinx.android.synthetic.main.sheet_advise.view.*
+import kotlinx.android.synthetic.main.alertdialog_autodelete.view.*
+import kotlinx.android.synthetic.main.alertdialog_permission.view.*
+import kotlinx.android.synthetic.main.bottomsheet_settings_layout.*
+import kotlinx.android.synthetic.main.bottomsheet_settings_layout.view.*
+import kotlinx.android.synthetic.main.sheet_advise.*
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -53,7 +56,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var notificationChannel: NotificationChannel
     private lateinit var builder : NotificationCompat.Builder
 
+    private lateinit var adapter : ArrayAdapter<String>
+
+    private var persistent = true
+    private var autodelete = false
+    private var dontSave = false
+    private var copy = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -61,7 +72,7 @@ class MainActivity : AppCompatActivity() {
 
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        loadData()
+        AsyncTasks().execute()
 
         if(oneTimeAdviseInt == 0)
             oneTimeAdvise()
@@ -71,52 +82,39 @@ class MainActivity : AppCompatActivity() {
 
         title_editText.requestFocus()
 
-        val adapter = ArrayAdapter(this, R.layout.listview_text_color, values)
-
-        gitHub_link_textView.text = HtmlCompat.fromHtml("<a href='https://github.com/Arfmann21/PushNotes'>GitHub</a>", HtmlCompat.FROM_HTML_MODE_LEGACY) //Add link to textView
-        gitHub_link_textView.movementMethod = LinkMovementMethod.getInstance()
-
         done_fab.setOnClickListener {
             doneClick()
         }
 
         listImageView.setOnClickListener {
-            listOfNotes(adapter)
+            title_editText.clearFocus()
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(title_editText.windowToken, 0)
+            listOfNotes()
         }
-
 
         settingsImageView.setOnClickListener {
             showSettings()
         }
 
         delete_fab.setOnClickListener{
-            cancelAllNotifications(notificationManager)
+            deleteAllNotifications(notificationManager)
         }
-
-        checkUpdate()
-
     }
 
     private fun oneTimeAdvise(){
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-
+            val view = layoutInflater.inflate(R.layout.sheet_advise, limitation_container)
             val dialog = BottomSheetDialog(this)
-            val view = layoutInflater.inflate(R.layout.sheet_advise, null)
 
             dialog.setContentView(view)
             dialog.show()
             oneTimeAdviseInt = 1
 
-            view.closeSheetAdvise.setOnClickListener {
-                dialog.cancel()
-            }
-
             saveData()
         }
-
     }
-
 
     private fun doneClick(){
 
@@ -124,21 +122,18 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, R.string.no_title_content, Toast.LENGTH_LONG).show()
             title_editText.requestFocus()
         }
-
         else {
-
-            if(autodelete_notification_switch.isChecked)
+            if(autodelete) {
                 autoDeleteChecked()
+            }
             else {
                 addNotesToList()
                 copyToClipboard()
                 notificationFunction(0)
             }
-
             saveData()
         }
     }
-
 
     private fun autoDeleteChecked(){ //function to handle auto-delete notifications
 
@@ -149,14 +144,14 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //Check if API is 26 (Android 8.0) or upper
 
             val inflater = LayoutInflater.from(applicationContext)
-            val dialogView = inflater.inflate(R.layout.alertdialog_autocancel, null)
+            val dialogView = inflater.inflate(R.layout.alertdialog_autodelete, null)
 
             val alertDialogHour = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle) //build AlertDialog
 
             alertDialogHour.setView(dialogView) //set inflated layout
             alertDialogHour.setTitle(R.string.alertdialog_title)
 
-            val setTime = dialogView.setTimeLayout
+            val setTime = dialogView.set_time_textView
 
             alertDialogHour.setPositiveButton(R.string.send_alertDialog) { _, _ ->
 
@@ -198,7 +193,7 @@ class MainActivity : AppCompatActivity() {
 
         } else { //if not, this feature will not work because API 24 and below doesn't supports it
             Toast.makeText(this, R.string.version_not_supported, Toast.LENGTH_LONG).show()
-            autodelete_notification_switch.isChecked = false
+            autodelete
         }
     }
 
@@ -215,15 +210,11 @@ class MainActivity : AppCompatActivity() {
 
             val tpd = TimePickerDialog(this,TimePickerDialog.OnTimeSetListener(function = { _, h, m ->
 
-                if(h < hour)
-                    Toast.makeText(this,  R.string.invalidTime, Toast.LENGTH_LONG).show()
-                else{
-
-                    Toast.makeText(this, resources.getString(R.string.willBeDeletedIn) + " "  + resources.getString(R.string.at) + " " + h.toString() + ":" + m.toString(), Toast.LENGTH_LONG).show()
-                    totalMilli = ((h.toLong() - hour.toLong()) * 3600000) + ((m.toLong() - minute.toLong()) * 60000)
-                    addNotesToList()
-                    notificationFunction(totalMilli)
-                }
+                Toast.makeText(this, resources.getString(R.string.willBeDeletedIn) + " "  + resources.getString(R.string.at) + " " + h.toString() + ":" + m.toString(), Toast.LENGTH_LONG).show()
+                totalMilli = ((h.toLong() - hour.toLong()) * 3600000) + ((m.toLong() - minute.toLong()) * 60000)
+                addNotesToList()
+                copyToClipboard()
+                notificationFunction(totalMilli)
 
             }),hour,minute,true)
 
@@ -232,12 +223,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private fun notificationFunction(totalMilli: Long){ //function to handle notification
 
         val channelId = "com.arfmann.notificationnotes"
         val description = "Notes"
-        val groupKey = "com.arfmann.notificationnotes"
+       // val groupKey = "com.arfmann.notificationnotes"
 
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -247,8 +237,13 @@ class MainActivity : AppCompatActivity() {
         val pendingIntentDelete = PendingIntent.getBroadcast(this,0,deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //check if API is 25 (Android 8) or upper
-            notificationChannel = NotificationChannel(channelId,description,NotificationManager.IMPORTANCE_DEFAULT) //set default importance
+            notificationChannel = NotificationChannel(
+                channelId,
+                description,
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
             notificationManager.createNotificationChannel(notificationChannel)
+        }
 
             builder = NotificationCompat.Builder(this,channelId) //build notification
 
@@ -264,19 +259,19 @@ class MainActivity : AppCompatActivity() {
 
             builder.setSmallIcon(R.drawable.logo)
                 .setContentIntent(pendingIntentDelete)
-                .setShowWhen(false)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setTimeoutAfter(totalMilli)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC) //set visibility to public to show notification on lock screen
-                .setAutoCancel(true) //set auto cancel to delete notification when click on it
                 .setStyle(NotificationCompat.BigTextStyle()) //set big text style to enable multiline notification
 
-            if(persistent_notfication_switch.isChecked || autodelete_notification_switch.isChecked){
+            if(persistent || autodelete){
                 builder.setOngoing(true) //set ongoing to prevent notification from clearing (except when user clicks on it)
                 builder.setSubText(howtoDelete)
             }
+            //if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                builder.setAutoCancel(true) //set auto cancel to delete notification when click on it
 
-        } else {
+        /* else {
 
             builder = NotificationCompat.Builder(this, channelId) //build notification
 
@@ -298,12 +293,11 @@ class MainActivity : AppCompatActivity() {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setStyle(NotificationCompat.BigTextStyle())
 
-            if(persistent_notfication_switch.isChecked || autodelete_notification_switch.isChecked) {
+            if(persistent || autodelete) {
                 builder.setOngoing(true)
                 builder.setSubText(howtoDelete)
             }
-
-        }
+        }*/
 
         notificationManager.notify(i, builder.build())
         i++
@@ -313,39 +307,37 @@ class MainActivity : AppCompatActivity() {
 
         title_editText.requestFocus()
 
-        autodelete_notification_switch.isChecked = false
-        dont_save_switch.isChecked = false
-        copy_to_clipboard_switch.isChecked = false
+        autodelete = false
+        copy = false
+        dontSave = false
     }
 
 
-    private fun cancelAllNotifications(notificationManager: NotificationManager){
+    private fun deleteAllNotifications(notificationManager: NotificationManager){
 
         val inflater = LayoutInflater.from(applicationContext)
-        val dialogView = inflater.inflate(R.layout.alertdialog_cancel_all, null)
+        val dialogView = inflater.inflate(R.layout.alertdialog_permission, null)
+        dialogView.alertdialog_textView.setText(R.string.delete_iconAdvise)
 
-        val alertDialogCancelAll = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
-        alertDialogCancelAll.setView(dialogView)
+        val alertDialogDeleteAll = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
+        alertDialogDeleteAll.setView(dialogView)
 
-        alertDialogCancelAll.setTitle(R.string.delete_question)
+        alertDialogDeleteAll.setTitle(R.string.delete_question)
 
-        alertDialogCancelAll.setPositiveButton(R.string.yes){ _, _ ->
+        alertDialogDeleteAll.setPositiveButton(R.string.yes){ _, _ ->
             notificationManager.cancelAll()
             Toast.makeText(this, resources.getString(R.string.deleteFromNotification), Toast.LENGTH_LONG).show()
         }
 
-        alertDialogCancelAll.setNegativeButton(R.string.no){
+        alertDialogDeleteAll.setNegativeButton(R.string.no){
                 dialog, _ -> dialog.dismiss()
         }
 
-        alertDialogCancelAll.show()
+        alertDialogDeleteAll.show()
     }
 
-
     private fun addNotesToList(){
-
-        if(!dont_save_switch.isChecked) {
-
+        if(!dontSave) {
             if (title_editText.text!!.isEmpty())
                 values.add(resources.getString(R.string.no_title) + "  -  " + content_editText.text!!.toString())
             else if (content_editText.text!!.isEmpty())
@@ -357,15 +349,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     private fun copyToClipboard(){
-
         val myClipboard: ClipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         val myClip: ClipData
 
-        if(copy_to_clipboard_switch.isChecked) {
-
-
+        if(copy) {
             if (title_editText.text!!.isEmpty())
                 myClip = ClipData.newPlainText(
                     "text",
@@ -391,49 +379,47 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun listOfNotes(adapter: ArrayAdapter<String>) {
-
+    private fun listOfNotes() {
         adapter.notifyDataSetChanged()
 
-        val inflater = LayoutInflater.from(applicationContext)
+        val contentLayout = findViewById<CoordinatorLayout>(R.id.contentLayout)
 
-        val dialogView = inflater.inflate(R.layout.alertdialog_listview, null)
+        val dialog = BottomSheetBehavior.from(contentLayout)
+        dialog.isHideable = false
+        dialog.state = BottomSheetBehavior.STATE_EXPANDED
 
-        dialogView.alertdialog_list.adapter = adapter
+        close_list_button.setOnClickListener {
+            dialog.state = BottomSheetBehavior.STATE_COLLAPSED
 
-        val alertDialogList = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
+            title_editText.requestFocus()
 
-        alertDialogList.setView(dialogView)
-
-        alertDialogList.setTitle(resources.getString(R.string.notes))
-
-        alertDialogList.setPositiveButton(R.string.close) { dialog, _ ->
-            dialog.dismiss()
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(title_editText, 0)
         }
 
         if (!adapter.isEmpty) {
-            alertDialogList.setNegativeButton(R.string.deleteNotes) { _, _ ->
-                deleteData(adapter)
+            no_notes_textView.visibility = View.INVISIBLE
+            delete_notes_button.visibility = View.VISIBLE
+
+            delete_notes_button.setOnClickListener {
+                deleteData()
+
                 Toast.makeText(this, resources.getString(R.string.fullDeleted), Toast.LENGTH_LONG).show()
+
+                dialog.state = BottomSheetBehavior.STATE_COLLAPSED
             }
 
         } else
-            alertDialogList.setMessage(resources.getString(R.string.noNotes))
+            no_notes_textView.visibility = View.VISIBLE
 
-        val alertDialogClose = alertDialogList.create()
+        alertdialog_list.setOnItemClickListener { _, view, i, _ ->
 
-        dialogView.alertdialog_list.setOnItemClickListener { _, view, i, _ ->
-
-            onListItemClick(adapter, view, i, alertDialogClose)
+            onListItemClick(view, i, dialog)
         }
-
-
-        alertDialogClose.show()
 
     }
 
-
-    private fun onListItemClick(adapter: ArrayAdapter<String>, view: View, i: Int, alertDialog: AlertDialog){
+    private fun onListItemClick(view: View, i: Int, dialog: BottomSheetBehavior<CoordinatorLayout>){
         val popupMenu = PopupMenu(this, view)
         val itemList = adapter.getItem(i)
 
@@ -464,9 +450,8 @@ class MainActivity : AppCompatActivity() {
                     if(content != resources.getString(R.string.no_content))
                         content_editText.setText(content)
 
-                    dont_save_switch.isChecked = true
+                    dontSave = true
 
-                    alertDialog.dismiss()
                     true
                 }
 
@@ -485,8 +470,7 @@ class MainActivity : AppCompatActivity() {
                     values.remove(itemList)
 
                     if(values.isEmpty())
-                        alertDialog.dismiss()
-
+                        dialog.state = BottomSheetBehavior.STATE_COLLAPSED
                     saveData()
                     true
                 }
@@ -513,76 +497,72 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     private fun showSettings(){
+        val dialogView = layoutInflater.inflate(R.layout.bottomsheet_settings_layout, bottom_sheet_container)
+        val dialog = BottomSheetDialog(this)
+        dialog.setContentView(dialogView)
 
-        val slideStart = AnimationUtils.loadAnimation(this, R.anim.visibility_anim_start)
-        val infoStart = AnimationUtils.loadAnimation(this, R.anim.info_anim_start)
-        val infoEnd = AnimationUtils.loadAnimation(this, R.anim.info_anim_end)
-        val visibilityEnd = AnimationUtils.loadAnimation(this, R.anim.visibility_anim_end)
+        if(persistent)
+            dialog.persistent_notfication_switch.isChecked = true
+        if(autodelete)
+            dialog.autodelete_notification_switch.isChecked = true
+        if(dontSave)
+            dialog.dont_save_switch.isChecked = true
+        if(copy)
+            dialog.copy_to_clipboard_switch.isChecked = true
 
-        if(settingsGridLayout.visibility == View.GONE) {
-            info_gridLayout.animation = infoStart
-            settingsGridLayout.animation = slideStart
-            settingsGridLayout.visibility = View.VISIBLE
-            settingsImageView.setImageDrawable(resources.getDrawable(R.drawable.ic_settings_pressed_icon))
+        dialog.show()
+
+        dialogView.persistent_notfication_switch.setOnCheckedChangeListener { _, b ->
+            persistent = b
+        }
+        dialogView.autodelete_notification_switch.setOnCheckedChangeListener { _, b ->
+            autodelete = b
+        }
+        dialogView.dont_save_switch.setOnCheckedChangeListener { _, b ->
+            dontSave = b
+        }
+        dialogView.copy_to_clipboard_switch.setOnCheckedChangeListener { _, b ->
+            copy = b
         }
 
-        else{
-            settingsGridLayout.animation = visibilityEnd
-            settingsGridLayout.visibility = View.GONE
-            info_gridLayout.animation = infoEnd
-            settingsImageView.setImageDrawable(resources.getDrawable(R.drawable.ic_settings_icon))
+        dialog.setOnDismissListener {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(title_editText, 0)
         }
 
+        var url: Uri
+
+        dialogView.dev_telegram_imageView.setOnClickListener {
+            url = Uri.parse("http://bit.ly/ArfmannTelegram")
+            openWeb(url)
+        }
+        dialogView.dev_github_imageView.setOnClickListener {
+            url = Uri.parse("http://bit.ly/ArfmannGitHub")
+            openWeb(url)
+        }
+        dialogView.ui_telegram_imageView.setOnClickListener {
+            url = Uri.parse("http://bit.ly/AleD219Telegram")
+            openWeb(url)
+        }
+        dialogView.ui_github_imageView.setOnClickListener {
+            url = Uri.parse("http://bit.ly/AleD219GitHub")
+            openWeb(url)
+        }
+        dialogView.push_notes_github_imageView.setOnClickListener {
+            url = Uri.parse("http://bit.ly/PsGitHub")
+            openWeb(url)
+        }
     }
 
+    private fun openWeb(url: Uri){
+        val webIntent = Intent(Intent.ACTION_VIEW, url)
+        val chooser = Intent.createChooser(webIntent, "Info")
 
-    private fun checkUpdate(){
-
-        val queue = Volley.newRequestQueue(this)
-
-        val jsonLink = "https://api.github.com/repos/arfmann21/pushnotes/releases/latest"
-
-        val stringReq = StringRequest(Request.Method.GET, jsonLink, //request to get JSON
-            Response.Listener<String> { response ->
-
-                val strResp = response.toString()
-                val jsonObj = JSONObject(strResp)
-
-                val jsonObjTagName: String = jsonObj.getString("tag_name") //get GitHub release version tag
-
-                val versionName = packageManager.getPackageInfo(packageName, 0).versionName //get installed version
-                val jsonArray: JSONArray = jsonObj.getJSONArray("assets")
-
-                var jsonUrlDownload = ""
-                val jsonUrlInfo = jsonObj.getString("html_url")
-
-                for (i in 0 until jsonArray.length()) {
-                    val jsonInner: JSONObject = jsonArray.getJSONObject(i)
-                    jsonUrlDownload = jsonInner.getString("browser_download_url")
-                }
-
-                if(versionName < jsonObjTagName){
-
-                    update_fab.show()
-
-                    update_fab.setOnClickListener{
-
-                        checkPermission(Uri.parse(jsonUrlDownload), Uri.parse(jsonUrlInfo))
-
-                    }
-
-                }
-            },
-            Response.ErrorListener {}) //if update check go fail
-        queue.add(stringReq) //add request to queue
-
+        startActivity(chooser)
     }
-
 
     private fun checkPermission(jsonUrlDownload: Uri, jsonUrlInfo: Uri){
-
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED) {
@@ -591,6 +571,7 @@ class MainActivity : AppCompatActivity() {
             val inflater = LayoutInflater.from(applicationContext)
 
             val dialogView = inflater.inflate(R.layout.alertdialog_permission, null)
+            dialogView.alertdialog_textView.setText(R.string.noPermissionAlert)
 
             alertDialogPermission.setTitle(R.string.noPermissionAlertTitle)
             alertDialogPermission.setView(dialogView)
@@ -611,7 +592,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     private fun downloadUpdate(jsonUrlDownload: Uri, jsonUrlInfo: Uri){
 
         val downloadIntent: Intent = jsonUrlInfo.let { webpage -> //create intent to release URL
@@ -626,9 +606,14 @@ class MainActivity : AppCompatActivity() {
         request.setVisibleInDownloadsUi(true)
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "PushNotes" + ".apk")
 
-        val alertDialogUpdateAvaible = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
+        val inflater = LayoutInflater.from(applicationContext)
+        val dialogView = inflater.inflate(R.layout.alertdialog_permission, null)
+        dialogView.alertdialog_textView.setText(R.string.update_download)
 
-        alertDialogUpdateAvaible.setMessage(resources.getString(R.string.update_avaible))
+        val alertDialogUpdateAvaible = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
+        alertDialogUpdateAvaible.setView(dialogView)
+
+        alertDialogUpdateAvaible.setTitle(resources.getString(R.string.update_avaible))
 
         alertDialogUpdateAvaible.setPositiveButton(R.string.yes) { _, _ ->
             downloadManager.enqueue(request)
@@ -682,10 +667,13 @@ class MainActivity : AppCompatActivity() {
 
         i = notificationIdSp
 
+        adapter = ArrayAdapter(this, R.layout.listview_text_color, values)
+        alertdialog_list.adapter = adapter
+
     }
 
 
-    private fun deleteData(adapter: ArrayAdapter<String>){
+    private fun deleteData(){
         val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.remove("noteList")
@@ -695,6 +683,51 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    inner class AsyncTasks : AsyncTask<Unit, Unit, String>(){
+        override fun doInBackground(vararg p0: Unit?): String {
+            loadData()
+
+            val queue = Volley.newRequestQueue(applicationContext)
+
+            val jsonLink = "https://api.github.com/repos/arfmann21/pushnotes/releases/latest"
+
+            val stringReq = StringRequest(Request.Method.GET, jsonLink, //request to get JSON
+                Response.Listener<String> { response ->
+
+                    val strResp = response.toString()
+                    val jsonObj = JSONObject(strResp)
+
+                    val jsonObjTagName: String = jsonObj.getString("tag_name") //get GitHub release version tag
+
+                    val versionName = packageManager.getPackageInfo(packageName, 0).versionName //get installed version
+                    val jsonArray: JSONArray = jsonObj.getJSONArray("assets")
+
+                    var jsonUrlDownload = ""
+                    val jsonUrlInfo = jsonObj.getString("html_url")
+
+                    for (i in 0 until jsonArray.length()) {
+                        val jsonInner: JSONObject = jsonArray.getJSONObject(i)
+                        jsonUrlDownload = jsonInner.getString("browser_download_url")
+                    }
+
+                    if(versionName < jsonObjTagName){
+
+                        update_fab.show()
+
+                        update_fab.setOnClickListener{
+
+                            checkPermission(Uri.parse(jsonUrlDownload), Uri.parse(jsonUrlInfo))
+
+                        }
+
+                    }
+                },
+                Response.ErrorListener {}) //if update check go fail
+            queue.add(stringReq) //add request to queue
+
+            return "FINISHED"
+        }
+    }
 }
 
 

@@ -1,54 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
-              android:id="@+id/sheetLayout"
-              android:theme="@style/AppTheme"
-              android:background="#202030"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-
-    <GridLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:focusable="true"
-                android:clickable="true"
-                android:layout_marginTop="16dp"
-                android:layout_gravity="start"
-                android:layout_marginStart="15dp"
-                android:contentDescription="@string/listIconDescription"
-                app:srcCompat="@drawable/ic_limitation_icon"
-                android:id="@+id/settingsImageView"/>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:theme="@style/AppTheme"
+        android:paddingBottom="40dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/limitation_container">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+        <androidx.cardview.widget.CardView
+                android:layout_width="40dp"
+                android:layout_height="6dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="2pt"
+                android:backgroundTint="#3d3d5c"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
         <TextView
                 android:text="@string/limitationsTitle"
-                android:fontFamily="@font/google_sans_bold"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="40dp"
                 android:layout_width="match_parent"
+                android:fontFamily="@font/dmsans_bold"
+                android:textColor="#d37a7a"
+                android:drawableStart="@drawable/ic_limitation"
+                android:drawablePadding="20dp"
                 android:layout_height="wrap_content"/>
-    </GridLayout>
     <TextView
             android:text="@string/limitationsContent"
             android:textSize="15sp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="85dp"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-    <TextView
-            android:text="@string/close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/google_sans_bold"
-            android:layout_gravity="end"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="20dp"
-            android:paddingBottom="40dp"
-            android:textColor="#b30000"
-            android:textSize="15sp"
-            android:clickable="true"
-            android:focusable="true"
-            android:id="@+id/closeSheetAdvise"/>
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

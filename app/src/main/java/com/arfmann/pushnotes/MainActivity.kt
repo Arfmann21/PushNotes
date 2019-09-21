@@ -230,7 +230,7 @@ class MainActivity : AppCompatActivity() {
 
         val channelId = "com.arfmann.notificationnotes"
         val description = "Notes"
-       // val groupKey = "com.arfmann.notificationnotes"
+        // val groupKey = "com.arfmann.notificationnotes"
 
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -248,59 +248,30 @@ class MainActivity : AppCompatActivity() {
             notificationManager.createNotificationChannel(notificationChannel)
         }
 
-            builder = NotificationCompat.Builder(this,channelId) //build notification
+        builder = NotificationCompat.Builder(this,channelId) //build notification
 
-            if(title_editText.text!!.isEmpty())
-                builder.setContentTitle(resources.getString(R.string.no_title))
-            else
-                builder.setContentTitle(title_editText.text!!.toString())
+        if(title_editText.text!!.isEmpty())
+            builder.setContentTitle(resources.getString(R.string.no_title))
+        else
+            builder.setContentTitle(title_editText.text!!.toString())
 
-            if(content_editText.text!!.isEmpty())
-                builder.setContentText(resources.getString(R.string.no_content))
-            else
-                builder.setContentText(content_editText.text!!.toString())
+        if(content_editText.text!!.isEmpty())
+            builder.setContentText(resources.getString(R.string.no_content))
+        else
+            builder.setContentText(content_editText.text!!.toString())
 
-            builder.setSmallIcon(R.drawable.logo)
-                .setContentIntent(pendingIntentDelete)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setTimeoutAfter(totalMilli)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC) //set visibility to public to show notification on lock screen
-                .setStyle(NotificationCompat.BigTextStyle()) //set big text style to enable multiline notification
+        builder.setSmallIcon(R.drawable.logo)
+            .setContentIntent(pendingIntentDelete)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setTimeoutAfter(totalMilli)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC) //set visibility to public to show notification on lock screen
+            .setStyle(NotificationCompat.BigTextStyle()) //set big text style to enable multiline notification
+            .setAutoCancel(true) //set auto cancel to delete notification when click on it
 
-            if(persistent || autodelete){
-                builder.setOngoing(true) //set ongoing to prevent notification from clearing (except when user clicks on it)
-                builder.setSubText(howtoDelete)
-            }
-            //if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                builder.setAutoCancel(true) //set auto cancel to delete notification when click on it
-
-        /* else {
-
-            builder = NotificationCompat.Builder(this, channelId) //build notification
-
-            if(title_editText.text!!.isEmpty())
-                builder.setContentTitle(resources.getString(R.string.no_title))
-            else
-                builder.setContentTitle(title_editText.text!!.toString())
-
-            if(content_editText.text!!.isEmpty())
-                builder.setContentText(resources.getString(R.string.no_content))
-            else
-                builder.setContentText(content_editText.text!!.toString())
-
-            builder.setSmallIcon(R.drawable.logo)
-                .setContentIntent(pendingIntentDelete)
-                .setGroup(groupKey)
-                .setGroupSummary(true)
-                .setAutoCancel(true)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setStyle(NotificationCompat.BigTextStyle())
-
-            if(persistent || autodelete) {
-                builder.setOngoing(true)
-                builder.setSubText(howtoDelete)
-            }
-        }*/
+        if(persistent || autodelete){
+            builder.setOngoing(true) //set ongoing to prevent notification from clearing (except when user clicks on it)
+            builder.setSubText(howtoDelete)
+        }
 
         notificationManager.notify(i, builder.build())
         i++
@@ -521,6 +492,11 @@ class MainActivity : AppCompatActivity() {
         }
         dialogView.autodelete_notification_switch.setOnCheckedChangeListener { _, b ->
             autodelete = b
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Toast.makeText(this, resources.getString(R.string.version_not_supported), Toast.LENGTH_LONG).show()
+                autodelete = false
+            }
         }
         dialogView.dont_save_switch.setOnCheckedChangeListener { _, b ->
             dontSave = b
@@ -675,7 +651,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-     inner class AsyncTasks : AsyncTask<Unit, Unit, String>(){
+    inner class AsyncTasks : AsyncTask<Unit, Unit, String>(){
         override fun doInBackground(vararg p0: Unit?): String {
             loadData()
 

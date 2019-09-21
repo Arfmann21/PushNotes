@@ -46,7 +46,7 @@
     <string name="hideLockScreen">Hide from lock screen</string>
     <string name="deleteFromNotification">Notes deleted from notification</string>
     <string name="resend">Resend</string>
-    <string name="copy">Copia</string>
+    <string name="copy">Copy</string>
     <string name="delete">Delete</string>
     <string name="update_download">Start download?</string>
     <string name="dev_info">Developer - Giovanni Ferraro</string>

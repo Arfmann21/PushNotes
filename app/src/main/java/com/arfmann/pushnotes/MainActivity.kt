@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
         AsyncTasks().execute()
 
-        if(oneTimeAdviseInt == 0)
+        if(oneTimeAdviseInt == 1)
             oneTimeAdvise()
 
         title_editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
@@ -493,9 +493,10 @@ class MainActivity : AppCompatActivity() {
         dialogView.autodelete_notification_switch.setOnCheckedChangeListener { _, b ->
             autodelete = b
 
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 Toast.makeText(this, resources.getString(R.string.version_not_supported), Toast.LENGTH_LONG).show()
                 autodelete = false
+                dialogView.autodelete_notification_switch.isChecked = false
             }
         }
         dialogView.dont_save_switch.setOnCheckedChangeListener { _, b ->

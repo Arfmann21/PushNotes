@@ -37,7 +37,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.alertdialog_autodelete.view.*
-import kotlinx.android.synthetic.main.alertdialog_permission.view.*
+import kotlinx.android.synthetic.main.alertdialog_default_model.view.*
 import kotlinx.android.synthetic.main.bottomsheet_settings_layout.*
 import kotlinx.android.synthetic.main.bottomsheet_settings_layout.view.*
 import kotlinx.android.synthetic.main.sheet_advise.*
@@ -319,7 +319,7 @@ class MainActivity : AppCompatActivity() {
     private fun deleteAllNotifications(notificationManager: NotificationManager){
 
         val inflater = LayoutInflater.from(applicationContext)
-        val dialogView = inflater.inflate(R.layout.alertdialog_permission, null)
+        val dialogView = inflater.inflate(R.layout.alertdialog_default_model, null)
         dialogView.alertdialog_textView.setText(R.string.delete_iconAdvise)
 
         val alertDialogDeleteAll = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
@@ -573,7 +573,7 @@ class MainActivity : AppCompatActivity() {
             val alertDialogPermission = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
             val inflater = LayoutInflater.from(applicationContext)
 
-            val dialogView = inflater.inflate(R.layout.alertdialog_permission, null)
+            val dialogView = inflater.inflate(R.layout.alertdialog_default_model, null)
             dialogView.alertdialog_textView.setText(R.string.noPermissionAlert)
 
             alertDialogPermission.setTitle(R.string.noPermissionAlertTitle)
@@ -596,7 +596,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun downloadUpdateAlertDialog(){
         val inflater = LayoutInflater.from(applicationContext)
-        val dialogView = inflater.inflate(R.layout.alertdialog_permission, null)
+        val dialogView = inflater.inflate(R.layout.alertdialog_default_model, null)
         dialogView.alertdialog_textView.setText(R.string.update_download)
 
         val downloadIntent = Intent(Intent.ACTION_VIEW, jsonUrlInfoUri)

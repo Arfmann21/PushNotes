@@ -63,6 +63,9 @@ class MainActivity : AppCompatActivity() {
     private var dontSave = false
     private var copy = false
 
+    private lateinit var jsonUrlDownloadUri: Uri
+    private lateinit var jsonUrlInfoUri: Uri
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
@@ -562,7 +565,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(chooser)
     }
 
-    private fun checkPermission(jsonUrlDownload: Uri, jsonUrlInfo: Uri){
+    private fun checkPermission(){
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED) {
@@ -578,7 +581,6 @@ class MainActivity : AppCompatActivity() {
 
             alertDialogPermission.setPositiveButton(R.string.yes){ _, _ ->
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), constant)
-
             }
 
             alertDialogPermission.setNegativeButton(R.string.no){
@@ -588,27 +590,17 @@ class MainActivity : AppCompatActivity() {
             alertDialogPermission.show()
         }
         else
-            downloadUpdate(jsonUrlDownload, jsonUrlInfo)
+            downloadUpdateAlertDialog()
 
     }
 
-    private fun downloadUpdate(jsonUrlDownload: Uri, jsonUrlInfo: Uri){
-
-        val downloadIntent: Intent = jsonUrlInfo.let { webpage -> //create intent to release URL
-            Intent(Intent.ACTION_VIEW, webpage)
-        }
-        val chooser = Intent.createChooser(downloadIntent, "Browser")
-
-        val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-
-        val request = DownloadManager.Request(jsonUrlDownload)
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
-        request.setVisibleInDownloadsUi(true)
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "PushNotes" + ".apk")
-
+    private fun downloadUpdateAlertDialog(){
         val inflater = LayoutInflater.from(applicationContext)
         val dialogView = inflater.inflate(R.layout.alertdialog_permission, null)
         dialogView.alertdialog_textView.setText(R.string.update_download)
+
+        val downloadIntent = Intent(Intent.ACTION_VIEW, jsonUrlInfoUri)
+        val chooser = Intent.createChooser(downloadIntent, "Browser")
 
         val alertDialogUpdateAvaible = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
         alertDialogUpdateAvaible.setView(dialogView)
@@ -616,7 +608,7 @@ class MainActivity : AppCompatActivity() {
         alertDialogUpdateAvaible.setTitle(resources.getString(R.string.update_avaible))
 
         alertDialogUpdateAvaible.setPositiveButton(R.string.yes) { _, _ ->
-            downloadManager.enqueue(request)
+            DownloadUpdate().execute()
 
             Toast.makeText(this, resources.getString(R.string.downloadPath), Toast.LENGTH_LONG).show()
 
@@ -683,7 +675,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    inner class AsyncTasks : AsyncTask<Unit, Unit, String>(){
+     inner class AsyncTasks : AsyncTask<Unit, Unit, String>(){
         override fun doInBackground(vararg p0: Unit?): String {
             loadData()
 
@@ -715,15 +707,31 @@ class MainActivity : AppCompatActivity() {
                         update_fab.show()
 
                         update_fab.setOnClickListener{
+                            jsonUrlDownloadUri = Uri.parse(jsonUrlDownload)
+                            jsonUrlInfoUri = Uri.parse(jsonUrlInfo)
 
-                            checkPermission(Uri.parse(jsonUrlDownload), Uri.parse(jsonUrlInfo))
-
+                            checkPermission()
                         }
 
                     }
                 },
                 Response.ErrorListener {}) //if update check go fail
             queue.add(stringReq) //add request to queue
+
+            return "FINISHED"
+        }
+    }
+
+    inner class DownloadUpdate : AsyncTask<Unit, Unit, String>(){
+        override fun doInBackground(vararg p0: Unit?): String {
+            val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+
+            val request = DownloadManager.Request(jsonUrlDownloadUri)
+            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+            request.setVisibleInDownloadsUi(true)
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "PushNotes" + ".apk")
+
+            downloadManager.enqueue(request)
 
             return "FINISHED"
         }

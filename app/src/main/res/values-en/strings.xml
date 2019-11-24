@@ -63,4 +63,5 @@
     <string name="theme">Theme</string>
     <string name="note_deleted">Note deleted</string>
     <string name="support">Supports</string>
+    <string name="click_on_add">Click on \"Create\" to create a new note</string>
 </resources>

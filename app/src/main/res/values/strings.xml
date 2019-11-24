@@ -63,8 +63,9 @@
     <string name="support">Supporta</string>
 
     <string name="reply_title">Crea nota rapida</string>
-    <string name="add">Aggiungi</string>
+    <string name="add">Crea</string>
     <string name="quick_note">Nota rapida</string>
+    <string name="click_on_add">Clicca su \"Crea\" per creare una nota</string>
 
     <string name="theme">Tema</string>
     <string name="light_theme">Tema chiaro</string>

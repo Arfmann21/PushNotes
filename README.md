@@ -7,12 +7,14 @@ A simple app that save notes on notifications
 * Autodelete notes from notification
 * Save or not notes in the list
 * Copy notes to the clipboard
+* Hide from lock screen
 * In-app update system
 
 
-<a href="https://imgur.com/VzKcbcz"><img src="https://imgur.com/VzKcbcz.png" /></a>
-<a href="https://imgur.com/V3tCJz1"><img src="https://imgur.com/V3tCJz1.png" /></a>
-<a href="https://imgur.com/Lv8KN3a"><img src="https://imgur.com/Lv8KN3a.png" /></a>
+<img src="https://imgur.com/lLVP3uc.png" />
+<img src="https://imgur.com/5Z5j8ap.png" />
+<img src="https://imgur.com/Lv8KN3a.png" />
+<img src="https://imgur.com/MjKtyaV.png"/>
 
 ---
 

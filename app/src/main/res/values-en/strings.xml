@@ -51,4 +51,16 @@
     <string name="update_download">Start download?</string>
     <string name="dev_info">Developer - Giovanni Ferraro</string>
     <string name="logo_info">Logo and UI help - AleD219</string>
+    <string name="add">Add</string>
+    <string name="hide">Hide from loock screen</string>
+    <string name="quick_note">Quick note</string>
+    <string name="reply_title">Create quick note</string>
+    <string name="dark_theme">Dark theme</string>
+    <string name="notification_settings">Notification settings</string>
+    <string name="follow_system">Device theme</string>
+    <string name="application_info">App info</string>
+    <string name="light_theme">Light theme</string>
+    <string name="theme">Theme</string>
+    <string name="note_deleted">Note deleted</string>
+    <string name="support">Supports</string>
 </resources>

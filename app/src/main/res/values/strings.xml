@@ -4,6 +4,7 @@
     <string name="note_content"><font size="10">Contenuto</font></string>
     <string name="persistent_notification">Notifica persistente</string>
     <string name="autodelete">Elimina automaticamente la notifica</string>
+    <string name="hide">Nascondi da schermata di blocco</string>
     <string name="alertdialog_title">Inserisci ore e minuti</string>
     <string name="hour"><font size="15">Ore</font></string>
     <string name="minute"><font size="15">Minuti</font></string>
@@ -49,11 +50,27 @@
     <string name="fullDeleted">Note eliminate</string>
     <string name="hideLockScreen">Nascondi dalla schermata di blocco</string>
     <string name="deleteFromNotification">Note eliminate dalle notifiche</string>
+
     <string name="resend">Rimanda</string>
     <string name="copy">Copia</string>
     <string name="delete">Elimina</string>
 
+    <string name="note_deleted">Nota eliminata</string>
+
     <string name="dev_info">Sviluppatore - Giovanni Ferraro</string>
     <string name="logo_info">Logo e aiuto UI - AleD219</string>
     <string name="ps_info" translatable="false">Push Notes - OpenSource</string>
+    <string name="support">Supporta</string>
+
+    <string name="reply_title">Crea nota rapida</string>
+    <string name="add">Aggiungi</string>
+    <string name="quick_note">Nota rapida</string>
+
+    <string name="theme">Tema</string>
+    <string name="light_theme">Tema chiaro</string>
+    <string name="dark_theme">Tema scuro</string>
+    <string name="follow_system">Tema di sistema</string>
+    <string name="application_info">Info applicazione</string>
+    <string name="notification_settings">Impostazioni notifiche</string>
+
 </resources>

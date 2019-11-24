@@ -10,9 +10,9 @@ A simple app that save notes on notifications
 * In-app update system
 
 
-<a href="https://imgur.com/Uxh7bdk"><img src="https://imgur.com/Uxh7bdk.png" /></a>
-<a href="https://imgur.com/gvxYENK"><img src="https://imgur.com/gvxYENK.png" /></a>
-<a href="https://imgur.com/HWbLaeY"><img src="https://imgur.com/HWbLaeY.png" /></a>
+<a href="https://imgur.com/VzKcbcz"><img src="https://imgur.com/VzKcbcz.png" /></a>
+<a href="https://imgur.com/V3tCJz1"><img src="https://imgur.com/V3tCJz1.png" /></a>
+<a href="https://imgur.com/Lv8KN3a"><img src="https://imgur.com/Lv8KN3a.png" /></a>
 
 ---
 

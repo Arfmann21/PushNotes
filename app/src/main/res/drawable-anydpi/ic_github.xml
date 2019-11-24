@@ -4,7 +4,7 @@
     android:height="24dp"
     android:viewportWidth="20"
     android:viewportHeight="20"
-    android:tint="#E0E0E0"
+    android:tint="#616161"
     android:alpha="0.8">
   <group android:translateX="-2"
       android:translateY="-2">

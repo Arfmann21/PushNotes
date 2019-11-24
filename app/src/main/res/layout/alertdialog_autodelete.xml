@@ -2,9 +2,8 @@
 <androidx.appcompat.widget.LinearLayoutCompat
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:background="#202030"
         android:orientation="vertical"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppThemeLight"
         android:id="@+id/autocancel_root"
         android:layout_height="match_parent">
     <com.google.android.material.textfield.TextInputLayout
@@ -17,7 +16,6 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
                 android:hint="@string/hour"
-                android:textColor="#E0E0E0"
                 android:backgroundTint="#d37a7a"
                 android:textSize="16sp"
                 android:layout_height="wrap_content"
@@ -35,7 +33,6 @@
                 android:layout_marginEnd="15dp"
                 android:backgroundTint="#d37a7a"
                 android:hint="@string/minute"
-                android:textColor="#E0E0E0"
                 android:textSize="16sp"
                 android:layout_height="wrap_content"
                 android:inputType="number"/>
@@ -44,10 +41,10 @@
                 android:textSize="17sp"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:textColor="#e0e0e0"
-                android:drawableStart="@drawable/ic_clock_icon"
+                android:drawableStart="@drawable/ic_clock"
                 android:layout_marginStart="20dp"
                 android:drawablePadding="15dp"
                 android:layout_marginTop="23dp"
-                android:id="@+id/set_time_textView"/>
+                android:id="@+id/set_time_textView"
+                android:textColor="#212121"/>
 </androidx.appcompat.widget.LinearLayoutCompat>

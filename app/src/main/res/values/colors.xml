@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#202030</color>
+    <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#1a1a1a</color>
     <color name="colorAccent">#3399ff</color>
-    <color name="splash_color">#202030</color>
+
+    <color name="splashColor">#FFFFFF</color>
+    <color name="statusBarSplashColor">#FFFFFF</color>
+    <color name="navbarSplashColor">#FFFFFF</color>
+
+    <color name="settingsDivider">#E0E0E0</color>
+    <color name="settingsTopPanel">#1976D2</color>
+
+    <color name="mainLayoutColor">#FFFFFF</color>
+    <color name="mainLayoutCardView">#FFFFFF</color>
+    <color name="textInputTextColor">#424242</color>
+    <color name="deleteFabColor">#cc0000</color>
+    <color name="doneFabColor">#1565c0</color>
+    <color name="updateAvaibleFabColor">#2e7d32</color>
+
+    <color name="titleAlertDialogColor">#1976D2</color>
+    <color name="positiveButtonColor">#81C784</color>
+    <color name="negativeButtonColor">#b30000</color>
+
+    <color name="contentTextColor">#757575</color>
 </resources>

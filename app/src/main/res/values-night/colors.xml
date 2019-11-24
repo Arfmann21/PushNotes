@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="splashColor">#202030</color>
+    <color name="statusBarSplashColor">#202030</color>
+    <color name="navbarSplashColor">#202030</color>
+
+    <color name="mainLayoutColor">#202030</color>
+    <color name="mainLayoutCardView">#29293d</color>
+    <color name="textInputTextColor">#E6E6E6</color>
+    <color name="deleteFabColor">#660000</color>
+    <color name="doneFabColor">#303050</color>
+
+    <color name="titleAlertDialogColor">#7986CB</color>
+    <color name="positiveButtonColor">#2e7d32</color>
+    <color name="negativeButtonColor">#b30000</color>
+
+    <color name="settingsTopPanel">#3d3d5c</color>
+    <color name="settingsDivider">#3d3d5c</color>
+
+    <color name="contentTextColor">#757575</color>
+</resources>

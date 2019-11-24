@@ -7,11 +7,11 @@
     <TextView
             android:layout_width="match_parent"
             android:fontFamily="@font/google_sans_medium"
-            android:textColor="#bfbfbf"
             android:textSize="14.5sp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="20dp"
             android:layout_height="wrap_content"
+            android:textColor="@color/contentTextColor"
             android:id="@+id/alertdialog_textView"/>
 </LinearLayout>

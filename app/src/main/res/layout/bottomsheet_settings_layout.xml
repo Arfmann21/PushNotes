@@ -4,8 +4,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/AppTheme"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:animateLayoutChanges="true"
         android:id="@+id/bottom_sheet_container">
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -16,13 +16,15 @@
                 android:layout_height="6dp"
                 android:layout_gravity="center"
                 app:cardCornerRadius="2pt"
-                android:backgroundTint="#3d3d5c"/>
+                app:cardBackgroundColor="@color/settingsTopPanel"
+                android:id="@+id/top_panel"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <View
             android:layout_width="wrap_content"
             android:layout_height="1dp"
-            android:background="#3d3d5c"
-            android:layout_marginTop="240dp"/>
+            android:background="@color/settingsDivider"
+            android:layout_marginTop="330dp"
+            android:id="@+id/separator"/>
     <GridLayout android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:columnCount="2"
@@ -35,16 +37,14 @@
                 android:layout_gravity="start"
                 android:layout_marginStart="15dp"
                 android:textSize="16sp"/>
-        <Switch
+        <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginEnd="15dp"
                 android:layout_marginTop="25dp"
-                android:track="@drawable/switch_track"
-                android:thumb="@drawable/switch_thumb"
                 android:checked="true"
-                android:id="@+id/persistent_notfication_switch"/>
+                android:id="@+id/persistent_notfication_checkbox"/>
 
         <TextView android:text="@string/autodelete"
                 android:layout_width="wrap_content"
@@ -53,15 +53,14 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="25dp"
                 android:textSize="15.5sp"/>
-        <Switch
+        <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="15dp"
-                android:thumb="@drawable/switch_thumb"
-                android:track="@drawable/switch_track"
-                android:id="@+id/autodelete_notification_switch"/>
+
+                android:id="@+id/autodelete_notification_checkbox"/>
 
         <TextView android:text="@string/dontSave"
                 android:layout_width="wrap_content"
@@ -69,15 +68,13 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginStart="15dp"
                 android:textSize="16sp"/>
-        <Switch
+        <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginEnd="15dp"
                 android:layout_marginTop="25dp"
-                android:thumb="@drawable/switch_thumb"
-                android:track="@drawable/switch_track"
-                android:id="@+id/dont_save_switch"/>
+                android:id="@+id/dont_save_checkbox"/>
 
         <TextView android:text="@string/copyToClipboard"
                 android:layout_width="wrap_content"
@@ -85,49 +82,98 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginStart="15dp"
                 android:textSize="16sp"/>
-        <Switch
+        <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="15dp"
-                android:thumb="@drawable/switch_thumb"
-                android:track="@drawable/switch_track"
-                android:id="@+id/copy_to_clipboard_switch"/>
+                android:id="@+id/copy_to_clipboard_checkbox"/>
+
+        <TextView android:text="@string/hide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="15dp"
+                android:textSize="16sp"/>
+        <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="15dp"
+                android:id="@+id/hide_checkbox"/>
     </GridLayout>
+        <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="1"
+                android:layout_marginTop="350dp"
+                android:paddingBottom="100dp"
+                android:id="@+id/application_settings_text_layout">
+            <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10dp"
+                    android:drawableEnd="@drawable/ic_theme"
+                    android:text="@string/theme"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:id="@+id/theme">
+            </TextView>
+            <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:textSize="16sp"
+                    android:layout_marginTop="25dp"
+                    android:drawableEnd="@drawable/ic_info"
+                    android:text="@string/application_info"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:id="@+id/application_settings">
+            </TextView>
+        </GridLayout>
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="250dp"
-            android:orientation="vertical">
+            android:layout_marginTop="50dp"
+            android:visibility="invisible"
+            android:orientation="vertical"
+            android:id="@+id/application_settings_layout">
         <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:columnCount="3">
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:fontFamily="@font/dmsans_medium"
-                android:textSize="15.5sp"
-                android:text="@string/dev_info"
-                android:layout_columnSpan="1"
-                android:id="@+id/dev_info_textView"/>
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_telegram"
-                android:layout_gravity="end"
-                android:layout_marginEnd="20dp"
-                android:id="@+id/dev_telegram_imageView"/>
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_github"
-                android:layout_marginEnd="15dp"
-                android:id="@+id/dev_github_imageView"/>
-    </GridLayout>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/dmsans_medium"
+                    android:textSize="15.5sp"
+                    android:text="@string/dev_info"
+                    android:layout_columnSpan="1"
+                    android:id="@+id/dev_info_textView"/>
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_telegram"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="20dp"
+                    android:id="@+id/dev_telegram_imageView"/>
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_github"
+                    android:layout_marginEnd="15dp"
+                    android:id="@+id/dev_github_imageView"/>
+        </GridLayout>
         <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -159,7 +205,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:paddingBottom="40dp">
+                android:columnCount="2">
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -176,5 +222,15 @@
                     android:layout_gravity="end"
                     android:id="@+id/push_notes_github_imageView"/>
         </GridLayout>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="@string/support"
+                android:drawableEnd="@drawable/ic_paypal"
+                android:layout_marginEnd="15dp"
+                android:textSize="15.5sp"
+                android:layout_marginTop="45dp"
+                android:id="@+id/support"/>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

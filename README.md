@@ -12,7 +12,7 @@ A simple app that save notes on notifications
 
 
 <img src="https://imgur.com/lLVP3uc.png" /> <img src="https://imgur.com/5Z5j8ap.png" />
-<img src="https://imgur.com/Lv8KN3a.png" /> <img src="https://imgur.com/MjKtyaV.png"/>
+<img src="https://imgur.com/Bbrei6u.png" /> <img src="https://imgur.com/MjKtyaV.png"/>
 
 
 ---

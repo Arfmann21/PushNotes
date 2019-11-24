@@ -11,16 +11,21 @@
             android:label="@string/app_name"
             android:roundIcon="@drawable/logo"
             android:supportsRtl="true"
-            android:versionCode="19"
-            android:versionName="1.9"
+            android:versionCode="20"
+            android:versionName="2.0"
             android:theme="@style/AppTheme.BrandedLaunch"
             tools:ignore="GoogleAppIndexingWarning">
+        <meta-data android:name="com.arfmann.pushnotes.DEFAULT" android:value="FF00FF00" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <receiver
+                android:name=".NotificationReceiver"
+                android:enabled="true"
+                android:exported="false">
+        </receiver>
     </application>
 </manifest>

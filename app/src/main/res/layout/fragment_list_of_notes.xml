@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:orientation="vertical"
+        android:elevation="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="620dp"
+        android:theme="@style/Animation.Design.BottomSheetDialog"
+        android:id="@+id/container_sheet"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/contentLayout"
+            android:padding="30dp">
+        <ListView
+                android:layout_width="match_parent"
+                android:id="@+id/notes_listView"
+                android:divider="#202030"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="60dp"
+                android:layout_marginTop="35dp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notes"
+                android:textColor="#d37a7a"
+                android:textSize="17.5sp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:text="@string/noNotes"
+                android:visibility="invisible"
+                android:id="@+id/no_notes_textView"/>
+        <Button
+                android:layout_width="95dp"
+                android:layout_height="55dp"
+                android:layout_gravity="end|bottom"
+                android:backgroundTint="#1976D2"
+                android:textColor="#eeeeee"
+                android:theme="@style/ButtonStyle"
+                android:text="@string/close"
+                android:id="@+id/close_list_button"/>
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_gravity="end|bottom"
+                android:background="@android:color/transparent"
+                android:layout_marginEnd="115dp"
+                android:textColor="#cc0000"
+                android:visibility="visible"
+                android:text="@string/deleteNotes"
+                android:id="@+id/delete_notes_button"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

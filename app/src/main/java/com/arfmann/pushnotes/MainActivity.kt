@@ -2,35 +2,31 @@ package com.arfmann.pushnotes
 
 import android.Manifest
 import android.app.*
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
+import android.content.res.Configuration
+import android.graphics.Color
 import android.icu.util.Calendar
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.text.InputType
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.app.RemoteInput
 import androidx.core.content.ContextCompat
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
@@ -47,10 +43,10 @@ import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
-    private var i = 0
+    var i = 0
     private var oneTimeAdviseInt = 0
     private var constant = 0
-    private var values = ArrayList<String>()
+    var values = ArrayList<String>()
 
     private lateinit var notificationManager: NotificationManager
     private lateinit var notificationChannel: NotificationChannel
@@ -62,26 +58,49 @@ class MainActivity : AppCompatActivity() {
     private var autodelete = false
     private var dontSave = false
     private var copy = false
+    private var hide = false
+
+    private var dark = false
+    private var followSystem = true
+
+    private var applicationSettings = false
 
     private lateinit var jsonUrlDownloadUri: Uri
     private lateinit var jsonUrlInfoUri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        loadData()
+
+        when (true){
+            followSystem -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            dark -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+
+        if(!dark && !followSystem)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        when(resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK){
+            Configuration.UI_MODE_NIGHT_YES -> {
+                setTheme(R.style.AppTheme)
+                setContentView(R.layout.activity_main)
+            }
+            Configuration.UI_MODE_NIGHT_NO -> {
+                setTheme(R.style.AppThemeLight)
+                setContentView(R.layout.activity_main)
+            }
+        }
 
         supportActionBar!!.hide()
 
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         AsyncTasks().execute()
+        FastNotification().execute()
 
         if(oneTimeAdviseInt == 1)
             oneTimeAdvise()
-
-        title_editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
-        content_editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
 
         title_editText.requestFocus()
 
@@ -93,7 +112,10 @@ class MainActivity : AppCompatActivity() {
             title_editText.clearFocus()
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(title_editText.windowToken, 0)
-            listOfNotes()
+
+            val listOfNotes = ListOfNotes()
+            listOfNotes.show(supportFragmentManager, "listOfNotes")
+
         }
 
         settingsImageView.setOnClickListener {
@@ -103,6 +125,17 @@ class MainActivity : AppCompatActivity() {
         delete_fab.setOnClickListener{
             deleteAllNotifications(notificationManager)
         }
+    }
+
+
+    fun resendTextInputTitle(title : String){
+        title_editText.setText(title)
+        dontSave = true
+    }
+
+    fun resendTextInputContent(content : String){
+        content_editText.setText(content)
+        dontSave = true
     }
 
     private fun oneTimeAdvise(){
@@ -148,6 +181,15 @@ class MainActivity : AppCompatActivity() {
 
             val inflater = LayoutInflater.from(applicationContext)
             val dialogView = inflater.inflate(R.layout.alertdialog_autodelete, null)
+
+            when(resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                Configuration.UI_MODE_NIGHT_YES -> {
+                    dialogView.hour_editText.setTextColor(Color.parseColor("#E0E0E0"))
+                    dialogView.minute_editText.setTextColor(Color.parseColor("#E0E0E0"))
+                    dialogView.set_time_textView.setTextColor(Color.parseColor("#E0E0E0"))
+                    dialogView.set_time_textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_clock_night, 0, 0, 0)
+                }
+            }
 
             val alertDialogHour = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle) //build AlertDialog
 
@@ -200,7 +242,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private fun timePicker(){
 
         var totalMilli: Long
@@ -243,7 +284,7 @@ class MainActivity : AppCompatActivity() {
             notificationChannel = NotificationChannel(
                 channelId,
                 description,
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_HIGH
             )
             notificationManager.createNotificationChannel(notificationChannel)
         }
@@ -264,7 +305,6 @@ class MainActivity : AppCompatActivity() {
             .setContentIntent(pendingIntentDelete)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setTimeoutAfter(totalMilli)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC) //set visibility to public to show notification on lock screen
             .setStyle(NotificationCompat.BigTextStyle()) //set big text style to enable multiline notification
             .setAutoCancel(true) //set auto cancel to delete notification when click on it
 
@@ -272,6 +312,9 @@ class MainActivity : AppCompatActivity() {
             builder.setOngoing(true) //set ongoing to prevent notification from clearing (except when user clicks on it)
             builder.setSubText(howtoDelete)
         }
+
+        if(hide)
+            builder.setVisibility(NotificationCompat.VISIBILITY_SECRET)
 
         notificationManager.notify(i, builder.build())
         i++
@@ -284,14 +327,21 @@ class MainActivity : AppCompatActivity() {
         autodelete = false
         copy = false
         dontSave = false
+        hide = false
     }
-
 
     private fun deleteAllNotifications(notificationManager: NotificationManager){
 
         val inflater = LayoutInflater.from(applicationContext)
         val dialogView = inflater.inflate(R.layout.alertdialog_default_model, null)
+
         dialogView.alertdialog_textView.setText(R.string.delete_iconAdvise)
+
+        when(resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                dialogView.alertdialog_textView.setTextColor(Color.parseColor("#bfbfbf"))
+            }
+        }
 
         val alertDialogDeleteAll = AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
         alertDialogDeleteAll.setView(dialogView)
@@ -299,7 +349,15 @@ class MainActivity : AppCompatActivity() {
         alertDialogDeleteAll.setTitle(R.string.delete_question)
 
         alertDialogDeleteAll.setPositiveButton(R.string.yes){ _, _ ->
-            notificationManager.cancelAll()
+            var j = 0
+            while(j < i){ //in order to avoid deleting fast reply notification
+                notificationManager.cancel(j)
+                j++
+            }
+
+            i = 0
+            saveData()
+
             Toast.makeText(this, resources.getString(R.string.deleteFromNotification), Toast.LENGTH_LONG).show()
         }
 
@@ -312,15 +370,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun addNotesToList(){
         if(!dontSave) {
+            loadData()
+
             if (title_editText.text!!.isEmpty())
                 values.add(resources.getString(R.string.no_title) + "  -  " + content_editText.text!!.toString())
             else if (content_editText.text!!.isEmpty())
                 values.add(title_editText.text!!.toString() + "  -  " + resources.getString(R.string.no_content))
             else
                 values.add(title_editText.text!!.toString() + "  -  " + content_editText.text!!.toString())
-
         }
 
+        saveData()
     }
 
     private fun copyToClipboard(){
@@ -352,163 +412,111 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-    private fun listOfNotes() {
-        adapter.notifyDataSetChanged()
-
-        val contentLayout = findViewById<CoordinatorLayout>(R.id.contentLayout)
-
-        val dialog = BottomSheetBehavior.from(contentLayout)
-        dialog.isHideable = false
-        dialog.state = BottomSheetBehavior.STATE_EXPANDED
-
-        close_list_button.setOnClickListener {
-            dialog.state = BottomSheetBehavior.STATE_COLLAPSED
-
-            title_editText.requestFocus()
-
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(title_editText, 0)
-        }
-
-        if (!adapter.isEmpty) {
-            no_notes_textView.visibility = View.INVISIBLE
-            delete_notes_button.visibility = View.VISIBLE
-
-            delete_notes_button.setOnClickListener {
-                deleteData()
-
-                Toast.makeText(this, resources.getString(R.string.fullDeleted), Toast.LENGTH_LONG).show()
-
-                dialog.state = BottomSheetBehavior.STATE_COLLAPSED
-            }
-
-        } else
-            no_notes_textView.visibility = View.VISIBLE
-
-        alertdialog_list.setOnItemClickListener { _, view, i, _ ->
-
-            onListItemClick(view, i, dialog)
-        }
-
-    }
-
-    private fun onListItemClick(view: View, i: Int, dialog: BottomSheetBehavior<CoordinatorLayout>){
-        val popupMenu = PopupMenu(this, view)
-        val itemList = adapter.getItem(i)
-
-        var title = ""
-        var content = ""
-        var j = 0
-
-        while(itemList.toString()[j] != '-') {
-            title += itemList.toString()[j]
-            j++
-        }
-
-        val itemLength = itemList.toString().length
-
-        j += 3
-
-        while(j < itemLength) {
-            content += itemList.toString()[j]
-            j++
-        }
-
-        popupMenu.setOnMenuItemClickListener { item ->
-            when(item.itemId){
-                R.id.resend_popup -> {
-                    if(title != (resources.getString(R.string.no_title) + "  "))
-                        title_editText.setText(title)
-
-                    if(content != resources.getString(R.string.no_content))
-                        content_editText.setText(content)
-
-                    dontSave = true
-
-                    true
-                }
-
-                R.id.copy_popup -> {
-                    val myClipboard: ClipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-                    val myClip = ClipData.newPlainText("text", itemList)
-                    myClipboard.setPrimaryClip(myClip)
-
-                    Toast.makeText(this, resources.getString(R.string.clipboardNote), Toast.LENGTH_LONG).show()
-
-                    true
-                }
-
-                R.id.delete_popup -> {
-                    adapter.remove(itemList)
-                    values.remove(itemList)
-
-                    if(values.isEmpty())
-                        dialog.state = BottomSheetBehavior.STATE_COLLAPSED
-                    saveData()
-                    true
-                }
-
-                else -> false
-            }
-
-        }
-
-        popupMenu.inflate(R.menu.popup_menu)
-
-        try{
-            val fieldMPopup = PopupMenu::class.java.getDeclaredField("mPopup")
-            fieldMPopup.isAccessible = true
-            val mPopup = fieldMPopup.get(popupMenu)
-            mPopup.javaClass
-                .getDeclaredMethod("setForceShowIcon", Boolean::class.java)
-                .invoke(mPopup, true)
-        } catch (e: Exception) {
-            Log.e("Main", "Error showing menu icons")
-        } finally {
-            popupMenu.show()
-        }
-
-    }
-
     private fun showSettings(){
         val dialogView = layoutInflater.inflate(R.layout.bottomsheet_settings_layout, bottom_sheet_container)
         val dialog = BottomSheetDialog(this)
         dialog.setContentView(dialogView)
 
         if(persistent)
-            dialog.persistent_notfication_switch.isChecked = true
+            dialog.persistent_notfication_checkbox.isChecked = true
         if(autodelete)
-            dialog.autodelete_notification_switch.isChecked = true
+            dialog.autodelete_notification_checkbox.isChecked = true
         if(dontSave)
-            dialog.dont_save_switch.isChecked = true
+            dialog.dont_save_checkbox.isChecked = true
         if(copy)
-            dialog.copy_to_clipboard_switch.isChecked = true
+            dialog.copy_to_clipboard_checkbox.isChecked = true
+        if(hide)
+            dialog.hide_checkbox.isChecked = true
 
         dialog.show()
 
-        dialogView.persistent_notfication_switch.setOnCheckedChangeListener { _, b ->
+        dialogView.persistent_notfication_checkbox.setOnCheckedChangeListener { _, b ->
             persistent = b
         }
-        dialogView.autodelete_notification_switch.setOnCheckedChangeListener { _, b ->
+        dialogView.autodelete_notification_checkbox.setOnCheckedChangeListener { _, b ->
             autodelete = b
 
             if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 Toast.makeText(this, resources.getString(R.string.version_not_supported), Toast.LENGTH_LONG).show()
                 autodelete = false
-                dialogView.autodelete_notification_switch.isChecked = false
+                dialogView.autodelete_notification_checkbox.isChecked = false
             }
         }
-        dialogView.dont_save_switch.setOnCheckedChangeListener { _, b ->
+        dialogView.dont_save_checkbox.setOnCheckedChangeListener { _, b ->
             dontSave = b
         }
-        dialogView.copy_to_clipboard_switch.setOnCheckedChangeListener { _, b ->
+        dialogView.copy_to_clipboard_checkbox.setOnCheckedChangeListener { _, b ->
             copy = b
+        }
+        dialogView.hide_checkbox.setOnCheckedChangeListener { _, b ->
+            hide = b
+        }
+        dialogView.theme.setOnClickListener {
+            val theme = arrayOf(getString(R.string.light_theme), getString(R.string.dark_theme), getString(R.string.follow_system))
+
+            val alertDialogTheme = AlertDialog.Builder(this, R.style.RadioGroupAlertDialogStyle)
+
+
+            alertDialogTheme.setSingleChoiceItems(theme, if(dark) 1 else if(followSystem) 2 else if(!dark && !followSystem) 0 else -1){
+                    dialog: DialogInterface?, which: Int ->
+
+                when (which){
+                    0 -> {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                        dark = false
+                        followSystem = false
+                        saveData()
+                    }
+
+                    1 -> {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                        dark = true
+                        followSystem = false
+                        saveData()
+                    }
+
+                    2 -> {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                        dark = false
+                        followSystem = true
+                        saveData()
+                    }
+                }
+
+                dialog!!.dismiss()
+            }
+
+            alertDialogTheme.show()
+
+        }
+        dialog.application_settings.setOnClickListener {
+            if(!applicationSettings) {
+                dialog.settingsGridLayout.visibility = View.INVISIBLE
+                dialog.application_settings_layout.visibility = View.VISIBLE
+
+                applicationSettings = true
+                dialog.application_settings.text = getString(R.string.notification_settings)
+            }
+
+            else{
+                dialog.settingsGridLayout.visibility = View.VISIBLE
+                dialog.application_settings_layout.visibility = View.INVISIBLE
+
+                dialog.application_settings.text = getString(R.string.application_info)
+                applicationSettings = false
+            }
         }
 
         dialog.setOnDismissListener {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(title_editText, 0)
+            applicationSettings = false
+        }
+
+        dialog.setOnCancelListener {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(title_editText, 0)
+            applicationSettings = false
         }
 
         var url: Uri
@@ -533,6 +541,10 @@ class MainActivity : AppCompatActivity() {
             url = Uri.parse("http://bit.ly/PsGitHub")
             openWeb(url)
         }
+        dialogView.support.setOnClickListener {
+            url = Uri.parse("http://bit.ly/supportaPushNotes")
+            openWeb(url)
+        }
     }
 
     private fun openWeb(url: Uri){
@@ -551,6 +563,7 @@ class MainActivity : AppCompatActivity() {
             val inflater = LayoutInflater.from(applicationContext)
 
             val dialogView = inflater.inflate(R.layout.alertdialog_default_model, null)
+
             dialogView.alertdialog_textView.setText(R.string.noPermissionAlert)
 
             alertDialogPermission.setTitle(R.string.noPermissionAlertTitle)
@@ -575,6 +588,12 @@ class MainActivity : AppCompatActivity() {
         val inflater = LayoutInflater.from(applicationContext)
         val dialogView = inflater.inflate(R.layout.alertdialog_default_model, null)
         dialogView.alertdialog_textView.setText(R.string.update_download)
+
+        when(resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                dialogView.alertdialog_textView.setTextColor(Color.parseColor("#bfbfbf"))
+            }
+        }
 
         val downloadIntent = Intent(Intent.ACTION_VIEW, jsonUrlInfoUri)
         val chooser = Intent.createChooser(downloadIntent, "Browser")
@@ -603,7 +622,6 @@ class MainActivity : AppCompatActivity() {
         alertDialogUpdateAvaible.show()
     }
 
-
     private fun saveData() {
         val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -612,15 +630,18 @@ class MainActivity : AppCompatActivity() {
         editor.putString("noteList", json) //save the new JSON with values
         editor.putInt("oneTime", oneTimeAdviseInt)
         editor.putInt("notificationId", i)
+        editor.putBoolean("dark", dark)
+        editor.putBoolean("followSystem", followSystem)
         editor.apply() //apply new changes
     }
 
-
-    private fun loadData() {
+    fun loadData() {
         val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
         val gson = Gson()
         val json = sharedPreferences.getString("noteList", null)
         val oneTimeAdvise = sharedPreferences.getInt("oneTime", 0)
+        dark = sharedPreferences.getBoolean("dark", false)
+        followSystem = sharedPreferences.getBoolean("followSystem", true)
         val notificationIdSp = sharedPreferences.getInt("notificationId", 0)
         val type = object: TypeToken<ArrayList<String>>() {
         }.type
@@ -637,19 +658,69 @@ class MainActivity : AppCompatActivity() {
         i = notificationIdSp
 
         adapter = ArrayAdapter(this, R.layout.listview_text_color, values)
-        alertdialog_list.adapter = adapter
-
     }
 
-
-    private fun deleteData(){
-        val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
+    fun deleteData(){
+        val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE
+        )
         val editor = sharedPreferences.edit()
         editor.remove("noteList")
         editor.apply() //apply new changes
 
         adapter.clear() //clear everything from the adapter
+        values.clear()
 
+    }
+
+    inner class FastNotification : AsyncTask<Unit, Unit, String>(){
+        override fun doInBackground(vararg p0: Unit?): String {
+            val channelId = "Test"
+            val description = "Notes"
+
+            val title = resources.getString(R.string.reply_title) //declare string with R.string value
+
+            val helpPendingIntent = PendingIntent.getBroadcast(
+                this@MainActivity,
+                101,
+                Intent(this@MainActivity, NotificationReceiver::class.java)
+                    .putExtra("keyintenthelp", 101),
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+
+            val remoteInput : RemoteInput = RemoteInput.Builder("NotificationReply")
+                .setLabel(resources.getString(R.string.add))
+                .build()
+
+            val replyAction = NotificationCompat.Action.Builder(R.drawable.logo, resources.getString(R.string.add), helpPendingIntent)
+                .addRemoteInput(remoteInput)
+                .build()
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //check if API is 25 (Android 8) or upper
+                notificationChannel = NotificationChannel(
+                    channelId,
+                    description,
+                    NotificationManager.IMPORTANCE_MIN
+                )
+                notificationManager.createNotificationChannel(notificationChannel)
+            }
+
+            builder = NotificationCompat.Builder(applicationContext, channelId) //build notification
+
+            builder.setSmallIcon(R.drawable.logo)
+                .setContentIntent(helpPendingIntent) //set visibility to public to show notification on lock screen
+                .setStyle(NotificationCompat.BigTextStyle()) //set big text style to enable multiline notification
+                .setAutoCancel(false) //set auto cancel to delete notification when click on it
+                .setVisibility(NotificationCompat.VISIBILITY_SECRET)
+                .addAction(replyAction)
+                .setContentTitle(title)
+                .setContentText(getString(R.string.click_on_add))
+                .setOngoing(true)
+
+            notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.notify(560, builder.build())
+
+            return "FINISHED"
+        }
     }
 
     inner class AsyncTasks : AsyncTask<Unit, Unit, String>(){
@@ -679,16 +750,16 @@ class MainActivity : AppCompatActivity() {
                         jsonUrlDownload = jsonInner.getString("browser_download_url")
                     }
 
-                    if(versionName < jsonObjTagName){
+                      if(versionName < jsonObjTagName){
 
-                        update_fab.show()
+                    update_fab.show()
 
-                        update_fab.setOnClickListener{
-                            jsonUrlDownloadUri = Uri.parse(jsonUrlDownload)
-                            jsonUrlInfoUri = Uri.parse(jsonUrlInfo)
+                    update_fab.setOnClickListener{
+                        jsonUrlDownloadUri = Uri.parse(jsonUrlDownload)
+                        jsonUrlInfoUri = Uri.parse(jsonUrlInfo)
 
-                            checkPermission()
-                        }
+                        checkPermission()
+                    }
 
                     }
                 },
@@ -705,7 +776,7 @@ class MainActivity : AppCompatActivity() {
 
             val request = DownloadManager.Request(jsonUrlDownloadUri)
             request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
-            request.setVisibleInDownloadsUi(true)
+            request.setNotificationVisibility(1)
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "PushNotes" + ".apk")
 
             downloadManager.enqueue(request)

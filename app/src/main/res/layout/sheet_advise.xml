@@ -4,7 +4,6 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/AppTheme"
         android:paddingBottom="40dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/limitation_container">

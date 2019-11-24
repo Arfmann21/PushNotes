@@ -1,7 +1,6 @@
 # PushNotes
 A simple app that save notes on notifications
 
-### Features
 #### Customize your notifications: 
   * Persistent notification
   * Autodelete notes
@@ -9,11 +8,20 @@ A simple app that save notes on notifications
   * Copy notes to the clipboard
   * Hide from lock screen
   
+---
+
+
 #### Never miss an update
   * Push Notes will advise you when an update is avabile and, if you want, can be downloaded automatically
   
+---
+
+
+  
 #### Choose your side
   Choose between ligth theme and dark theme
+
+---
 
 
 <img src="https://imgur.com/lLVP3uc.png" /> <img src="https://imgur.com/5Z5j8ap.png" />

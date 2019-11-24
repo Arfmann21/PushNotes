@@ -5,19 +5,18 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:orientation="horizontal"
+        android:background="@color/mainLayoutColor"
         android:layout_height="match_parent"
-        android:theme="@style/AppTheme"
-        android:background="#202030"
+        android:id="@+id/main_layout"
         tools:context=".MainActivity">
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/done_fab"
             android:layout_width="57dp"
             android:layout_height="57dp"
             android:layout_gravity="bottom|end"
-            app:backgroundTint="#303050"
-            android:backgroundTint="#303050"
             android:layout_margin="12pt"
-            app:srcCompat="@drawable/ic_done_icon"/>
+            app:backgroundTint="@color/doneFabColor"
+            app:srcCompat="@drawable/ic_done"/>
     <View
             android:id="@+id/dummy"
             android:layout_width="1dp"
@@ -29,169 +28,100 @@
             android:layout_width="57dp"
             android:layout_height="57dp"
             android:layout_gravity="top|end"
-            app:backgroundTint="#660000"
             android:layout_marginEnd="12pt"
             app:layout_anchor="@id/dummy"
+            app:backgroundTint="@color/deleteFabColor"
             app:layout_anchorGravity="top|right|end"
-            app:srcCompat="@drawable/ic_delete_icon"
-            android:backgroundTint="#660000"/>
+            app:srcCompat="@drawable/ic_delete" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/update_fab"
             android:layout_width="57dp"
             android:layout_height="57dp"
             android:layout_gravity="bottom|start"
-            android:backgroundTint="#81C784"
+            app:backgroundTint="@color/updateAvaibleFabColor"
             android:visibility="gone"
             android:layout_margin="12pt"
-            app:srcCompat="@drawable/ic_download_icon"
-            app:backgroundTint="#cc0000"/>
+            app:srcCompat="@drawable/ic_download_icon"/>
 
     <ScrollView android:layout_width="match_parent"
             android:scrollbarThumbVertical="@null"
             android:backgroundTint="#202030"
             android:layout_height="match_parent">
 
-        <GridLayout android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:columnCount="1">
-            <androidx.cardview.widget.CardView
-                    android:layout_height="180dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:backgroundTint="#29293d"
-                    app:cardCornerRadius="4.5pt"
-                    app:cardElevation="10dp"
-                    android:layout_width="match_parent">
-                <GridLayout  android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:columnCount="2">
-                    <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="250dp"
-                            android:layout_marginTop="35dp"
-                            android:backgroundTint="#d37a7a"
-                            android:layout_height="wrap_content">
-                        <com.google.android.material.textfield.TextInputEditText
-                                android:layout_width="wrap_content"
-                                android:layout_height="40dp"
-                                android:inputType="text"
-                                android:backgroundTint="#d37a7a"
-                                android:textColor="#e0e0e0"
-                                android:ems="8"
-                                android:fontFamily="@font/google_sans_medium"
-                                android:hint="@string/note_title"
-                                android:layout_marginStart="15dp"
-                                android:textSize="17sp"
-                                android:id="@+id/title_editText"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-                    <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:focusable="true"
-                            android:clickable="true"
-                            android:layout_marginTop="50dp"
-                            android:layout_gravity="end"
-                            android:layout_marginEnd="50dp"
-                            android:contentDescription="@string/listIconDescription"
-                            app:srcCompat="@drawable/ic_list_icon"
-                            android:id="@+id/listImageView"/>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="250dp"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginStart="15dp"
-                            android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                                android:layout_width="wrap_content"
-                                android:layout_height="40dp"
-                                android:inputType="textMultiLine"
-                                android:ems="10"
-                                android:fontFamily="@font/google_sans_medium"
-                                android:hint="@string/note_content"
-                                android:textColor="#e0e0e0"
-                                android:backgroundTint="#d37a7a"
-                                android:textSize="17sp"
-                                android:id="@+id/content_editText"/>
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:focusable="true"
-                            android:clickable="true"
-                            android:layout_marginTop="30dp"
-                            android:layout_gravity="end"
-                            android:layout_marginEnd="50dp"
-                            android:contentDescription="@string/listIconDescription"
-                            app:srcCompat="@drawable/ic_settings_icon"
-                            android:id="@+id/settingsImageView"/>
-
-                </GridLayout>
-            </androidx.cardview.widget.CardView>
-        </GridLayout>
-    </ScrollView>
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:orientation="vertical"
-            android:elevation="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:theme="@style/Animation.Design.BottomSheetDialog"
-            android:layout_marginTop="40dp"
-            android:id="@+id/container_sheet">
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        <androidx.cardview.widget.CardView
+                android:layout_height="180dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                app:cardCornerRadius="4.5pt"
+                app:cardElevation="10dp"
+                app:cardBackgroundColor="@color/mainLayoutCardView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@drawable/bottom_sheet_corner"
-                android:id="@+id/contentLayout"
-                android:padding="30dp"
-                app:layout_behavior=".GestureLockedBottomSheetBehavior"
-                app:behavior_peekHeight="0dp">
-
-            <ListView
-                    android:layout_width="match_parent"
-                    android:id="@+id/alertdialog_list"
-                    android:divider="#202030"
+                android:id="@+id/main_card">
+            <GridLayout  android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="60dp"
-                    android:layout_marginTop="35dp"/>
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/notes"
-                    android:textColor="#d37a7a"
-                    android:textSize="17.5sp"/>
+                    android:columnCount="2">
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="250dp"
+                        android:layout_marginTop="35dp"
+                        android:layout_height="wrap_content">
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:inputType="textCapSentences"
+                            android:backgroundTint="#d37a7a"
+                            android:ems="8"
+                            android:textColor="@color/textInputTextColor"
+                            android:fontFamily="@font/google_sans_medium"
+                            android:hint="@string/note_title"
+                            android:layout_marginStart="15dp"
+                            android:textSize="17sp"
+                            android:id="@+id/title_editText"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:layout_marginTop="50dp"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="50dp"
+                        android:contentDescription="@string/listIconDescription"
+                        app:srcCompat="@drawable/ic_list"
+                        android:id="@+id/listImageView"/>
 
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="250dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_height="wrap_content">
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="35dp"
-                    android:text="@string/noNotes"
-                    android:visibility="invisible"
-                    android:id="@+id/no_notes_textView"/>
-            <Button
-                    android:layout_width="95dp"
-                    android:layout_height="55dp"
-                    android:layout_gravity="end|bottom"
-                    android:backgroundTint="#303050"
-                    android:theme="@style/ButtonStyle"
-                    android:text="@string/close"
-                    android:id="@+id/close_list_button"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:inputType="textCapSentences"
+                            android:ems="10"
+                            android:fontFamily="@font/google_sans_medium"
+                            android:hint="@string/note_content"
+                            android:textColor="@color/textInputTextColor"
+                            android:backgroundTint="#d37a7a"
+                            android:textSize="17sp"
+                            android:id="@+id/content_editText"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="50dp"
+                        android:contentDescription="@string/listIconDescription"
+                        app:srcCompat="@drawable/ic_settings"
+                        android:paddingBottom="30dp"
+                        android:id="@+id/settingsImageView"/>
 
-            <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="55dp"
-                    android:layout_gravity="end|bottom"
-                    android:background="@android:color/transparent"
-                    android:layout_marginEnd="115dp"
-                    android:textColor="#F4511E"
-                    android:visibility="invisible"
-                    android:text="@string/deleteNotes"
-                    android:id="@+id/delete_notes_button"/>
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+            </GridLayout>
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

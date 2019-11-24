@@ -1,6 +1,12 @@
 # PushNotes
 A simple app that save notes on notifications
 
+
+#### Quick notes
+ Create notes quickly from notification
+ 
+ ---
+
 #### Customize your notifications: 
   * Persistent notification
   * Autodelete notes

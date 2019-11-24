@@ -4,7 +4,7 @@ A simple app that save notes on notifications
 ### Features
 #### Customize your notifications: 
   * Persistent notification
-  * Autodelete notes from notification
+  * Autodelete notes
   * Save or not notes in the list
   * Copy notes to the clipboard
   * Hide from lock screen

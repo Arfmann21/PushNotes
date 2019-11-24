@@ -43,10 +43,10 @@ import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
-    var i = 0
+    private var i = 0
     private var oneTimeAdviseInt = 0
     private var constant = 0
-    var values = ArrayList<String>()
+    private var values = ArrayList<String>()
 
     private lateinit var notificationManager: NotificationManager
     private lateinit var notificationChannel: NotificationChannel
@@ -388,21 +388,16 @@ class MainActivity : AppCompatActivity() {
         val myClip: ClipData
 
         if(copy) {
-            if (title_editText.text!!.isEmpty())
-                myClip = ClipData.newPlainText(
-                    "text",
-                    resources.getString(R.string.no_title) + " - " + content_editText.text!!.toString()
-                )
-            else if (content_editText.text!!.isEmpty())
-                myClip = ClipData.newPlainText(
-                    "text",
-                    title_editText.text!!.toString() + " - " + resources.getString(R.string.no_content)
-                )
-            else
-                myClip = ClipData.newPlainText(
-                    "text",
-                    title_editText.text!!.toString() + "  -  " + content_editText.text!!.toString()
-                )
+
+            myClip = if(title_editText.text!!.isEmpty()) ClipData.newPlainText(
+                "text",
+                resources.getString(R.string.no_title) + " - " + content_editText.text!!.toString())
+            else if(content_editText.text!!.isEmpty()) ClipData.newPlainText(
+                "text",
+                title_editText.text!!.toString() + " - " + resources.getString(R.string.no_content))
+            else ClipData.newPlainText(
+                "text",
+                title_editText.text!!.toString() + "  -  " + content_editText.text!!.toString())
 
             myClipboard.setPrimaryClip(myClip)
 
@@ -417,16 +412,13 @@ class MainActivity : AppCompatActivity() {
         val dialog = BottomSheetDialog(this)
         dialog.setContentView(dialogView)
 
-        if(persistent)
-            dialog.persistent_notfication_checkbox.isChecked = true
-        if(autodelete)
-            dialog.autodelete_notification_checkbox.isChecked = true
-        if(dontSave)
-            dialog.dont_save_checkbox.isChecked = true
-        if(copy)
-            dialog.copy_to_clipboard_checkbox.isChecked = true
-        if(hide)
-            dialog.hide_checkbox.isChecked = true
+        when(true){
+            persistent -> dialog.persistent_notfication_checkbox.isChecked = true
+            autodelete -> dialog.autodelete_notification_checkbox.isChecked = true
+            dontSave -> dialog.dont_save_checkbox.isChecked = true
+            copy -> dialog.copy_to_clipboard_checkbox.isChecked = true
+            hide -> dialog.hide_checkbox.isChecked = true
+        }
 
         dialog.show()
 
@@ -646,11 +638,7 @@ class MainActivity : AppCompatActivity() {
         val type = object: TypeToken<ArrayList<String>>() {
         }.type
 
-        when(json){
-            null -> values = ArrayList() //if json is null, so empty, values is just an empty ArrayList
-            else-> values = gson.fromJson(json, type) //got JSON values and convert them back to ArrayList
-
-        }
+        values = if(json == null) ArrayList() else gson.fromJson(json, type)
 
         if(oneTimeAdvise >= 1)
             oneTimeAdviseInt = 1
@@ -750,16 +738,16 @@ class MainActivity : AppCompatActivity() {
                         jsonUrlDownload = jsonInner.getString("browser_download_url")
                     }
 
-                      if(versionName < jsonObjTagName){
+                    if(versionName < jsonObjTagName){
 
-                    update_fab.show()
+                        update_fab.show()
 
-                    update_fab.setOnClickListener{
-                        jsonUrlDownloadUri = Uri.parse(jsonUrlDownload)
-                        jsonUrlInfoUri = Uri.parse(jsonUrlInfo)
+                        update_fab.setOnClickListener{
+                            jsonUrlDownloadUri = Uri.parse(jsonUrlDownload)
+                            jsonUrlInfoUri = Uri.parse(jsonUrlInfo)
 
-                        checkPermission()
-                    }
+                            checkPermission()
+                        }
 
                     }
                 },

@@ -37,6 +37,7 @@ class NotificationReceiver : BroadcastReceiver(){
                 .setAutoCancel(true) //set auto cancel to delete notification when click on it
                 .setContentTitle(context.resources.getString(R.string.quick_note))
                 .setContentText(name)
+                .setSubText(context.getString(R.string.howto_delete))
                 .setOngoing(true)
                 .setGroup("fast")
 

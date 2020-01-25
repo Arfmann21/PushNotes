@@ -2,7 +2,10 @@ package com.arfmann.pushnotes
 
 import android.Manifest
 import android.app.*
-import android.content.*
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
@@ -16,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -34,6 +38,7 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.alertdialog_autodelete.view.*
 import kotlinx.android.synthetic.main.alertdialog_default_model.view.*
+import kotlinx.android.synthetic.main.alertdialog_theme_selector.view.*
 import kotlinx.android.synthetic.main.bottomsheet_settings_layout.*
 import kotlinx.android.synthetic.main.bottomsheet_settings_layout.view.*
 import kotlinx.android.synthetic.main.sheet_advise.*
@@ -46,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     private var i = 0
     private var oneTimeAdviseInt = 0
     private var constant = 0
-    private var values = ArrayList<String>()
+    private var arrayOfNotes = ArrayList<String>()
 
     private lateinit var notificationManager: NotificationManager
     private lateinit var notificationChannel: NotificationChannel
@@ -59,6 +64,7 @@ class MainActivity : AppCompatActivity() {
     private var dontSave = false
     private var copy = false
     private var hide = false
+    private var quickNote = true
 
     private var dark = false
     private var followSystem = true
@@ -97,11 +103,17 @@ class MainActivity : AppCompatActivity() {
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         AsyncTasks().execute()
-        FastNotification().execute()
+
+        if(quickNote)
+            FastNotification().execute()
 
         if(oneTimeAdviseInt == 1)
             oneTimeAdvise()
 
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(title_editText, 0)
+
+        title_editText.isActivated = true
         title_editText.requestFocus()
 
         done_fab.setOnClickListener {
@@ -373,11 +385,11 @@ class MainActivity : AppCompatActivity() {
             loadData()
 
             if (title_editText.text!!.isEmpty())
-                values.add(resources.getString(R.string.no_title) + "  -  " + content_editText.text!!.toString())
+                arrayOfNotes.add(resources.getString(R.string.no_title) + "  -  " + content_editText.text!!.toString())
             else if (content_editText.text!!.isEmpty())
-                values.add(title_editText.text!!.toString() + "  -  " + resources.getString(R.string.no_content))
+                arrayOfNotes.add(title_editText.text!!.toString() + "  -  " + resources.getString(R.string.no_content))
             else
-                values.add(title_editText.text!!.toString() + "  -  " + content_editText.text!!.toString())
+                arrayOfNotes.add(title_editText.text!!.toString() + "  -  " + content_editText.text!!.toString())
         }
 
         saveData()
@@ -418,7 +430,11 @@ class MainActivity : AppCompatActivity() {
             dontSave -> dialog.dont_save_checkbox.isChecked = true
             copy -> dialog.copy_to_clipboard_checkbox.isChecked = true
             hide -> dialog.hide_checkbox.isChecked = true
+            quickNote -> dialog.quick_note_checkbox.isChecked = true
         }
+
+        if(quickNote) // Doesn't works on when() statements, don't know why
+            dialog.quick_note_checkbox.isChecked = true
 
         dialog.show()
 
@@ -434,68 +450,72 @@ class MainActivity : AppCompatActivity() {
                 dialogView.autodelete_notification_checkbox.isChecked = false
             }
         }
+
         dialogView.dont_save_checkbox.setOnCheckedChangeListener { _, b ->
             dontSave = b
         }
+
         dialogView.copy_to_clipboard_checkbox.setOnCheckedChangeListener { _, b ->
             copy = b
         }
+
         dialogView.hide_checkbox.setOnCheckedChangeListener { _, b ->
             hide = b
         }
+
+        dialogView.quick_note_checkbox.setOnCheckedChangeListener { _, b ->
+            quickNote = b
+
+            notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            if(!quickNote)
+                notificationManager.cancel(560)
+            else
+                FastNotification().execute()
+
+            saveData()
+        }
+
         dialogView.theme.setOnClickListener {
-            val theme = arrayOf(getString(R.string.light_theme), getString(R.string.dark_theme), getString(R.string.follow_system))
+            val dialogRadioView = layoutInflater.inflate(R.layout.alertdialog_theme_selector, null)
 
             val alertDialogTheme = AlertDialog.Builder(this, R.style.RadioGroupAlertDialogStyle)
 
+            alertDialogTheme.setTitle(R.string.theme)
+            alertDialogTheme.setView(dialogRadioView)
 
-            alertDialogTheme.setSingleChoiceItems(theme, if(dark) 1 else if(followSystem) 2 else if(!dark && !followSystem) 0 else -1){
-                    dialog: DialogInterface?, which: Int ->
+            when(true) {
+                dark -> dialogRadioView.dark_theme_radio.isChecked = true
+                !dark && !followSystem -> dialogRadioView.light_theme_radio.isChecked = true
+                followSystem -> dialogRadioView.system_theme_radio.isChecked = true
 
-                when (which){
-                    0 -> {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                        dark = false
-                        followSystem = false
-                        saveData()
-                    }
-
-                    1 -> {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                        dark = true
-                        followSystem = false
-                        saveData()
-                    }
-
-                    2 -> {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-                        dark = false
-                        followSystem = true
-                        saveData()
-                    }
-                }
-
-                dialog!!.dismiss()
             }
 
             alertDialogTheme.show()
 
         }
+
         dialog.application_settings.setOnClickListener {
             if(!applicationSettings) {
                 dialog.settingsGridLayout.visibility = View.INVISIBLE
+                dialog.separatorInfo.visibility = View.VISIBLE
                 dialog.application_settings_layout.visibility = View.VISIBLE
 
                 applicationSettings = true
                 dialog.application_settings.text = getString(R.string.notification_settings)
+
+                dialog.application_settings.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_settings, 0)
             }
 
             else{
                 dialog.settingsGridLayout.visibility = View.VISIBLE
+                dialog.separatorInfo.visibility = View.INVISIBLE
                 dialog.application_settings_layout.visibility = View.INVISIBLE
 
                 dialog.application_settings.text = getString(R.string.application_info)
                 applicationSettings = false
+
+                dialog.application_settings.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_info, 0)
             }
         }
 
@@ -538,6 +558,36 @@ class MainActivity : AppCompatActivity() {
             openWeb(url)
         }
     }
+
+    fun onRadioButtonClicked(view: View) {
+        if (view is RadioButton) {
+            val checked = view.isChecked
+
+            when (view.getId()) {
+                R.id.light_theme_radio ->
+                    if (checked) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                        dark = false
+                        followSystem = false
+                        saveData()
+                    }
+                R.id.dark_theme_radio ->
+                    if (checked) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                        dark = true
+                        followSystem = false
+                    }
+                R.id.system_theme_radio ->
+                    if(checked){
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                        dark = false
+                        followSystem = true
+                        saveData()
+                    }
+            }
+        }
+    }
+
 
     private fun openWeb(url: Uri){
         val webIntent = Intent(Intent.ACTION_VIEW, url)
@@ -618,12 +668,13 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         val gson = Gson()
-        val json = gson.toJson(values) //convert ArrayList to JSON (shared preferences can't handle ArrayList)
-        editor.putString("noteList", json) //save the new JSON with values
+        val json = gson.toJson(arrayOfNotes) //convert ArrayList to JSON (shared preferences can't handle ArrayList)
+        editor.putString("noteList", json) //save the new JSON with arrayOfNotes
         editor.putInt("oneTime", oneTimeAdviseInt)
         editor.putInt("notificationId", i)
         editor.putBoolean("dark", dark)
         editor.putBoolean("followSystem", followSystem)
+        editor.putBoolean("quickNote", quickNote)
         editor.apply() //apply new changes
     }
 
@@ -631,21 +682,24 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
         val gson = Gson()
         val json = sharedPreferences.getString("noteList", null)
+
         val oneTimeAdvise = sharedPreferences.getInt("oneTime", 0)
         dark = sharedPreferences.getBoolean("dark", false)
         followSystem = sharedPreferences.getBoolean("followSystem", true)
+        quickNote = sharedPreferences.getBoolean("quickNote", true)
         val notificationIdSp = sharedPreferences.getInt("notificationId", 0)
+
         val type = object: TypeToken<ArrayList<String>>() {
         }.type
 
-        values = if(json == null) ArrayList() else gson.fromJson(json, type)
+        arrayOfNotes = if(json == null) ArrayList() else gson.fromJson(json, type)
 
         if(oneTimeAdvise >= 1)
             oneTimeAdviseInt = 1
 
         i = notificationIdSp
 
-        adapter = ArrayAdapter(this, R.layout.listview_text_color, values)
+        adapter = ArrayAdapter(this, R.layout.listview_text_color, arrayOfNotes)
     }
 
     fun deleteData(){
@@ -656,16 +710,16 @@ class MainActivity : AppCompatActivity() {
         editor.apply() //apply new changes
 
         adapter.clear() //clear everything from the adapter
-        values.clear()
+        arrayOfNotes.clear()
 
     }
 
     inner class FastNotification : AsyncTask<Unit, Unit, String>(){
         override fun doInBackground(vararg p0: Unit?): String {
-            val channelId = "Test"
-            val description = "Notes"
+            val channelId = "FastNotes"
+            val description = "Create a note from notification"
 
-            val title = resources.getString(R.string.reply_title) //declare string with R.string value
+            val title = resources.getString(R.string.reply_title)
 
             val helpPendingIntent = PendingIntent.getBroadcast(
                 this@MainActivity,
@@ -705,6 +759,7 @@ class MainActivity : AppCompatActivity() {
                 .setOngoing(true)
 
             notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
             notificationManager.notify(560, builder.build())
 
             return "FINISHED"

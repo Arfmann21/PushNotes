@@ -1,125 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:background="@color/mainLayoutColor"
-        android:layout_height="match_parent"
-        android:id="@+id/main_layout"
-        tools:context=".MainActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:background="@color/mainLayoutColor"
+    android:layout_height="match_parent"
+    android:id="@+id/main_layout"
+    tools:context=".MainActivity">
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/done_fab"
-            android:layout_width="57dp"
-            android:layout_height="57dp"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="12pt"
-            app:backgroundTint="@color/doneFabColor"
-            app:srcCompat="@drawable/ic_done"/>
+        android:id="@+id/done_fab"
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="12pt"
+        app:backgroundTint="@color/doneFabColor"
+        app:srcCompat="@drawable/ic_done"/>
     <View
-            android:id="@+id/dummy"
-            android:layout_width="1dp"
-            android:layout_height="18dp"
-            app:layout_anchor="@id/done_fab"
-            app:layout_anchorGravity="top|right|end" />
+        android:id="@+id/dummy"
+        android:layout_width="1dp"
+        android:layout_height="18dp"
+        app:layout_anchor="@id/done_fab"
+        app:layout_anchorGravity="top|right|end" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/delete_fab"
-            android:layout_width="57dp"
-            android:layout_height="57dp"
-            android:layout_gravity="top|end"
-            android:layout_marginEnd="12pt"
-            app:layout_anchor="@id/dummy"
-            app:backgroundTint="@color/deleteFabColor"
-            app:layout_anchorGravity="top|right|end"
-            app:srcCompat="@drawable/ic_delete" />
+        android:id="@+id/delete_fab"
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_gravity="top|end"
+        android:layout_marginEnd="12pt"
+        app:layout_anchor="@id/dummy"
+        app:backgroundTint="@color/deleteFabColor"
+        app:layout_anchorGravity="top|right|end"
+        app:srcCompat="@drawable/ic_delete" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/update_fab"
-            android:layout_width="57dp"
-            android:layout_height="57dp"
-            android:layout_gravity="bottom|start"
-            app:backgroundTint="@color/updateAvaibleFabColor"
-            android:visibility="gone"
-            android:layout_margin="12pt"
-            app:srcCompat="@drawable/ic_download_icon"/>
+        android:id="@+id/update_fab"
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_gravity="bottom|start"
+        app:backgroundTint="@color/updateAvaibleFabColor"
+        android:visibility="gone"
+        android:layout_margin="12pt"
+        app:srcCompat="@drawable/ic_download_icon"/>
 
     <ScrollView android:layout_width="match_parent"
-            android:scrollbarThumbVertical="@null"
-            android:backgroundTint="#202030"
-            android:layout_height="match_parent">
+        android:scrollbarThumbVertical="@null"
+        android:backgroundTint="#202030"
+        android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
-                android:layout_height="180dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                app:cardCornerRadius="4.5pt"
-                app:cardElevation="10dp"
-                app:cardBackgroundColor="@color/mainLayoutCardView"
-                android:layout_width="match_parent"
-                android:id="@+id/main_card">
+            android:layout_height="180dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            app:cardCornerRadius="4.5pt"
+            app:cardElevation="10dp"
+            app:cardBackgroundColor="@color/mainLayoutCardView"
+            android:layout_width="match_parent"
+            android:id="@+id/main_card">
             <GridLayout  android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:columnCount="2">
+                android:layout_height="wrap_content"
+                android:columnCount="2">
                 <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="250dp"
-                        android:layout_marginTop="35dp"
-                        android:layout_height="wrap_content">
+                    android:layout_width="250dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_height="wrap_content">
                     <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:inputType="textCapSentences"
-                            android:backgroundTint="#d37a7a"
-                            android:ems="8"
-                            android:textColor="@color/textInputTextColor"
-                            android:fontFamily="@font/google_sans_medium"
-                            android:hint="@string/note_title"
-                            android:layout_marginStart="15dp"
-                            android:textSize="17sp"
-                            android:id="@+id/title_editText"/>
-                </com.google.android.material.textfield.TextInputLayout>
-                <ImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:layout_marginTop="50dp"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="50dp"
-                        android:contentDescription="@string/listIconDescription"
-                        app:srcCompat="@drawable/ic_list"
-                        android:id="@+id/listImageView"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="250dp"
-                        android:layout_marginTop="15dp"
+                        android:layout_height="40dp"
+                        android:inputType="textCapSentences"
+                        android:ems="8"
+                        android:focusedByDefault="true"
+                        android:textColor="@color/textInputTextColor"
+                        android:fontFamily="@font/google_sans_medium"
+                        android:hint="@string/note_title"
                         android:layout_marginStart="15dp"
-                        android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:inputType="textCapSentences"
-                            android:ems="10"
-                            android:fontFamily="@font/google_sans_medium"
-                            android:hint="@string/note_content"
-                            android:textColor="@color/textInputTextColor"
-                            android:backgroundTint="#d37a7a"
-                            android:textSize="17sp"
-                            android:id="@+id/content_editText"/>
+                        android:textSize="17sp"
+                        android:id="@+id/title_editText"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:layout_marginTop="50dp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="50dp"
+                    android:contentDescription="@string/listIconDescription"
+                    app:srcCompat="@drawable/ic_list"
+                    android:id="@+id/listImageView"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="250dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:layout_marginTop="30dp"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="50dp"
-                        android:contentDescription="@string/listIconDescription"
-                        app:srcCompat="@drawable/ic_settings"
-                        android:paddingBottom="30dp"
-                        android:id="@+id/settingsImageView"/>
+                        android:layout_height="40dp"
+                        android:inputType="textCapSentences"
+                        android:ems="10"
+                        android:fontFamily="@font/google_sans_medium"
+                        android:hint="@string/note_content"
+                        android:textColor="@color/textInputTextColor"
+                        android:textSize="17sp"
+                        android:id="@+id/content_editText"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:layout_marginTop="30dp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="50dp"
+                    android:contentDescription="@string/listIconDescription"
+                    app:srcCompat="@drawable/ic_settings"
+                    android:paddingBottom="30dp"
+                    android:id="@+id/settingsImageView"/>
 
             </GridLayout>
         </androidx.cardview.widget.CardView>

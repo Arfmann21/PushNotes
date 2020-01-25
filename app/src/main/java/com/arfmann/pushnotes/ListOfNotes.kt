@@ -3,9 +3,6 @@ package com.arfmann.pushnotes
 import android.app.Dialog
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.res.ColorStateList
-import android.content.res.Configuration
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,7 +13,6 @@ import android.widget.FrameLayout
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -34,16 +30,6 @@ class ListOfNotes : BottomSheetDialogFragment() {
 
         val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
         dialog.setContentView(R.layout.fragment_list_of_notes)
-
-        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_YES -> {
-                setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme)
-                dialog.close_list_button.backgroundTintList =
-                    ColorStateList.valueOf(Color.parseColor("#303050"))
-                dialog.close_list_button.setTextColor(Color.parseColor("#E0E0E0"))
-
-            }
-        }
 
         adapter = ArrayAdapter(context!!, R.layout.listview_text_color, values)
         dialog.notes_listView.adapter = adapter

@@ -11,14 +11,14 @@
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
         <item name="android:timePickerDialogTheme">@style/TimePickerDialog</item>
         <item name="android:fontFamily">@font/dmsans_medium</item>
-        <item name="android:textColor">#E0E0E0</item>
+        <item name="android:textColor">#BDBDBD</item>
         <item name="android:buttonStyle">@style/ButtonStyle</item>
         <item name="android:colorControlHighlight">#3399ff</item>
         <item name="actionMenuTextColor">@color/colorAccent</item>
         <item name="alertDialogStyle">@style/AppCompatAlertDialogStyle</item>
         <item name="android:textColorHint">#9E9E9E</item>
-        <item name="colorControlNormal">#E0E0E0</item>
-        <item name="colorControlActivated">#1E88E5</item>
+        <item name="colorControlNormal">#d37a7a</item>
+        <item name="colorControlActivated">#d37a7a</item>
         <item name="colorControlHighlight">#FFFFFF</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
@@ -35,14 +35,13 @@
         <item name="android:popupMenuStyle">@style/PopupMenuLight</item>
         <item name="android:timePickerDialogTheme">@style/TimePickerDialogLight</item>
         <item name="android:fontFamily">@font/dmsans_medium</item>
-        <item name="android:textColor">#424242</item>
+        <item name="android:textColor">#212121</item>
         <item name="android:colorControlHighlight">#3399ff</item>
         <item name="actionMenuTextColor">@color/colorAccent</item>
         <item name="alertDialogStyle">@style/AppCompatAlertDialogStyle</item>
         <item name="android:textColorHint">#757575</item>
-        <item name="colorControlNormal">#2e7d32</item>
-        <item name="colorControlActivated">#1976D2</item>
-        <item name="colorControlHighlight">#FFFFFF</item>
+        <item name="colorControlNormal">#2196f3</item>
+        <item name="colorControlActivated">#2196f3</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogThemeLight</item>
         <item name="buttonStyle">@style/ButtonStyle</item>
     </style>
@@ -109,7 +108,7 @@
         <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
         <item name="android:buttonBarNeutralButtonStyle">@style/NeutralButtonStyle</item>
         <item name="android:textColor">@color/titleAlertDialogColor</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
     <style name="TimePickerDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
@@ -129,7 +128,7 @@
     </style>
 
     <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">#b30000</item>
+        <item name="android:textColor">#bf360c</item>
         <item name="android:textSize">14.5sp</item>
     </style>
 
@@ -139,7 +138,7 @@
     </style>
 
     <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">#81C784</item>
+        <item name="android:textColor">#388e3c</item>
         <item name="android:textSize">14.5sp</item>
     </style>
 
@@ -196,5 +195,6 @@
         <item name="android:topRightRadius">3pt</item>
         <item name="android:bottomLeftRadius">3pt</item>
         <item name="android:bottomRightRadius">3pt</item>
+        <item name="android:backgroundTint">@color/buttonColor</item>
     </style>
 </resources>

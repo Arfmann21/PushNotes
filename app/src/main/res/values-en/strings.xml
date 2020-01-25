@@ -58,10 +58,13 @@
     <string name="dark_theme">Dark theme</string>
     <string name="notification_settings">Notification settings</string>
     <string name="follow_system">Device theme</string>
-    <string name="application_info">App info</string>
+    <string name="application_info">Info and settings</string>
     <string name="light_theme">Light theme</string>
     <string name="theme">Theme</string>
     <string name="note_deleted">Note deleted</string>
     <string name="support">Supports</string>
     <string name="click_on_add">Click on \"Create\" to create a new note</string>
+
+    <string name="quickNote">Quick notes</string>
+
 </resources>

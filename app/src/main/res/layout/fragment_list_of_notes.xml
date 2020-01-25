@@ -37,9 +37,8 @@
                 android:layout_width="95dp"
                 android:layout_height="55dp"
                 android:layout_gravity="end|bottom"
-                android:backgroundTint="#1976D2"
-                android:textColor="#eeeeee"
                 android:theme="@style/ButtonStyle"
+                android:textColor="@color/buttonTextColor"
                 android:text="@string/close"
                 android:id="@+id/close_list_button"/>
 
@@ -49,7 +48,7 @@
                 android:layout_gravity="end|bottom"
                 android:background="@android:color/transparent"
                 android:layout_marginEnd="115dp"
-                android:textColor="#cc0000"
+                android:textColor="#d84315"
                 android:visibility="visible"
                 android:text="@string/deleteNotes"
                 android:id="@+id/delete_notes_button"/>

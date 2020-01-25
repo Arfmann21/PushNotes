@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#1a1a1a</color>
-    <color name="colorAccent">#3399ff</color>
+    <color name="colorAccent">#1976D2</color>
 
     <color name="splashColor">#FFFFFF</color>
     <color name="statusBarSplashColor">#FFFFFF</color>
@@ -10,6 +10,12 @@
 
     <color name="settingsDivider">#E0E0E0</color>
     <color name="settingsTopPanel">#1976D2</color>
+
+    <color name="buttonTextColor">#E0E0E0</color>
+    <color name="buttonColor">#1976D2</color>
+
+    <color name="radioTextColor">#424242</color>
+    <color name="radioButtonColor">#1976D2</color>
 
     <color name="mainLayoutColor">#FFFFFF</color>
     <color name="mainLayoutCardView">#FFFFFF</color>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="20dp"
+        android:orientation="vertical">
+        <RadioButton
+            android:id="@+id/light_theme_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/radioTextColor"
+            android:paddingStart="10dp"
+            android:text="@string/light_theme"
+            android:onClick="onRadioButtonClicked"
+            android:buttonTint="@color/radioButtonColor"/>
+
+        <RadioButton
+            android:id="@+id/dark_theme_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingStart="10dp"
+            android:textColor="@color/radioTextColor"
+            android:buttonTint="@color/radioButtonColor"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/dark_theme" />
+
+        <RadioButton
+            android:id="@+id/system_theme_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingStart="10dp"
+            android:textColor="@color/radioTextColor"
+            android:buttonTint="@color/radioButtonColor"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/follow_system" />
+    </RadioGroup>
+
+</LinearLayout>

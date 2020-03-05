@@ -92,7 +92,7 @@ class ListOfNotes : BottomSheetDialogFragment() {
 
         val itemLength = itemList.toString().length
 
-        j += 3
+        j += 2
 
         while ((++j) < itemLength) {
             content += itemList.toString()[j]

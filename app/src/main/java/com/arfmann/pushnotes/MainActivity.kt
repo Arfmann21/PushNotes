@@ -576,6 +576,7 @@ class MainActivity : AppCompatActivity() {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                         dark = true
                         followSystem = false
+                        saveData()
                     }
                 R.id.system_theme_radio ->
                     if(checked){

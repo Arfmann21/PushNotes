@@ -98,6 +98,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        textFromShare()
+
         supportActionBar!!.hide()
 
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -122,7 +124,6 @@ class MainActivity : AppCompatActivity() {
 
         listImageView.setOnClickListener {
             title_editText.clearFocus()
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(title_editText.windowToken, 0)
 
             val listOfNotes = ListOfNotes()
@@ -384,12 +385,11 @@ class MainActivity : AppCompatActivity() {
         if(!dontSave) {
             loadData()
 
-            if (title_editText.text!!.isEmpty())
-                arrayOfNotes.add(resources.getString(R.string.no_title) + "  -  " + content_editText.text!!.toString())
-            else if (content_editText.text!!.isEmpty())
-                arrayOfNotes.add(title_editText.text!!.toString() + "  -  " + resources.getString(R.string.no_content))
-            else
-                arrayOfNotes.add(title_editText.text!!.toString() + "  -  " + content_editText.text!!.toString())
+            when {
+                title_editText.text!!.isEmpty() -> arrayOfNotes.add(resources.getString(R.string.no_title) + "  -  " + content_editText.text!!.toString())
+                content_editText.text!!.isEmpty() -> arrayOfNotes.add(title_editText.text!!.toString() + "  -  " + resources.getString(R.string.no_content))
+                else -> arrayOfNotes.add(title_editText.text!!.toString() + "  -  " + content_editText.text!!.toString())
+            }
         }
 
         saveData()
@@ -401,15 +401,17 @@ class MainActivity : AppCompatActivity() {
 
         if(copy) {
 
-            myClip = if(title_editText.text!!.isEmpty()) ClipData.newPlainText(
-                "text",
-                resources.getString(R.string.no_title) + " - " + content_editText.text!!.toString())
-            else if(content_editText.text!!.isEmpty()) ClipData.newPlainText(
-                "text",
-                title_editText.text!!.toString() + " - " + resources.getString(R.string.no_content))
-            else ClipData.newPlainText(
-                "text",
-                title_editText.text!!.toString() + "  -  " + content_editText.text!!.toString())
+            myClip = when {
+                title_editText.text!!.isEmpty() -> ClipData.newPlainText(
+                    "text",
+                    resources.getString(R.string.no_title) + " - " + content_editText.text!!.toString())
+                content_editText.text!!.isEmpty() -> ClipData.newPlainText(
+                    "text",
+                    title_editText.text!!.toString() + " - " + resources.getString(R.string.no_content))
+                else -> ClipData.newPlainText(
+                    "text",
+                    title_editText.text!!.toString() + "  -  " + content_editText.text!!.toString())
+            }
 
             myClipboard.setPrimaryClip(myClip)
 
@@ -712,6 +714,20 @@ class MainActivity : AppCompatActivity() {
 
         adapter.clear() //clear everything from the adapter
         arrayOfNotes.clear()
+
+    }
+
+    private fun textFromShare(){
+        when (intent?.action) {
+            Intent.ACTION_SEND -> {
+                intent.getStringExtra(Intent.EXTRA_TEXT).let {
+                    content_editText.setText(intent.getStringExtra(Intent.EXTRA_TEXT))
+                }
+            }
+            else -> {
+                // Handle other intents, such as being started from the home screen
+            }
+        }
 
     }
 

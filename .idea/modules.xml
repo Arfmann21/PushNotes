@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/PushNotes.iml" filepath="$PROJECT_DIR$/.idea/PushNotes.iml" group="PushNotes" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="PushNotes/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/PushNotes.iml" filepath="$PROJECT_DIR$/.idea/PushNotes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/PushNotes.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/PushNotes.app.iml" />
     </modules>
   </component>
 </project>

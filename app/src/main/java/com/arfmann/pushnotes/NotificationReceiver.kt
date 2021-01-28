@@ -36,7 +36,7 @@ class NotificationReceiver : BroadcastReceiver(){
                 context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             var builder = NotificationCompat.Builder(
                 context,
-                "com.arfmann.notificationnotes"
+                "FastNotes"
             ) //build notification
                 .setSmallIcon(R.drawable.logo)
                 .setContentIntent(pendingIntentDelete)

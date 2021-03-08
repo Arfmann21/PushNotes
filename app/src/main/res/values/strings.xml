@@ -15,7 +15,7 @@
     <string name="yes">Si</string>
     <string name="no" translatable="false">No</string>
     <string name="developer" translatable="false">Developer</string>
-    <string name="nameDeveloper" translatable="false">Giovanni Ferraro</string>
+    <string name="nameDeveloper" translatable="false">Grapheion</string>
     <string name="openSource" translatable="false">Open Source</string>
     <string name="gitHub" translatable="false">GitHub</string>
     <string name="version_not_supported">La tua versione Android non supporta questa funzione</string>
@@ -59,7 +59,7 @@
 
     <string name="note_deleted">Nota eliminata</string>
 
-    <string name="dev_info">Sviluppatore - Giovanni Ferraro</string>
+    <string name="dev_info">Sviluppatore - Grapheion</string>
     <string name="logo_info">Logo e aiuto UI - AleD219</string>
     <string name="ps_info" translatable="false">Push Notes - OpenSource</string>
     <string name="support">Supporta</string>

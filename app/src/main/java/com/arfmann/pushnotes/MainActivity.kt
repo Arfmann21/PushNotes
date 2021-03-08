@@ -535,12 +535,12 @@ class MainActivity : AppCompatActivity() {
 
         var url: Uri
 
-        dialogView.dev_telegram_imageView.setOnClickListener {
-            url = Uri.parse("http://bit.ly/ArfmannTelegram")
+        dialogView.dev_instagram_imageView.setOnClickListener {
+            url = Uri.parse("http://bit.ly/GrapheionInstagram")
             openWeb(url)
         }
         dialogView.dev_github_imageView.setOnClickListener {
-            url = Uri.parse("http://bit.ly/ArfmannGitHub")
+            url = Uri.parse("http://bit.ly/GrapheionGithub")
             openWeb(url)
         }
         dialogView.ui_telegram_imageView.setOnClickListener {
@@ -555,10 +555,7 @@ class MainActivity : AppCompatActivity() {
             url = Uri.parse("http://bit.ly/PsGitHub")
             openWeb(url)
         }
-        dialogView.support.setOnClickListener {
-            url = Uri.parse("http://bit.ly/supportaPushNotes")
-            openWeb(url)
-        }
+
     }
 
     fun onRadioButtonClicked(view: View) {
@@ -824,7 +821,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 },
                 Response.ErrorListener {}) //if update check go fail
-            queue.add(stringReq) //add request to queue
+            queue.add(stringReq) //add request to queue*/
 
             return "FINISHED"
         }

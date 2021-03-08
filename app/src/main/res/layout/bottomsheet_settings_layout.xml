@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:background="@color/settingsDivider"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="200dp"
         android:visibility="invisible"
         android:id="@+id/separatorInfo"/>
 
@@ -176,10 +176,10 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_telegram"
+                android:src="@drawable/ic_instagram"
                 android:layout_gravity="end"
                 android:layout_marginEnd="20dp"
-                android:id="@+id/dev_telegram_imageView"/>
+                android:id="@+id/dev_instagram_imageView"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -236,21 +236,10 @@
                 android:id="@+id/push_notes_github_imageView"/>
         </GridLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:text="@string/support"
-            android:drawableEnd="@drawable/ic_paypal"
-            android:layout_marginEnd="15dp"
-            android:textSize="15.5sp"
-            android:layout_marginTop="25dp"
-            android:id="@+id/support"/>
-
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="70dp"
             android:columnCount="2">
             <TextView android:text="@string/quick_note"
                 android:layout_width="wrap_content"
